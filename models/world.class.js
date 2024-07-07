@@ -15,6 +15,7 @@ class World {
     canvas;
     ctx;
     keyboard;
+    camera_x;
 
     constructor(canvas, keyboard){
         this.ctx = canvas.getContext('2d');
@@ -33,10 +34,14 @@ class World {
     draw(){
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
+        this.ctx.translate(this.camera_x, 0);
+
         this.addObjectsToMap(this.background);        
         this.addToMap(this.character);
         this.addObjectsToMap(this.enemies);
         this.addToMap(this.frontground);
+
+        this.ctx.translate(-this.camera_x, 0);
 
         let self = this           //self muss geschrieben werden, weil innerhalb der neuen funktion sonst 'this' nicht mehr die aktuelle World kennt.
         requestAnimationFrame( function () {
