@@ -74,26 +74,75 @@ class Character extends MovableObject{
         'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle Blinking/0_Orc_Idle Blinking_016.png',
         'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle Blinking/0_Orc_Idle Blinking_017.png'
     ];
-    currentImage = 0;
+
+    walkImages = [
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Walking/0_Orc_Walking_000.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Walking/0_Orc_Walking_001.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Walking/0_Orc_Walking_002.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Walking/0_Orc_Walking_003.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Walking/0_Orc_Walking_004.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Walking/0_Orc_Walking_005.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Walking/0_Orc_Walking_006.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Walking/0_Orc_Walking_007.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Walking/0_Orc_Walking_008.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Walking/0_Orc_Walking_009.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Walking/0_Orc_Walking_010.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Walking/0_Orc_Walking_011.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Walking/0_Orc_Walking_011.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Walking/0_Orc_Walking_012.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Walking/0_Orc_Walking_013.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Walking/0_Orc_Walking_014.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Walking/0_Orc_Walking_015.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Walking/0_Orc_Walking_016.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Walking/0_Orc_Walking_017.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Walking/0_Orc_Walking_018.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Walking/0_Orc_Walking_019.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Walking/0_Orc_Walking_020.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Walking/0_Orc_Walking_021.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Walking/0_Orc_Walking_022.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Walking/0_Orc_Walking_023.png'
+    ];
+    world;
 
     constructor(){
         super();
+        // keyboard = world.keyboard;
         this.loadImages(this.idleImages);
+        this.loadImages(this.walkImages);
         this.animate();
     };
 
 
     animate(){
+
         setInterval(() => {
-            let i = this.currentImage % this.idleImages.length; // der modulo operator '%' gibt immer nur den rest einer division zurueck und sorgt dafuer das wir wieder bei 0 starten, wenn wir einmal durchlaufen sind.
-            let path = this.idleImages[i];
-            this.img = this.imageCache[path];
-            this.currentImage++;
-        }, 80);
-    };
-    
+            // walk RIGHT
+                if (this.world.keyboard.RIGHT) {
+                    this.x += this.speed + 3;
+                    this.otherDirection = false;
+                }
+            // walk LEFT
+                if (this.world.keyboard.LEFT) {
+                    this.x -= this.speed + 3;
+                    this.otherDirection = true;
+                }
+            }, 1000 / 60);
 
-    jump(){
-
+        setInterval(() => {
+        // WALK
+            if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
+                let i = this.currentImage % this.walkImages.length; // der modulo operator '%' gibt immer nur den rest einer division zurueck und sorgt dafuer das wir wieder bei 0 starten, wenn wir einmal durchlaufen sind.
+                let path = this.walkImages[i];
+                this.img = this.imageCache[path];
+                this.currentImage++;
+            }
+        // IDLE
+            else {
+                let i = this.currentImage % this.idleImages.length;
+                let path = this.idleImages[i];
+                this.img = this.imageCache[path];
+                this.currentImage++;
+            }
+        }, 60);
     };
 }
