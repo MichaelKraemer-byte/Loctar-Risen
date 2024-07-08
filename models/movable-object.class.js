@@ -39,4 +39,6 @@ class MovableObject {
         audio.volume = volume;
         audio.play();
     }
+
+
 }

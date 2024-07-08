@@ -82,6 +82,8 @@ class Minotaur_1 extends MovableObject{
     ];
     world;
     walkSound = new Audio('assets/audio/walking/walking-on-crunchy-road.wav');
+    
+
 
     constructor(){
         super(); //ruft variablen und constructor funktionen auf (MovableObject)
@@ -91,13 +93,16 @@ class Minotaur_1 extends MovableObject{
         this.animate();
     };
 
+
     animate(){
     this.moveLeft();
     setInterval(() => {
-        
-        this.playSound(this.walkSound, 0.01);
+        if (this.isVisible()) {
+            this.playSound(this.walkSound, 0.01);
+        }
     }, 50);
     
+
     setInterval(() => {
         let i = this.currentImage % this.walkImages.length; // der modulo operator '%' gibt immer nur den rest einer division zurueck und sorgt dafuer das wir wieder bei 0 starten, wenn wir einmal durchlaufen sind.
         let path = this.walkImages[i]; 
@@ -105,4 +110,13 @@ class Minotaur_1 extends MovableObject{
         this.currentImage++;
     }, 50);
     };
+    
+
+    isVisible() {
+        // Check if the object is visible in the canvas
+        if (this.world) {
+            return this.x + this.width > -this.world.camera_x && this.x < -this.world.camera_x + this.world.canvas.width;
+        }
+        return false;
+    }
 }
