@@ -83,7 +83,7 @@ class Minotaur_1 extends MovableObject{
     world;
 
     constructor(){
-        super(); //ruft variablen und constructor funktionen auf
+        super(); //ruft variablen und constructor funktionen auf (MovableObject)
         this.loadImages(this.walkImages);
         this.x = 300 + Math.random() * 500;
         this.speed = 0.15 + Math.random() * 0.4;
@@ -95,7 +95,7 @@ class Minotaur_1 extends MovableObject{
 
         setInterval(() => {
             let i = this.currentImage % this.walkImages.length; // der modulo operator '%' gibt immer nur den rest einer division zurueck und sorgt dafuer das wir wieder bei 0 starten, wenn wir einmal durchlaufen sind.
-            let path = this.walkImages[i];
+            let path = this.walkImages[i]; 
             this.img = this.imageCache[path];
             this.currentImage++;
         }, 50);

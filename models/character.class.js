@@ -117,16 +117,16 @@ class Character extends MovableObject{
 
         setInterval(() => {
             // walk RIGHT
-                if (this.world.keyboard.RIGHT) {
+                if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
                     this.x += this.speed + 3;
                     this.otherDirection = false;
                 }
             // walk LEFT
-                if (this.world.keyboard.LEFT) {
+                if (this.world.keyboard.LEFT && this.x > -300) {
                     this.x -= this.speed + 3;
                     this.otherDirection = true;
                 };
-                this.world.camera_x = -this.x + 20;
+                this.world.camera_x = -this.x + 60;
             }, 1000 / 60);
 
         setInterval(() => {

@@ -1,5 +1,5 @@
 class MovableObject {
-    x = 20;
+    x = 0;
     y = 280;
     img;
     height = 200;
@@ -14,7 +14,7 @@ class MovableObject {
     // und mit einem path entsprechend befuellt werden,
     // um dann dessen image zu generieren.
     loadImage(path){
-        this.img = new Image();
+        this.img = new Image(); //<img>
         this.img.src = path;
     };
 

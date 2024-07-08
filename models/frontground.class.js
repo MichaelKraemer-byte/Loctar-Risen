@@ -4,8 +4,9 @@ class Frontground extends MovableObject {
     x = 0;
     y = 0;
 
-    constructor(){
+    constructor(path, x){
         super();
-        this.loadImage('assets/crafties/forest-backgrounds/forest/PNG/Cartoon_Forest_BG_01/Layers/Ground.png');
+        this.loadImage(path);
+        this.x = x;
     };
 }
