@@ -34,4 +34,9 @@ class MovableObject {
             this.imageCache[path] = this.img;
         });
     };
+
+    playSound(audio, volume){
+        audio.volume = volume;
+        audio.play();
+    }
 }

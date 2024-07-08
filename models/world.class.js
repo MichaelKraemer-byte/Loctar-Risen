@@ -49,7 +49,7 @@ class World {
 
     drawBackgroundLayer(layer) {
         layer.forEach(bg => {
-            let adjustedX = bg.speed * (this.camera_x / 2); // Anpassen der Geschwindigkeit für Parallaxen-Effekt
+            let adjustedX = bg.speed * (this.camera_x / 4); // Anpassen der Geschwindigkeit für Parallaxen-Effekt
             this.ctx.save(); // Speichert den Zustand vor der Verschiebung
             this.ctx.translate(adjustedX, 0); // Hintergrund basierend auf Geschwindigkeit verschieben
             this.addToMap(bg);

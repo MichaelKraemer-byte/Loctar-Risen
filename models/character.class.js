@@ -103,6 +103,8 @@ class Character extends MovableObject{
         'assets/crafties/orcs/Orc/PNG/PNG Sequences/Walking/0_Orc_Walking_023.png'
     ];
     world;
+    walkSound = new Audio('assets/audio/walking/walking-on-tall-grass.wav');
+
 
     constructor(){
         super();
@@ -117,14 +119,17 @@ class Character extends MovableObject{
 
         setInterval(() => {
             // walk RIGHT
+            this.walkSound.pause();
                 if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x ) {
-                    this.x += this.speed + 3;
+                    this.x += this.speed + 2;
                     this.otherDirection = false;
+                    this.playSound(this.walkSound, 0.35);
                 }
             // walk LEFT
                 if (this.world.keyboard.LEFT && this.x > -300) {
-                    this.x -= this.speed + 3;
+                    this.x -= this.speed + 2;
                     this.otherDirection = true;
+                    this.playSound(this.walkSound, 0.35);
                 };
                 this.world.camera_x = -this.x + 20;
             }, 1000 / 60);
@@ -144,6 +149,6 @@ class Character extends MovableObject{
                 this.img = this.imageCache[path];
                 this.currentImage++;
             }
-        }, 60);
+        }, 50);
     };
 }
