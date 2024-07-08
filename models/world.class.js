@@ -10,8 +10,8 @@ class World {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
-        this.draw();
         this.setWorld();
+        this.draw();
     }
 
 
@@ -23,19 +23,38 @@ class World {
     draw(){
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-        this.ctx.translate(this.camera_x, 0);
+        this.ctx.save(); // Speichert den aktuellen Zustand der Transformationen
 
-        this.addObjectsToMap(this.level.backgrounds);        
+        this.ctx.translate(this.camera_x, 0);
+        // Zeichne Hintergrundebenen mit unterschiedlichen Geschwindigkeiten
+        this.drawBackgroundLayer(this.level.skies);
+        this.drawBackgroundLayer(this.level.backDecors);
+        this.drawBackgroundLayer(this.level.middleDecors);
+        this.drawBackgroundLayer(this.level.foregrounds);
+
+        // Zeichne andere Objekte
         this.addToMap(this.character);
         this.addObjectsToMap(this.level.enemies);
-        this.addObjectsToMap(this.level.frontgrounds);
 
-        this.ctx.translate(-this.camera_x, 0);
+        this.drawBackgroundLayer(this.level.grounds);
 
-        let self = this;           //self muss geschrieben werden, weil innerhalb der neuen funktion sonst 'this' nicht mehr die aktuelle World kennt.
-        requestAnimationFrame( function () {
+        this.ctx.restore(); // Stellt den gespeicherten Zustand der Transformationen wieder her
+
+        let self = this;
+        requestAnimationFrame(function () {
             self.draw();
         })
+    }
+
+
+    drawBackgroundLayer(layer) {
+        layer.forEach(bg => {
+            let adjustedX = bg.speed * (this.camera_x / 2); // Anpassen der Geschwindigkeit für Parallaxen-Effekt
+            this.ctx.save(); // Speichert den Zustand vor der Verschiebung
+            this.ctx.translate(adjustedX, 0); // Hintergrund basierend auf Geschwindigkeit verschieben
+            this.addToMap(bg);
+            this.ctx.restore(); // Stellt den Zustand nach der Verschiebung wieder her
+        });
     }
 
 

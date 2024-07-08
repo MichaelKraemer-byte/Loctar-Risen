@@ -1,14 +1,14 @@
-class Background extends MovableObject {
+class MiddleDecor extends MovableObject {
     width = 720;
     height = 480;
     x = 0;
     y = 0;
-    speed = 1;
+    speed = 0.4;
 
     constructor(path, x, speed){
         super();
         this.loadImage(path);
         this.x = x;
-        this.speed = speed || 1;
+        this.speed = speed || 0.6;
     };
 }
