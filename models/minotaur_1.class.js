@@ -98,16 +98,15 @@ class Minotaur_1 extends MovableObject{
     this.moveLeft();
     setInterval(() => {
         if (this.isVisible()) {
-            this.playSound(this.walkSound, 0.01);
+            this.playSound(this.walkSound, 0.02);
+        } else if (!this.isVisible()) {
+            this.pauseSound(this.walkSound);
         }
     }, 50);
     
 
     setInterval(() => {
-        let i = this.currentImage % this.walkImages.length; // der modulo operator '%' gibt immer nur den rest einer division zurueck und sorgt dafuer das wir wieder bei 0 starten, wenn wir einmal durchlaufen sind.
-        let path = this.walkImages[i]; 
-        this.img = this.imageCache[path];
-        this.currentImage++;
+        this.playAnimation(this.walkImages);
     }, 50);
     };
     

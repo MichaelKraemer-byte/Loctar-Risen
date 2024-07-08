@@ -20,6 +20,9 @@ class World {
         this.level.enemies.forEach(enemy => {
             enemy.world = this;
         });
+        this.level.endboss.forEach(endboss => {
+            endboss.world = this;
+        });
     }
 
 
@@ -38,6 +41,7 @@ class World {
         // Zeichne andere Objekte
         this.addToMap(this.character);
         this.addObjectsToMap(this.level.enemies);
+        this.addObjectsToMap(this.level.endboss);
 
         this.drawBackgroundLayer(this.level.grounds);
 

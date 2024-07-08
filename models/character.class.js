@@ -137,17 +137,11 @@ class Character extends MovableObject{
         setInterval(() => {
         // WALK
             if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
-                let i = this.currentImage % this.walkImages.length; // der modulo operator '%' gibt immer nur den rest einer division zurueck und sorgt dafuer das wir wieder bei 0 starten, wenn wir einmal durchlaufen sind.
-                let path = this.walkImages[i];
-                this.img = this.imageCache[path];
-                this.currentImage++;
+                this.playAnimation(this.walkImages);
             }
         // IDLE
             else {
-                let i = this.currentImage % this.idleImages.length;
-                let path = this.idleImages[i];
-                this.img = this.imageCache[path];
-                this.currentImage++;
+                this.playAnimation(this.idleImages);
             }
         }, 50);
     };
