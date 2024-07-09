@@ -88,14 +88,18 @@ class Minotaur_1 extends MovableObject{
     constructor(){
         super(); //ruft variablen und constructor funktionen auf (MovableObject)
         this.loadImages(this.walkImages);
-        this.x = 300 + Math.random() * 500;
+        this.x = 800 + Math.random() * 500;
         this.speed = 0.15 + Math.random() * 0.4;
         this.animate();
     };
 
 
     animate(){
-    this.moveLeft();
+
+    setInterval(() => {
+        this.walkLeft();
+    }, 1000 / 25);
+
     setInterval(() => {
         if (this.isVisible()) {
             this.playSound(this.walkSound, 0.02);
@@ -104,10 +108,10 @@ class Minotaur_1 extends MovableObject{
         }
     }, 50);
     
-
     setInterval(() => {
         this.playAnimation(this.walkImages);
     }, 50);
+    
     };
     
 

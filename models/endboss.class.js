@@ -13,26 +13,30 @@ class Endboss extends MovableObject {
     ];
     world;
     walkSound = new Audio('assets/audio/walking/walking-on-crunchy-road.wav');
+    width = 700;
+    height = 500;
+    y = 22;
+    x = 3100;
+
     
 
 
     constructor(){
         super(); //ruft variablen und constructor funktionen auf (MovableObject)
         this.loadImages(this.walkImages);
-        this.x = 1000 + Math.random() * 500;
         this.speed = 0.6 + Math.random() * 0.4;
-        this.width = 700;
-        this.height = 500;
-        this.y = 20;
         this.animate();
     };
 
 
     animate(){
-    this.moveLeft();
+    setInterval(() => {
+        this.walkLeft();
+    }, 1000 / 40);
+
     setInterval(() => {
         if (this.isVisible()) {
-            this.playSound(this.walkSound, 0.6);
+            this.playSound(this.walkSound, 0.4);
         } else if (!this.isVisible()) {
             this.pauseSound(this.walkSound);
         }

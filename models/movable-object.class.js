@@ -8,6 +8,9 @@ class MovableObject {
     currentImage = 0;
     speed = 0.15;
     otherDirection = false;
+    speedY = 0;
+    acceleration = 5;
+
 
 
     // kann von character uebernommen werden (super()), 
@@ -19,12 +22,16 @@ class MovableObject {
     };
 
 
-    moveLeft(){
+    walkLeft(){
         this.otherDirection = true;
-        setInterval(() => {        
-        this.x -= this.speed
-        }, 1000 / 60);
+        this.x -= this.speed + 2;
     };
+
+
+    walkRight(){
+        this.x += this.speed + 2;
+        this.otherDirection = false;
+    }
 
 
     loadImages(array){
@@ -35,10 +42,12 @@ class MovableObject {
         });
     };
 
+
     playSound(audio, volume){
         audio.volume = volume;
         audio.play();
     }
+
 
     pauseSound(audio){
         audio.pause();
@@ -52,4 +61,30 @@ class MovableObject {
         this.currentImage++;
     }
 
+
+    applyGravity(){
+        setInterval(()=> {
+            if (this.isAboveGround()) {
+                this.y -= this.speedY;
+                this.speedY -= this.acceleration;
+            }
+            if (this.y > 280) {
+                this.y = 280;
+            }
+        }, 1000 / 25);
+    };
+
+
+    isAboveGround(){
+        if (this.y < 280 || this.speedY > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
+
+    jump(){
+        this.speedY = 38;
+    }
 }

@@ -102,8 +102,25 @@ class Character extends MovableObject{
         'assets/crafties/orcs/Orc/PNG/PNG Sequences/Walking/0_Orc_Walking_022.png',
         'assets/crafties/orcs/Orc/PNG/PNG Sequences/Walking/0_Orc_Walking_023.png'
     ];
+
+    jumpImages = [
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Jump Start/0_Orc_Jump Start_000.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Jump Start/0_Orc_Jump Start_001.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Jump Start/0_Orc_Jump Start_002.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Jump Start/0_Orc_Jump Start_003.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Jump Start/0_Orc_Jump Start_004.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Jump Start/0_Orc_Jump Start_005.png',
+
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Falling Down/0_Orc_Falling Down_000.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Falling Down/0_Orc_Falling Down_001.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Falling Down/0_Orc_Falling Down_002.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Falling Down/0_Orc_Falling Down_003.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Falling Down/0_Orc_Falling Down_004.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Falling Down/0_Orc_Falling Down_005.png',
+    ];
     world;
     walkSound = new Audio('assets/audio/walking/walking-on-tall-grass.wav');
+    y = 280;
 
 
     constructor(){
@@ -111,38 +128,54 @@ class Character extends MovableObject{
         // keyboard = world.keyboard;
         this.loadImages(this.idleImages);
         this.loadImages(this.walkImages);
+        this.loadImages(this.jumpImages);
+        this.applyGravity();
         this.animate();
     };
 
 
     animate(){
 
+        // Moving & Sound
         setInterval(() => {
-            // walk RIGHT
+            // walk RIGHT 
             this.walkSound.pause();
-                if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x ) {
-                    this.x += this.speed + 2;
-                    this.otherDirection = false;
-                    this.playSound(this.walkSound, 0.35);
-                }
+            if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x ) {
+                this.walkRight();
+                this.playSound(this.walkSound, 0.35);
+            }
+            // jump
+            if (this.world.keyboard.SPACE && !this.isAboveGround()) {
+                this.jump();
+            };
             // walk LEFT
-                if (this.world.keyboard.LEFT && this.x > -300) {
-                    this.x -= this.speed + 2;
-                    this.otherDirection = true;
-                    this.playSound(this.walkSound, 0.35);
-                };
-                this.world.camera_x = -this.x + 20;
-            }, 1000 / 60);
+            if (this.world.keyboard.LEFT && this.x > -300) {
+                this.walkLeft();
+                this.playSound(this.walkSound, 0.35);
+            };
+            this.world.camera_x = -this.x + 20;
+        }, 1000 / 60);
 
+
+
+
+        // Images
         setInterval(() => {
-        // WALK
+        // WALK Images
             if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
                 this.playAnimation(this.walkImages);
-            }
-        // IDLE
-            else {
+            }}, 35);
+        // IDLE Images
+        setInterval(() => {
+            if (this.world.keyboard.NONE) {
                 this.playAnimation(this.idleImages);
             }
-        }, 50);
+        }, 80);
+        // JUMP Images
+        setInterval(() => {
+            if (this.isAboveGround()) {
+                this.playAnimation(this.jumpImages);
+            }
+        }, 120);
     };
 }
