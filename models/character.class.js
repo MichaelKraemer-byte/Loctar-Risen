@@ -121,6 +121,11 @@ class Character extends MovableObject{
     world;
     walkSound = new Audio('assets/audio/walking/walking-on-tall-grass.wav');
     y = 280;
+    frameWidth = 80;
+    frameHeight = 115;
+    frameY = 330;
+    frameX = 55;
+
 
 
     constructor(){
@@ -141,7 +146,7 @@ class Character extends MovableObject{
             // walk RIGHT 
             this.walkSound.pause();
             if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x ) {
-                this.walkRight();
+                this.walkRight(this.frameX);
                 this.playSound(this.walkSound, 0.35);
             }
             // jump
@@ -150,7 +155,7 @@ class Character extends MovableObject{
             };
             // walk LEFT
             if (this.world.keyboard.LEFT && this.x > -300) {
-                this.walkLeft();
+                this.walkLeft(this.frameX);
                 this.playSound(this.walkSound, 0.35);
             };
             this.world.camera_x = -this.x + 20;
@@ -162,18 +167,18 @@ class Character extends MovableObject{
         // Images
         setInterval(() => {
         // WALK Images
-            if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
+            if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT && !this.isAboveGround()) {
                 this.playAnimation(this.walkImages);
             }}, 35);
         // IDLE Images
         setInterval(() => {
-            if (this.world.keyboard.NONE) {
+            if (this.world.keyboard.NONE  && !this.isAboveGround() && !this.world.keyboard.RIGHT && !this.world.keyboard.LEFT) {
                 this.playAnimation(this.idleImages);
             }
         }, 80);
         // JUMP Images
         setInterval(() => {
-            if (this.isAboveGround()) {
+            if (this.isAboveGround() && this.world.keyboard.SPACE) {
                 this.playAnimation(this.jumpImages);
             }
         }, 120);

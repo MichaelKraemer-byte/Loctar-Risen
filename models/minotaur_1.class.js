@@ -82,16 +82,26 @@ class Minotaur_1 extends MovableObject{
     ];
     world;
     walkSound = new Audio('assets/audio/walking/walking-on-crunchy-road.wav');
+    frameWidth = 80;
+    frameHeight = 115;
+    frameY = 330;
+    spawnX;
     
 
 
     constructor(){
         super(); //ruft variablen und constructor funktionen auf (MovableObject)
         this.loadImages(this.walkImages);
-        this.x = 800 + Math.random() * 500;
+        this.setSpawnPoint();
+        this.x = this.spawnX;
         this.speed = 0.15 + Math.random() * 0.4;
         this.animate();
     };
+
+
+    setSpawnPoint(){
+        this.spawnX = 800 + Math.random() * 500;
+    }
 
 
     animate(){
@@ -111,7 +121,7 @@ class Minotaur_1 extends MovableObject{
     setInterval(() => {
         this.playAnimation(this.walkImages);
     }, 50);
-    
+
     };
     
 

@@ -12,6 +12,27 @@ class MovableObject {
     acceleration = 5;
 
 
+    draw(ctx){
+        ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+    };
+
+    drawFrame(ctx){
+        if (this instanceof Character || this instanceof Minotaur_1) {
+            ctx.beginPath();
+            ctx.lineWidth = "4";
+            ctx.strokeStyle = "green";
+            ctx.rect(this.x + this.width / 4, this.y + this.height * 0.26, this.width  / 2.3, this.height  / 1.7);
+            ctx.stroke();
+        };
+
+        if (this instanceof Endboss) {
+            ctx.beginPath();
+            ctx.lineWidth = "4";
+            ctx.strokeStyle = "green";
+            ctx.rect(this.x + 250, this.y + this.height * 0.34, this.width  / 2.6, this.height  / 1.7);
+            ctx.stroke();
+        }
+    };
 
     // kann von character uebernommen werden (super()), 
     // und mit einem path entsprechend befuellt werden,
@@ -29,9 +50,9 @@ class MovableObject {
 
 
     walkRight(){
-        this.x += this.speed + 2;
         this.otherDirection = false;
-    }
+        this.x += this.speed + 2;
+    };
 
 
     loadImages(array){
@@ -46,12 +67,12 @@ class MovableObject {
     playSound(audio, volume){
         audio.volume = volume;
         audio.play();
-    }
+    };
 
 
     pauseSound(audio){
         audio.pause();
-    }
+    };
 
 
     playAnimation(images){
@@ -59,7 +80,7 @@ class MovableObject {
         let path = images[i];
         this.img = this.imageCache[path];
         this.currentImage++;
-    }
+    };
 
 
     applyGravity(){
@@ -86,5 +107,5 @@ class MovableObject {
 
     jump(){
         this.speedY = 38;
-    }
+    };
 }
