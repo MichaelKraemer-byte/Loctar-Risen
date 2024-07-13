@@ -118,13 +118,36 @@ class Character extends MovableObject{
         'assets/crafties/orcs/Orc/PNG/PNG Sequences/Falling Down/0_Orc_Falling Down_004.png',
         'assets/crafties/orcs/Orc/PNG/PNG Sequences/Falling Down/0_Orc_Falling Down_005.png',
     ];
+
+    hurtImages = [
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Hurt/0_Orc_Hurt_000.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Hurt/0_Orc_Hurt_001.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Hurt/0_Orc_Hurt_002.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Hurt/0_Orc_Hurt_003.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Hurt/0_Orc_Hurt_004.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Hurt/0_Orc_Hurt_005.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Hurt/0_Orc_Hurt_006.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Hurt/0_Orc_Hurt_007.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Hurt/0_Orc_Hurt_008.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Hurt/0_Orc_Hurt_009.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Hurt/0_Orc_Hurt_010.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Hurt/0_Orc_Hurt_011.png',
+    ]
     world;
     walkSound = new Audio('assets/audio/walking/walking-on-tall-grass.wav');
     y = 280;
-    frameWidth = 80;
-    frameHeight = 115;
-    frameY = 330;
-    frameX = 55;
+    offset = {
+        top: 60,
+        bottom: 40,
+        right: 70,
+        left: 60,
+
+
+        offsetX: 0,
+        offsetY: 0,
+        offsetWidth: 0,
+        offsetHeight: 0
+    };
 
 
 
@@ -134,6 +157,7 @@ class Character extends MovableObject{
         this.loadImages(this.idleImages);
         this.loadImages(this.walkImages);
         this.loadImages(this.jumpImages);
+        this.loadImages(this.hurtImages);
         this.applyGravity();
         this.animate();
     };
@@ -145,8 +169,8 @@ class Character extends MovableObject{
         setInterval(() => {
             // walk RIGHT 
             this.walkSound.pause();
-            if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x ) {
-                this.walkRight(this.frameX);
+            if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
+                this.walkRight();
                 this.playSound(this.walkSound, 0.35);
             }
             // jump
@@ -155,31 +179,38 @@ class Character extends MovableObject{
             };
             // walk LEFT
             if (this.world.keyboard.LEFT && this.x > -300) {
-                this.walkLeft(this.frameX);
+                this.walkLeft();
                 this.playSound(this.walkSound, 0.35);
             };
             this.world.camera_x = -this.x + 20;
+            this.refreshOffset();
         }, 1000 / 60);
-
-
 
 
         // Images
         setInterval(() => {
         // WALK Images
             if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT && !this.isAboveGround()) {
-                this.playAnimation(this.walkImages);
+                if (!this.damageProcess) {
+                    this.playAnimation(this.walkImages);
+                } 
             }}, 35);
         // IDLE Images
         setInterval(() => {
-            if (this.world.keyboard.NONE  && !this.isAboveGround() && !this.world.keyboard.RIGHT && !this.world.keyboard.LEFT) {
+            if (!this.damageProcess && this.world.keyboard.NONE  && !this.isAboveGround() && !this.world.keyboard.RIGHT && !this.world.keyboard.LEFT) {
                 this.playAnimation(this.idleImages);
             }
         }, 80);
         // JUMP Images
         setInterval(() => {
-            if (this.isAboveGround() && this.world.keyboard.SPACE) {
+            if (this.isAboveGround() && this.world.keyboard.SPACE && !this.damageProcess) {
                 this.playAnimation(this.jumpImages);
+            }
+        }, 120);
+        // HURT Images
+        setInterval(() => {
+            if (this.damageProcess) {
+                this.playAnimation(this.hurtImages);
             }
         }, 120);
     };

@@ -12,6 +12,25 @@ class World {
         this.keyboard = keyboard;
         this.setWorld();
         this.draw();
+        this.checkCollisions();
+    }
+
+
+    checkCollisions(){
+        setInterval(()=> {
+            this.level.enemies.forEach( (enemy) => {
+                if (this.character.isColliding(enemy) ) {
+                    this.character.reduceHP(enemy);
+                    console.log('character collision with enemy - health points of character:', this.character.HP);
+                }});     
+        }, 50);
+        setInterval(()=> {
+            this.level.endboss.forEach( (endboss) => {
+                if (this.character.isColliding(endboss) ) {
+                    this.character.reduceHP(endboss);
+                    console.log('character collision with endboss - health points of character:', this.character.HP);
+                }});     
+        }, 50);
     }
 
 

@@ -2,7 +2,7 @@ const level_1 = new Level (
     [
         new Minotaur_1(),
         new Minotaur_1(),
-        new Minotaur_1()
+        new Minotaur_1(),
     ],
     [
         new Endboss()

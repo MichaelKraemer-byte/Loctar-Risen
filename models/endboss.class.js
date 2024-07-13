@@ -16,7 +16,19 @@ class Endboss extends MovableObject {
     width = 700;
     height = 500;
     y = 22;
-    x = 3100;
+    x = 2600;
+    offset = {
+        top: 180,
+        bottom: 70,
+        right: 220,
+        left: 250,
+
+        
+        offsetX: 0,
+        offsetY: 0,
+        offsetWidth: 0,
+        offsetHeight: 0
+    }
 
     
 
@@ -32,6 +44,7 @@ class Endboss extends MovableObject {
     animate(){
     setInterval(() => {
         this.walkLeft();
+        this.refreshOffset();
     }, 1000 / 40);
 
     setInterval(() => {

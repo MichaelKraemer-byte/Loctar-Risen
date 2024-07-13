@@ -6,7 +6,7 @@ class Level {
     middleDecors;
     foregrounds;
     grounds;
-    level_end_x = 1300;
+    level_end_x = 1800;
 
 
     constructor(enemies, endboss, skies, backDecors, middleDecors, foregrounds, grounds) {
