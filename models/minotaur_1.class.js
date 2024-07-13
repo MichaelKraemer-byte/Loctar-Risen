@@ -122,7 +122,7 @@ class Minotaur_1 extends MovableObject{
 
     setInterval(() => {
         if (this.isVisible()) {
-            this.playSound(this.walkSound, 0.02);
+            this.playSound(this.walkSound, 0.02, 1);
         } else if (!this.isVisible()) {
             this.pauseSound(this.walkSound);
         }

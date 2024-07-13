@@ -132,6 +132,21 @@ class Character extends MovableObject{
         'assets/crafties/orcs/Orc/PNG/PNG Sequences/Hurt/0_Orc_Hurt_009.png',
         'assets/crafties/orcs/Orc/PNG/PNG Sequences/Hurt/0_Orc_Hurt_010.png',
         'assets/crafties/orcs/Orc/PNG/PNG Sequences/Hurt/0_Orc_Hurt_011.png',
+    ];
+
+    runImages = [
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Running/0_Orc_Running_000.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Running/0_Orc_Running_001.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Running/0_Orc_Running_002.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Running/0_Orc_Running_003.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Running/0_Orc_Running_004.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Running/0_Orc_Running_005.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Running/0_Orc_Running_006.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Running/0_Orc_Running_007.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Running/0_Orc_Running_008.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Running/0_Orc_Running_009.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Running/0_Orc_Running_010.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Running/0_Orc_Running_011.png'
     ]
     world;
     walkSound = new Audio('assets/audio/walking/walking-on-tall-grass.wav');
@@ -156,6 +171,7 @@ class Character extends MovableObject{
         // keyboard = world.keyboard;
         this.loadImages(this.idleImages);
         this.loadImages(this.walkImages);
+        this.loadImages(this.runImages);
         this.loadImages(this.jumpImages);
         this.loadImages(this.hurtImages);
         this.applyGravity();
@@ -171,16 +187,33 @@ class Character extends MovableObject{
             this.walkSound.pause();
             if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
                 this.walkRight();
-                this.playSound(this.walkSound, 0.35);
-            }
-            // jump
-            if (this.world.keyboard.SPACE && !this.isAboveGround()) {
-                this.jump();
+                this.speed = 0.15;
+
+                // RUN
+                if (this.world.keyboard.SHIFT) {
+                    this.speed = 5;
+                    this.playSound(this.walkSound, 0.35, 3);
+                    console.log(this.speed)
+                } else {
+                    this.playSound(this.walkSound, 0.35, 1);
+                }
             };
             // walk LEFT
             if (this.world.keyboard.LEFT && this.x > -300) {
                 this.walkLeft();
-                this.playSound(this.walkSound, 0.35);
+                this.speed = 0.15;
+
+                 // RUN
+                if (this.world.keyboard.SHIFT) {
+                    this.speed = 5;
+                    this.playSound(this.walkSound, 0.35, 3);
+                } else {
+                    this.playSound(this.walkSound, 0.35, 1);
+                }
+            };
+            // jump
+            if (this.world.keyboard.SPACE && !this.isAboveGround()) {
+                this.jump();
             };
             this.world.camera_x = -this.x + 20;
             this.refreshOffset();
@@ -191,27 +224,38 @@ class Character extends MovableObject{
         setInterval(() => {
         // WALK Images
             if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT && !this.isAboveGround()) {
-                if (!this.damageProcess) {
+                if (!this.damageProcess && !this.world.keyboard.SHIFT) {
                     this.playAnimation(this.walkImages);
                 } 
-            }}, 35);
+        }}, 35);
+
+        // RUN Images
+        setInterval(() => {
+            if (this.world.keyboard.SHIFT && !this.isAboveGround()) {
+                this.playAnimation(this.runImages);
+            }
+        }, 35);
+
         // IDLE Images
         setInterval(() => {
             if (!this.damageProcess && this.world.keyboard.NONE  && !this.isAboveGround() && !this.world.keyboard.RIGHT && !this.world.keyboard.LEFT) {
                 this.playAnimation(this.idleImages);
             }
         }, 80);
+
         // JUMP Images
         setInterval(() => {
             if (this.isAboveGround() && this.world.keyboard.SPACE && !this.damageProcess) {
                 this.playAnimation(this.jumpImages);
             }
         }, 120);
+
         // HURT Images
         setInterval(() => {
             if (this.damageProcess) {
                 this.playAnimation(this.hurtImages);
             }
         }, 120);
+
     };
 }

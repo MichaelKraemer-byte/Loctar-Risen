@@ -38,6 +38,11 @@ window.addEventListener('keydown', (KeyboardEvent) => {
             keyboard.E = true;
             keyboard.NONE = false;
             break;
+        case 'ShiftLeft':
+        case 'ShiftRight':
+            keyboard.SHIFT = true;
+            keyboard.NONE = false;
+            break;
     };
 });
 
@@ -70,6 +75,11 @@ window.addEventListener('keyup', (KeyboardEvent) => {
             break;
         case 'KeyE':
             keyboard.E = false;
+            keyboard.NONE = true;
+            break;
+        case 'ShiftLeft':
+        case 'ShiftRight':
+            keyboard.SHIFT = false;
             keyboard.NONE = true;
             break;
     }

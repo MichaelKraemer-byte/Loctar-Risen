@@ -70,7 +70,7 @@ class MovableObject {
             ctx.rect(
                 this.x + this.offset.left,
                 this.y + this.offset.top,
-                this.width - this.offset.right - this.offset.left,
+                this.width - this.offset.left - this.offset.right,
                 this.height - this.offset.top - this.offset.bottom
             );
             ctx.stroke();
@@ -79,10 +79,10 @@ class MovableObject {
 
     reduceHP(collisionObject){
         if (collisionObject instanceof Endboss) {
-            this.HP -= 4;
+            this.HP -= 2;
         };
         if (collisionObject instanceof Minotaur_1) {
-            this.HP -= 2;
+            this.HP -= 1;
         };
         this.checkAndStartDamageProcess();
     }
@@ -160,9 +160,12 @@ class MovableObject {
     };
 
 
-    playSound(audio, volume){
+    playSound(audio, volume, audioSpeed){
         audio.volume = volume;
         audio.play();
+        if (this.world.keyboard.SHIFT) {
+            audio.playbackRate = audioSpeed;
+        }
     };
 
 

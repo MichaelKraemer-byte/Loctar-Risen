@@ -20,8 +20,8 @@ class Endboss extends MovableObject {
     offset = {
         top: 180,
         bottom: 70,
-        right: 220,
-        left: 250,
+        right: 235,
+        left: 235,
 
         
         offsetX: 0,
@@ -49,7 +49,7 @@ class Endboss extends MovableObject {
 
     setInterval(() => {
         if (this.isVisible()) {
-            this.playSound(this.walkSound, 0.4);
+            this.playSound(this.walkSound, 0.4 , 1);
         } else if (!this.isVisible()) {
             this.pauseSound(this.walkSound);
         }
