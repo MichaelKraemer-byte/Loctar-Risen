@@ -1,7 +1,13 @@
 class World {
     character = new Character();
     level = level_1;
-    statusBar = new StatusBar();
+    drawableObject = new DrawableObject();
+    statusBars = [
+        new StatusBar(20, this.drawableObject.HPImages),
+        new StatusBar(60, this.drawableObject.axeStatusImages),
+        new StatusBar(100, this.drawableObject.coinStatusImages)
+    ];
+    
     canvas;
     ctx;
     keyboard;
@@ -22,7 +28,7 @@ class World {
             this.level.enemies.forEach( (enemy) => {
                 if (this.character.isColliding(enemy) ) {
                     this.character.reduceHP(enemy);
-                    this.statusBar.setPercentage(this.character.HP)
+                    this.statusBars[0].setPercentage(this.character.HP, this.drawableObject.HPImages)
                     // console.log('character collision with enemy - health points of character:', this.character.HP);
                 }});     
         }, 50);
@@ -30,7 +36,7 @@ class World {
             this.level.endboss.forEach( (endboss) => {
                 if (this.character.isColliding(endboss) ) {
                     this.character.reduceHP(endboss);
-                    this.statusBar.setPercentage(this.character.HP);
+                    this.statusBars[0].setPercentage(this.character.HP, this.drawableObject.HPImages);
                     // console.log('character collision with endboss - health points of character:', this.character.HP);
                 }});     
         }, 50);
@@ -39,6 +45,7 @@ class World {
 
     setWorld(){
         this.character.world = this;
+        this.statusBars.world = this;
         this.level.enemies.forEach(enemy => {
             enemy.world = this;
         });
@@ -64,7 +71,7 @@ class World {
         this.addToMap(this.character);
         this.addObjectsToMap(this.level.enemies);
         this.addObjectsToMap(this.level.endboss);
-        this.addFixedObjectToMap(this.statusBar);
+        this.addMultipleFixedObjectsToMap(this.statusBars);
 
         this.drawBackgroundLayer(this.level.grounds);
 
@@ -113,6 +120,13 @@ class World {
         this.ctx.translate(-this.camera_x, 0);
         object.draw(this.ctx);
         this.ctx.translate(this.camera_x, 0);
+    }
+
+
+    addMultipleFixedObjectsToMap(objects){
+        objects.forEach( obj => {
+            this.addFixedObjectToMap(obj)
+        });
     }
 
 
