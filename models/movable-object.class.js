@@ -182,6 +182,14 @@ class MovableObject {
     };
 
 
+    playSingleAnimation(images){
+        for (let i = 0; i < images.length; i++) {
+            let path = images[i];
+            this.img = this.imageCache[path];
+        }
+    };
+
+
     applyGravity(){
         setInterval(()=> {
             if (this.isAboveGround()) {
