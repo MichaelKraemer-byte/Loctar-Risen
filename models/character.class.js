@@ -213,7 +213,6 @@ class Character extends MovableObject{
                 if (this.world.keyboard.SHIFT) {
                     this.speed = 5;
                     this.playSound(this.walkSound, 0.35, 3);
-                    console.log(this.speed)
                 } else {
                     this.playSound(this.walkSound, 0.35, 1);
                 }
@@ -248,7 +247,7 @@ class Character extends MovableObject{
                     this.playAnimation(this.walkImages);
                 } 
         }}, 35);
-
+        
         // RUN Images
         setInterval(() => {
             if (this.world.keyboard.SHIFT && !this.isAboveGround()) {
@@ -285,10 +284,10 @@ class Character extends MovableObject{
 
         // DYING Images
         setInterval(() => {
-            if (this.HP <= 0) {
+            if (this.isDead()) {
                 this.playSingleAnimation(this.dyingImages);
             }
-        }, 120);
+        }, 100);
 
     };
 }

@@ -1,6 +1,7 @@
 class World {
     character = new Character();
     level = level_1;
+    statusBar = new StatusBar();
     canvas;
     ctx;
     keyboard;
@@ -21,6 +22,7 @@ class World {
             this.level.enemies.forEach( (enemy) => {
                 if (this.character.isColliding(enemy) ) {
                     this.character.reduceHP(enemy);
+                    this.statusBar.setPercentage(this.character.HP)
                     // console.log('character collision with enemy - health points of character:', this.character.HP);
                 }});     
         }, 50);
@@ -28,6 +30,7 @@ class World {
             this.level.endboss.forEach( (endboss) => {
                 if (this.character.isColliding(endboss) ) {
                     this.character.reduceHP(endboss);
+                    this.statusBar.setPercentage(this.character.HP);
                     // console.log('character collision with endboss - health points of character:', this.character.HP);
                 }});     
         }, 50);
@@ -61,6 +64,7 @@ class World {
         this.addToMap(this.character);
         this.addObjectsToMap(this.level.enemies);
         this.addObjectsToMap(this.level.endboss);
+        this.addFixedObjectToMap(this.statusBar);
 
         this.drawBackgroundLayer(this.level.grounds);
 
@@ -102,6 +106,13 @@ class World {
         if (movableObject.otherDirection) {
             this.flipImageBack(movableObject);
         }
+    }
+
+
+    addFixedObjectToMap(object){
+        this.ctx.translate(-this.camera_x, 0);
+        object.draw(this.ctx);
+        this.ctx.translate(this.camera_x, 0);
     }
 
 

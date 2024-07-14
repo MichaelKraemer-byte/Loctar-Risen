@@ -60,13 +60,5 @@ class Endboss extends MovableObject {
         this.playAnimation(this.walkImages);
     }, 70);
     };
-    
 
-    isVisible() {
-        // Check if the object is visible in the canvas
-        if (this.world) {
-            return this.x + this.width > -this.world.camera_x && this.x < -this.world.camera_x + this.world.canvas.width;
-        }
-        return false;
-    }
 }

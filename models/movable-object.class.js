@@ -1,11 +1,5 @@
-class MovableObject {
-    x = 0;
-    y = 280;
-    img;
-    height = 200;
-    width = 200;
-    imageCache = {};
-    currentImage = 0;
+class MovableObject extends DrawableObject {
+
     speed = 0.15;
     otherDirection = false;
     speedY = 0;
@@ -25,11 +19,6 @@ class MovableObject {
         offsetY: 0,
         offsetWidth: 0,
         offsetHeight: 0
-    }
-    
-
-    draw(ctx){
-        ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
     };
 
     drawFrame(ctx){
@@ -77,6 +66,7 @@ class MovableObject {
         };
     };
 
+
     reduceHP(collisionObject){
         if (collisionObject instanceof Endboss) {
             this.HP -= 2;
@@ -85,6 +75,9 @@ class MovableObject {
             this.HP -= 1;
         };
         this.checkAndStartDamageProcess();
+        if (this.HP < 0) {
+            this.HP = 0;
+        }
     }
 
 
@@ -93,6 +86,11 @@ class MovableObject {
         if (!this.damageProcess) {
             this.startDamageProcess();
         }
+    }
+
+
+    isDead(){
+        return this.HP <= 0
     }
 
 
@@ -130,15 +128,6 @@ class MovableObject {
     // }
     
 
-    // kann von character uebernommen werden (super()), 
-    // und mit einem path entsprechend befuellt werden,
-    // um dann dessen image zu generieren.
-    loadImage(path){
-        this.img = new Image(); //<img>
-        this.img.src = path;
-    };
-
-
     walkLeft(){
         this.otherDirection = true;
         this.x -= this.speed + 2;
@@ -148,45 +137,6 @@ class MovableObject {
     walkRight(){
         this.otherDirection = false;
         this.x += this.speed + 2;
-    };
-
-
-    loadImages(array){
-        array.forEach((path) => {
-            this.img = new Image();
-            this.img.src = path;
-            this.imageCache[path] = this.img;
-        });
-    };
-
-
-    playSound(audio, volume, audioSpeed){
-        audio.volume = volume;
-        audio.play();
-        if (this.world.keyboard.SHIFT) {
-            audio.playbackRate = audioSpeed;
-        }
-    };
-
-
-    pauseSound(audio){
-        audio.pause();
-    };
-
-
-    playAnimation(images){
-        let i = this.currentImage % images.length;
-        let path = images[i];
-        this.img = this.imageCache[path];
-        this.currentImage++;
-    };
-
-
-    playSingleAnimation(images){
-        for (let i = 0; i < images.length; i++) {
-            let path = images[i];
-            this.img = this.imageCache[path];
-        }
     };
 
 
@@ -225,5 +175,11 @@ class MovableObject {
     //         obj.onCollisionCourse; // Optional: hiermit könnten wir schauen, ob ein Objekt sich in die richtige Richtung bewegt. Nur dann kollidieren wir. Nützlich bei Gegenständen, auf denen man stehen kann.
     // }
 
-
+    isVisible() {
+        // Check if the object is visible in the canvas
+        if (this.world) {
+            return this.x + this.width > -this.world.camera_x && this.x < -this.world.camera_x + this.world.canvas.width;
+        }
+        return false;
+    }
 }
