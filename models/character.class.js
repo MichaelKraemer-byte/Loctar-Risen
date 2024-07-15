@@ -167,6 +167,21 @@ class Character extends MovableObject{
         'assets/crafties/orcs/Orc/PNG/PNG Sequences/Dying/0_Orc_Dying_014.png'
     ];
 
+    throwImages = [
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Throwing in The Air/0_Orc_Throwing in The Air_000.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Throwing in The Air/0_Orc_Throwing in The Air_001.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Throwing in The Air/0_Orc_Throwing in The Air_002.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Throwing in The Air/0_Orc_Throwing in The Air_003.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Throwing in The Air/0_Orc_Throwing in The Air_004.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Throwing in The Air/0_Orc_Throwing in The Air_005.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Throwing in The Air/0_Orc_Throwing in The Air_006.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Throwing in The Air/0_Orc_Throwing in The Air_007.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Throwing in The Air/0_Orc_Throwing in The Air_008.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Throwing in The Air/0_Orc_Throwing in The Air_009.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Throwing in The Air/0_Orc_Throwing in The Air_010.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Throwing in The Air/0_Orc_Throwing in The Air_011.png'
+    ];
+
     world;
     walkSound = new Audio('assets/audio/walking/walking-on-tall-grass.wav');
     y = 280;
@@ -194,6 +209,7 @@ class Character extends MovableObject{
         this.loadImages(this.jumpImages);
         this.loadImages(this.hurtImages);
         this.loadImages(this.dyingImages);
+        this.loadImages(this.throwImages);
         this.applyGravity();
         this.animate();
     };
@@ -203,6 +219,7 @@ class Character extends MovableObject{
 
         // Moving & Sound
         setInterval(() => {
+            this.refreshOffset();
             // walk RIGHT 
             this.walkSound.pause();
             if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x && this.HP > 0) {
@@ -211,8 +228,7 @@ class Character extends MovableObject{
 
                 // RUN
                 if (this.world.keyboard.SHIFT) {
-                    this.speed = 5;
-                    this.playSound(this.walkSound, 0.35, 3);
+                    this.run();
                 } else {
                     this.playSound(this.walkSound, 0.35, 1);
                 }
@@ -222,10 +238,9 @@ class Character extends MovableObject{
                 this.walkLeft();
                 this.speed = 0.15;
 
-                 // RUN
+                // RUN
                 if (this.world.keyboard.SHIFT) {
-                    this.speed = 5;
-                    this.playSound(this.walkSound, 0.35, 3);
+                    this.run();
                 } else {
                     this.playSound(this.walkSound, 0.35, 1);
                 }
@@ -235,7 +250,6 @@ class Character extends MovableObject{
                 this.jump();
             };
             this.world.camera_x = -this.x + 20;
-            this.refreshOffset();
         }, 1000 / 60);
 
 
@@ -245,17 +259,16 @@ class Character extends MovableObject{
             if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT && !this.isAboveGround()) {
                 if (!this.damageProcess && !this.world.keyboard.SHIFT && this.HP > 0) {
                     this.playAnimation(this.walkImages);
-                } 
-        }}, 35);
+                };
         
         // RUN Images
-        setInterval(() => {
-            if (this.world.keyboard.SHIFT && !this.isAboveGround()) {
-                if (this.HP > 0) {
-                    this.playAnimation(this.runImages);
+                if (this.world.keyboard.SHIFT && !this.isAboveGround()) {
+                    if (this.HP > 0) {
+                        this.playAnimation(this.runImages);
+                    }
                 }
-            }
-        }, 35);
+        }}, 35);
+        
 
         // IDLE Images
         setInterval(() => {
@@ -286,8 +299,17 @@ class Character extends MovableObject{
         setInterval(() => {
             if (this.isDead()) {
                 this.playSingleAnimation(this.dyingImages);
-            }
+            };
         }, 100);
 
+        // THROW Images
+        setInterval( () => {
+            if (this.world.keyboard.E) {
+                this.playAnimation(this.throwImages);
+            }
+        }, 15)
+
     };
+
+
 }

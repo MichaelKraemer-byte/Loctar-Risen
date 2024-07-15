@@ -7,6 +7,7 @@ class MovableObject extends DrawableObject {
     HP = 100;
     damageProcess = false;
     RECHARGE_TIME = 1200;
+    world;
 
 
     offset = {
@@ -74,6 +75,10 @@ class MovableObject extends DrawableObject {
         if (collisionObject instanceof Minotaur_1) {
             this.HP -= 1;
         };
+        // if (collisionObject instanceof ThrowableObject) {
+        //     this.HP -= 30;
+        //     console.log('hit on enemy')
+        // };
         this.checkAndStartDamageProcess();
         if (this.HP < 0) {
             this.HP = 0;
@@ -142,11 +147,11 @@ class MovableObject extends DrawableObject {
 
     applyGravity(){
         setInterval(()=> {
-            if (this.isAboveGround()) {
+            if (this.isAboveGround() || this instanceof ThrowableObject) {
                 this.y -= this.speedY;
                 this.speedY -= this.acceleration;
-            }
-            if (this.y > 280) {
+            };
+            if (this.y > 280 && !(this instanceof ThrowableObject)) {
                 this.y = 280;
             }
         }, 1000 / 25);
@@ -181,5 +186,11 @@ class MovableObject extends DrawableObject {
             return this.x + this.width > -this.world.camera_x && this.x < -this.world.camera_x + this.world.canvas.width;
         }
         return false;
+    }
+
+
+    run(){
+        this.speed = 5;
+        this.playSound(this.walkSound, 0.35, 3);
     }
 }

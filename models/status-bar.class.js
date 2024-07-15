@@ -3,8 +3,6 @@ class StatusBar extends DrawableObject {
 
 
     bars = [];
-    world;
-
     statusImages;
     percentage = 100;
     spacing;

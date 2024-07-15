@@ -1,12 +1,6 @@
 class DrawableObject {
-    x = 0;
-    y = 280;
-    img;
-    height = 200;
-    width = 200;
-    imageCache = {};
-    currentImage = 0;
 
+    // Status-Bars
     HPImages = [
         'assets/el_pollo_locco/7_statusbars/1_statusbar/2_statusbar_health/orange/0.png',
         'assets/el_pollo_locco/7_statusbars/1_statusbar/2_statusbar_health/orange/20.png',
@@ -33,6 +27,14 @@ class DrawableObject {
         'assets/el_pollo_locco/7_statusbars/1_statusbar/1_statusbar_coin/blue/80.png',
         'assets/el_pollo_locco/7_statusbars/1_statusbar/1_statusbar_coin/blue/100.png'
     ];
+
+    x = 0;
+    y = 280;
+    img;
+    height = 200;
+    width = 200;
+    imageCache = {};
+    currentImage = 0;
 
 
     draw(ctx){
@@ -76,6 +78,8 @@ class DrawableObject {
         audio.play();
         if (this.world.keyboard.SHIFT) {
             audio.playbackRate = audioSpeed;
+        } else {
+            audio.playbackRate = 1;
         }
     };
 

@@ -7,7 +7,7 @@ class World {
         new StatusBar(60, this.drawableObject.axeStatusImages),
         new StatusBar(100, this.drawableObject.coinStatusImages)
     ];
-    
+    throwableObjects = [];
     canvas;
     ctx;
     keyboard;
@@ -19,33 +19,53 @@ class World {
         this.keyboard = keyboard;
         this.setWorld();
         this.draw();
-        this.checkCollisions();
+        this.run();
+
     }
 
+    run(){
+        setInterval(()=> {
+            this.checkCollisions();
+            this.checkThrowObjects();
+            
+        }, 50e0);
+    }
 
     checkCollisions(){
-        setInterval(()=> {
+
             this.level.enemies.forEach( (enemy) => {
                 if (this.character.isColliding(enemy) ) {
                     this.character.reduceHP(enemy);
                     this.statusBars[0].setPercentage(this.character.HP, this.drawableObject.HPImages)
                     // console.log('character collision with enemy - health points of character:', this.character.HP);
                 }});     
-        }, 50);
-        setInterval(()=> {
+
             this.level.endboss.forEach( (endboss) => {
                 if (this.character.isColliding(endboss) ) {
                     this.character.reduceHP(endboss);
                     this.statusBars[0].setPercentage(this.character.HP, this.drawableObject.HPImages);
                     // console.log('character collision with endboss - health points of character:', this.character.HP);
                 }});     
-        }, 50);
+        // setInterval(()=> {
+        //     this.throwableObjects.forEach( (throwableObject) => {
+        //         if (this.level.enemies.isColliding(throwableObject) ) {
+        //             this.level.enemies.reduceHP(throwableObject);
+        //             console.log('enemy collision with axe - health points of enemy:', this.level.enemies.HP);
+        //         }});     
+        // }, 50);
+    }
+
+
+    checkThrowObjects(){
+        if (this.keyboard.E) {
+            let axe = new ThrowableObject(this.character.x, this.character.y, this.character.otherDirection);
+            this.throwableObjects.push(axe);
+        }
     }
 
 
     setWorld(){
         this.character.world = this;
-        this.statusBars.world = this;
         this.level.enemies.forEach(enemy => {
             enemy.world = this;
         });
@@ -74,6 +94,8 @@ class World {
         this.addMultipleFixedObjectsToMap(this.statusBars);
 
         this.drawBackgroundLayer(this.level.grounds);
+        this.addObjectsToMap(this.throwableObjects);
+
 
         this.ctx.restore(); // Stellt den gespeicherten Zustand der Transformationen wieder her
 
@@ -82,6 +104,17 @@ class World {
             self.draw();
         })
     }
+
+
+    // throwingObjectsListener(){
+    //     if (this.keyboard.E) {
+    //         this.addToMap(this.throwableObjects[0]);
+    //         // console.log('axes left:', this.throwableObjects.length)
+    //         // this.throwableObjects.splice(0, 1);
+    //     } else {
+    //         return;
+    //     }
+    // }
 
 
     drawBackgroundLayer(layer) {
