@@ -63,9 +63,11 @@ class World {
 
 
     checkThrowObjects(){
-        if (this.keyboard.E) {
+        if (this.keyboard.E && !this.character.isDead() && this.character.axes !== 0 ) {
             let axe = new ThrowableObject(this.character.x, this.character.y, this.character.otherDirection);
             this.throwableObjects.push(axe);
+            this.character.axes -= 20;
+            this.statusBars[1].setPercentage(this.character.axes);
         }
     }
 
@@ -95,14 +97,15 @@ class World {
         this.drawBackgroundLayer(this.level.foregrounds);
 
         // Zeichne andere Objekte
-        this.addToMap(this.character);
         this.addObjectsToMap(this.level.enemies);
         this.addObjectsToMap(this.level.endboss);
         this.addObjectsToMap(this.level.axe);
         this.addMultipleFixedObjectsToMap(this.statusBars);
 
-        this.drawBackgroundLayer(this.level.grounds);
         this.addObjectsToMap(this.throwableObjects);
+        this.addToMap(this.character);
+
+        this.drawBackgroundLayer(this.level.grounds);
 
 
         this.ctx.restore(); // Stellt den gespeicherten Zustand der Transformationen wieder her

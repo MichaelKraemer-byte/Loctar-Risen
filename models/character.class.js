@@ -303,7 +303,7 @@ class Character extends MovableObject{
 
         // THROW Images
         setInterval( () => {
-            if (this.world.keyboard.E) {
+            if (this.world.keyboard.E && !this.isDead()) {
                 this.playAnimation(this.throwImages);
             }
         }, 15)
