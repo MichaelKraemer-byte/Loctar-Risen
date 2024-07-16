@@ -191,7 +191,6 @@ class Character extends MovableObject{
         right: 70,
         left: 60,
 
-
         offsetX: 0,
         offsetY: 0,
         offsetWidth: 0,
@@ -228,10 +227,10 @@ class Character extends MovableObject{
 
                 // RUN
                 if (this.world.keyboard.SHIFT) {
-                    this.run();
-                } else {
-                    this.playSound(this.walkSound, 0.35, 1);
-                }
+                    this.run();}
+                // } else {
+                //     this.playSound(this.walkSound, 0.35, 1);
+                // }
             };
             // walk LEFT
             if (this.world.keyboard.LEFT && this.x > -300 && this.HP > 0) {
@@ -240,10 +239,10 @@ class Character extends MovableObject{
 
                 // RUN
                 if (this.world.keyboard.SHIFT) {
-                    this.run();
-                } else {
-                    this.playSound(this.walkSound, 0.35, 1);
-                }
+                    this.run()}
+                // } else {
+                //     this.playSound(this.walkSound, 0.35, 1);
+                // }
             };
             // jump
             if (this.world.keyboard.SPACE && !this.isAboveGround() && this.HP > 0) {

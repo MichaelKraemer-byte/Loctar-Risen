@@ -8,6 +8,7 @@ class MovableObject extends DrawableObject {
     damageProcess = false;
     RECHARGE_TIME = 1200;
     world;
+    axes = 0;
 
 
     offset = {
@@ -22,50 +23,8 @@ class MovableObject extends DrawableObject {
         offsetHeight: 0
     };
 
-    drawFrame(ctx){
-        if (this instanceof Character || this instanceof Minotaur_1) {
-            ctx.beginPath();
-            ctx.lineWidth = "4";
-            ctx.strokeStyle = "green";
-            ctx.rect(this.x, this.y, this.width, this.height);
-            ctx.stroke();
-        };
 
-        //offset-rectangle-form
-        if (this instanceof Character || this instanceof Minotaur_1) {
-            ctx.beginPath();
-            ctx.lineWidth = "4";
-            ctx.strokeStyle = "red";
-            ctx.rect(
-                this.x + this.offset.left,
-                this.y + this.offset.top,
-                this.width - this.offset.left - this.offset.right,
-                this.height - this.offset.top - this.offset.bottom
-            );
-            ctx.stroke();
-        };
 
-        if (this instanceof Endboss) {
-            ctx.beginPath();
-            ctx.lineWidth = "4";
-            ctx.strokeStyle = "green";
-            ctx.rect(this.x, this.y, this.width, this.height);
-            ctx.stroke();
-        }
-
-        if (this instanceof Endboss) {
-            ctx.beginPath();
-            ctx.lineWidth = "4";
-            ctx.strokeStyle = "red";
-            ctx.rect(
-                this.x + this.offset.left,
-                this.y + this.offset.top,
-                this.width - this.offset.left - this.offset.right,
-                this.height - this.offset.top - this.offset.bottom
-            );
-            ctx.stroke();
-        };
-    };
 
 
     reduceHP(collisionObject){
@@ -91,6 +50,17 @@ class MovableObject extends DrawableObject {
         if (!this.damageProcess) {
             this.startDamageProcess();
         }
+    }
+
+
+    increaseAxes(collisionObject) {
+        if (collisionObject instanceof Axe) {
+            this.axes += 20;
+        };
+        if (this.axes > 100) {
+            this.axes = 100;
+        }
+        console.log('Axes increased: ', this.axes); // Debugging output
     }
 
 

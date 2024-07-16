@@ -1,6 +1,7 @@
 class Level {
     enemies;
     endboss;
+    axe;
     skies;
     backDecors;
     middleDecors;
@@ -9,16 +10,15 @@ class Level {
     level_end_x = 1800;
 
 
-    constructor(enemies, endboss, skies, backDecors, middleDecors, foregrounds, grounds) {
+    constructor(enemies, endboss, axe, skies, backDecors, middleDecors, foregrounds, grounds) {
         this.enemies = enemies;
         this.endboss = endboss;
+        this.axe = axe;
         this.skies = skies;
         this.backDecors = backDecors;
         this.middleDecors = middleDecors;
         this.foregrounds = foregrounds;
         this.grounds = grounds;
     }
-    // im constrcutor werden die enemies, backgrounds on frontgrounds mit den Objekten initialisiert.
-    // hier werden die arrays aus dem Objekt "Level" als Parameter in der richtigen Reihenfolge ubergeben, 
-    // damit die initialisierung korrekt ablaeuft und die variabeln richtig bestimmt werden.
+
 }

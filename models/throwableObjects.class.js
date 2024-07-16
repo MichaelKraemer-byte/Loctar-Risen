@@ -8,8 +8,6 @@ class ThrowableObject extends MovableObject {
 
     ];
 
-
-
     offset = {
         top: 5,
         bottom: 5,

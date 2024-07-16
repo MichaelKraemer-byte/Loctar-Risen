@@ -47,13 +47,13 @@ class Endboss extends MovableObject {
         this.refreshOffset();
     }, 1000 / 40);
 
-    setInterval(() => {
-        if (this.isVisible()) {
-            this.playSound(this.walkSound, 0.4 , 1);
-        } else if (!this.isVisible()) {
-            this.pauseSound(this.walkSound);
-        }
-    }, 50);
+    // setInterval(() => {
+    //     if (this.isVisible()) {
+    //         this.playSound(this.walkSound, 0.4 , 1);
+    //     } else if (!this.isVisible()) {
+    //         this.pauseSound(this.walkSound);
+    //     }
+    // }, 50);
     
 
     setInterval(() => {
