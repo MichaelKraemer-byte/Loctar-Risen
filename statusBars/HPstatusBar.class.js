@@ -22,7 +22,6 @@ class HPstatusBar extends DrawableObject {
     
         setPercentage(percentage){
             this.percentage = percentage;
-            console.log(this.percentage);
             let path = this.HPImages[this.getIndexByPercentageHighToLow()];
             this.img = this.imageCache[path];
         };

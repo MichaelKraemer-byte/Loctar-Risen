@@ -81,6 +81,39 @@ class Minotaur_1 extends MovableObject{
         'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Walking/0_Minotaur_Walking_023.png'
     ];
 
+    hurtImages = [
+        'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Hurt/0_Minotaur_Hurt_000.png',
+        'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Hurt/0_Minotaur_Hurt_001.png',
+        'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Hurt/0_Minotaur_Hurt_002.png',
+        'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Hurt/0_Minotaur_Hurt_003.png',
+        'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Hurt/0_Minotaur_Hurt_004.png',
+        'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Hurt/0_Minotaur_Hurt_005.png',
+        'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Hurt/0_Minotaur_Hurt_006.png',
+        'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Hurt/0_Minotaur_Hurt_007.png',
+        'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Hurt/0_Minotaur_Hurt_008.png',
+        'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Hurt/0_Minotaur_Hurt_009.png',
+        'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Hurt/0_Minotaur_Hurt_010.png',
+        'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Hurt/0_Minotaur_Hurt_011.png'
+    ];
+
+    dyingImages = [
+        'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Dying/0_Minotaur_Dying_000.png',
+        'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Dying/0_Minotaur_Dying_001.png',
+        'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Dying/0_Minotaur_Dying_002.png',
+        'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Dying/0_Minotaur_Dying_003.png',
+        'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Dying/0_Minotaur_Dying_004.png',
+        'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Dying/0_Minotaur_Dying_005.png',
+        'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Dying/0_Minotaur_Dying_006.png',
+        'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Dying/0_Minotaur_Dying_007.png',
+        'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Dying/0_Minotaur_Dying_008.png',
+        'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Dying/0_Minotaur_Dying_009.png',
+        'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Dying/0_Minotaur_Dying_010.png',
+        'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Dying/0_Minotaur_Dying_011.png',
+        'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Dying/0_Minotaur_Dying_012.png',
+        'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Dying/0_Minotaur_Dying_013.png',
+        'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Dying/0_Minotaur_Dying_014.png'
+    ];
+
 
     world;
     walkSound = new Audio('assets/audio/walking/walking-on-crunchy-road.wav');
@@ -89,7 +122,6 @@ class Minotaur_1 extends MovableObject{
         bottom: 40,
         right: 70,
         left: 60,
-        
 
         offsetX: 0,
         offsetY: 0,
@@ -101,6 +133,8 @@ class Minotaur_1 extends MovableObject{
     constructor(){
         super(); //ruft variablen und constructor funktionen auf (MovableObject)
         this.loadImages(this.walkImages);
+        this.loadImages(this.hurtImages);
+        this.loadImages(this.dyingImages);
         this.x = this.spawnPoint();
         this.speed = 0.15 + Math.random() * 0.4;
         this.animate();
@@ -114,32 +148,45 @@ class Minotaur_1 extends MovableObject{
 
     animate(){
 
-    setInterval(() => {
-        this.walkLeft();
-        this.refreshOffset();
-    }, 1000 / 25);
+        // Offset Refresh
+        setInterval(() => {
+            this.refreshOffset();
+        }, 1000 / 25);
+
+        // WALK
+        setInterval(() => {
+            if (this.isVisible() && this.HP > 0) {
+                this.walkLeft();
+                // this.playSound(this.walkSound, 0.02, 1);
+        //     } else if (!this.isVisible()) {
+        //         this.pauseSound(this.walkSound);
+            }
+        }, 1000 / 25);
+
+        setInterval(() => {
+            if (this.HP > 0) {
+                this.playAnimation(this.walkImages);
+            };
+        }, 50);
 
 
-    // setInterval(() => {
-    //     if (this.isVisible()) {
-    //         this.playSound(this.walkSound, 0.02, 1);
-    //     } else if (!this.isVisible()) {
-    //         this.pauseSound(this.walkSound);
-    //     }
-    // }, 50);
-    
-    setInterval(() => {
-        this.playAnimation(this.walkImages);
-    }, 50);
+        // HURT Images
+        setInterval(() => {
+            if (this.damageProcess && this.HP > 0) {
+                this.playAnimation(this.hurtImages);
+            }
+        }, 120);
+
+
+        // DYING Images
+        setInterval(() => {
+            if (this.isDead()) {
+                this.playSingleAnimation(this.dyingImages);
+            };
+        }, 100);
 
     };
     
 
-    isVisible() {
-        // Check if the object is visible in the canvas
-        if (this.world) {
-            return this.x + this.width > -this.world.camera_x && this.x < -this.world.camera_x + this.world.canvas.width;
-        }
-        return false;
-    }
+
 }

@@ -12,6 +12,7 @@ class World {
     ctx;
     keyboard;
     camera_x = 0;
+    throwableObjectIndex = -1;
 
     constructor(canvas, keyboard){
         this.ctx = canvas.getContext('2d');
@@ -24,22 +25,22 @@ class World {
 
     run(){
         setInterval(()=> {
-            this.checkCollisions();
             this.checkThrowObjects();
+            this.checkCollisions();
         }, 50);
     };
 
     checkCollisions(){
 
             this.level.enemies.forEach( (enemy) => {
-                if (this.character.isColliding(enemy) ) {
+                if (!enemy.isDead() && this.character.isColliding(enemy) ) {
                     this.character.reduceHP(enemy);
                     this.statusBars[0].setPercentage(this.character.HP)
                     // console.log('character collision with enemy - health points of character:', this.character.HP);
                 }});     
 
             this.level.endboss.forEach( (endboss) => {
-                if (this.character.isColliding(endboss) ) {
+                if (!endboss.isDead() && this.character.isColliding(endboss) ) {
                     this.character.reduceHP(endboss);
                     this.statusBars[0].setPercentage(this.character.HP);
                     // console.log('character collision with endboss - health points of character:', this.character.HP);
@@ -52,13 +53,17 @@ class World {
                     this.removeAxe(axe); 
                 }});        
 
-        // setInterval(()=> {
-        //     this.throwableObjects.forEach( (throwableObject) => {
-        //         if (this.level.enemies.isColliding(throwableObject) ) {
-        //             this.level.enemies.reduceHP(throwableObject);
-        //             console.log('enemy collision with axe - health points of enemy:', this.level.enemies.HP);
-        //         }});     
-        // }, 50);
+            if (this.throwableObjects[0]) {
+                this.level.enemies.forEach( (enemy) => {
+                    if (!enemy.isDead() && this.throwableObjects[this.throwableObjectIndex].isColliding(enemy) ) {
+                        enemy.reduceHP(this.throwableObjects[this.throwableObjectIndex]);
+                    }});
+
+                this.level.endboss.forEach( (endboss) => {
+                    if (!endboss.isDead() && this.throwableObjects[this.throwableObjectIndex].isColliding(endboss) ) {
+                        endboss.reduceHP(this.throwableObjects[this.throwableObjectIndex]);
+                    }});                
+            }
     };
 
 
@@ -66,6 +71,7 @@ class World {
         if (this.keyboard.E && !this.character.isDead() && this.character.axes !== 0 ) {
             let axe = new ThrowableObject(this.character.x, this.character.y, this.character.otherDirection);
             this.throwableObjects.push(axe);
+            this.throwableObjectIndex++;
             this.character.axes -= 20;
             this.statusBars[1].setPercentage(this.character.axes);
         }

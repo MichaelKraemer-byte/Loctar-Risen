@@ -34,14 +34,14 @@ class MovableObject extends DrawableObject {
         if (collisionObject instanceof Minotaur_1) {
             this.HP -= 1;
         };
-        // if (collisionObject instanceof ThrowableObject) {
-        //     this.HP -= 30;
-        //     console.log('hit on enemy')
-        // };
+        if (collisionObject instanceof ThrowableObject) {
+            this.HP -= 50;
+        };
         this.checkAndStartDamageProcess();
         if (this.HP < 0) {
             this.HP = 0;
-        }
+        };
+        
     }
 
 
@@ -60,7 +60,6 @@ class MovableObject extends DrawableObject {
         if (this.axes > 100) {
             this.axes = 100;
         }
-        console.log('Axes increased: ', this.axes); // Debugging output
     }
 
 
