@@ -33,7 +33,7 @@ class World {
 
             this.level.enemies.forEach( (enemy) => {
                 if (!enemy.isDead() && this.character.isColliding(enemy) ) {
-                    if (this.character.isStandingOn(enemy)) {
+                    if (this.character.isStandingOn(enemy) && this.character.isFalling()) {
                         this.character.stampJump();
                         enemy.dies();
                     } else {

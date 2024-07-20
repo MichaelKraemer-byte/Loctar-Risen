@@ -86,10 +86,10 @@ class MovableObject extends DrawableObject {
 
     isStandingOn(obj) {
         // Berechnung der relevanten Kanten
-        let characterBottom = this.y + this.height - this.offset.bottom;
-        let characterTop = this.y + this.offset.top;
-        let enemyBottom = obj.y + obj.height - obj.offset.bottom;
-        let enemyTop = obj.y + obj.offset.top;
+        const characterBottom = this.y + this.height - this.offset.bottom;
+        const characterTop = this.y + this.offset.top;
+        const enemyBottom = obj.y + obj.height - obj.offset.bottom;
+        const enemyTop = obj.y + obj.offset.top;
     
         // Überprüfung, ob der Charakter horizontal über dem Feind ist
         const horizontallyAligned = 
@@ -101,12 +101,12 @@ class MovableObject extends DrawableObject {
             characterBottom > enemyTop && 
             characterTop < enemyBottom;
     
-        // Der Charakter muss sowohl horizontal als auch vertikal auf dem Feind stehen
-        // Zusätzlich: Der Charakter sollte nicht zu viel über dem Feind stehen
+        // Der Charakter muss sich innerhalb eines bestimmten Bereichs über dem Feind befinden
         const isOnTop = verticallyAligned && 
-                         (characterBottom - enemyTop) < (characterBottom - characterTop) / 2;
+                         (characterBottom - enemyTop) < (this.height / 2);
     
-        return horizontallyAligned && isOnTop;
+        // Der Charakter muss den Feind horizontal berühren und sich vertikal in der Nähe des Feindes befinden
+        return horizontallyAligned && isOnTop && (characterTop < enemyBottom);
     }
 
 
@@ -154,6 +154,11 @@ class MovableObject extends DrawableObject {
             }
         }, 1000 / 25);
     };
+
+
+    isFalling(){
+        return this.speedY <= 0;
+    }
 
 
     isAboveGround(){
