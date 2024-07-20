@@ -46,7 +46,7 @@ class Endboss extends MovableObject {
     width = 700;
     height = 500;
     y = 22;
-    x = 600;
+    x = 1600;
     offset = {
         top: 180,
         bottom: 70,
@@ -102,9 +102,9 @@ class Endboss extends MovableObject {
         }, 70);
 
         // DYING Images
-        setInterval(() => {
+        let dyingIntervall = setInterval(() => {
             if (this.isDead()) {
-                this.playSingleAnimation(this.dyingImages);
+                this.playSingleAnimation(this.dyingImages, dyingIntervall);
             };
         }, 100);
 

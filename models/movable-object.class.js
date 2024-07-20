@@ -24,6 +24,7 @@ class MovableObject extends DrawableObject {
         offsetHeight: 0
     };
 
+
     dies(){
         this.HP = 0;
     }
@@ -82,15 +83,32 @@ class MovableObject extends DrawableObject {
         //     this.offset.offsetWidth < obj.offset.offsetHeight // B zu T
     }
 
-    isStampingOn(obj) {
+
+    isStandingOn(obj) {
+        // Berechnung der relevanten Kanten
         let characterBottom = this.y + this.height - this.offset.bottom;
+        let characterTop = this.y + this.offset.top;
+        let enemyBottom = obj.y + obj.height - obj.offset.bottom;
         let enemyTop = obj.y + obj.offset.top;
     
-        return (
-            characterBottom > enemyTop && // Der Charakter muss sich über dem Feind befinden
-            this.y + this.offset.top < obj.y + obj.height - obj.offset.bottom // Der Charakter muss sich innerhalb des Feindes vertikal befinden
-        );
+        // Überprüfung, ob der Charakter horizontal über dem Feind ist
+        const horizontallyAligned = 
+            this.x < obj.x + obj.width &&
+            this.x + this.width > obj.x;
+    
+        // Überprüfung, ob der Charakter sich vertikal in einem Bereich des Feindes befindet
+        const verticallyAligned = 
+            characterBottom > enemyTop && 
+            characterTop < enemyBottom;
+    
+        // Der Charakter muss sowohl horizontal als auch vertikal auf dem Feind stehen
+        // Zusätzlich: Der Charakter sollte nicht zu viel über dem Feind stehen
+        const isOnTop = verticallyAligned && 
+                         (characterBottom - enemyTop) < (characterBottom - characterTop) / 2;
+    
+        return horizontallyAligned && isOnTop;
     }
+
 
     stampJump(){
         this.speedY = 30;

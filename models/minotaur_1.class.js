@@ -179,11 +179,11 @@ class Minotaur_1 extends MovableObject{
 
 
         // DYING Images
-        setInterval(() => {
+        let dyingIntervall = setInterval(() => {
             if (this.isDead()) {
-                this.playSingleAnimation(this.dyingImages);
+                this.playSingleAnimation(this.dyingImages, dyingIntervall);
             };
-        }, 100);
+        }, 50);
 
     };
     
