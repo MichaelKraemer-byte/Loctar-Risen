@@ -6,7 +6,7 @@ class MovableObject extends DrawableObject {
     acceleration = 5;
     HP = 100;
     damageProcess = false;
-    damageProcessTime = 1200;
+    damageProcessTime = 300;
     collision = false;
     world;
     axes = 0;
@@ -24,25 +24,16 @@ class MovableObject extends DrawableObject {
         offsetHeight: 0
     };
 
+    
 
-
-
-
-    reduceHP(collisionObject){
-        if (collisionObject instanceof Endboss) {
-            this.HP -= 2;
+    reduceHP(damage, obj){
+        if (!(obj instanceof redSplash)) {
+            this.checkAndStartDamageProcess();
+            this.HP -= damage;
         };
-        if (collisionObject instanceof Minotaur_1) {
-            this.HP -= 1;
-        };
-        if (collisionObject instanceof ThrowableObject) {
-            this.HP -= 10;
-        };
-        this.checkAndStartDamageProcess();
         if (this.HP < 0) {
             this.HP = 0;
         };
-        
     }
 
 
@@ -151,7 +142,6 @@ class MovableObject extends DrawableObject {
     // }
 
     isVisible() {
-        // Check if the object is visible in the canvas
         if (this.world) {
             return this.x + this.width > -this.world.camera_x && this.x < -this.world.camera_x + this.world.canvas.width;
         }

@@ -7,15 +7,6 @@ class ThrowableObject extends MovableObject {
         'assets/crafties/orcs/throwable-objects/axe/Axe-1.png'
     ];
 
-    redSplash = [
-        'assets/el_pollo_locco/6_salsa_bottle/bottle_rotation/bottle_splash/1_bottle_splash.png',
-        'assets/el_pollo_locco/6_salsa_bottle/bottle_rotation/bottle_splash/2_bottle_splash.png',
-        'assets/el_pollo_locco/6_salsa_bottle/bottle_rotation/bottle_splash/3_bottle_splash.png',
-        'assets/el_pollo_locco/6_salsa_bottle/bottle_rotation/bottle_splash/4_bottle_splash.png',
-        'assets/el_pollo_locco/6_salsa_bottle/bottle_rotation/bottle_splash/5_bottle_splash.png',
-        'assets/el_pollo_locco/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png'
-    ];
-
     offset = {
         top: 5,
         bottom: 5,
@@ -28,7 +19,6 @@ class ThrowableObject extends MovableObject {
         offsetHeight: 0
     };
 
-    collision;
 
 
     constructor(x, y, direction) {
@@ -41,45 +31,27 @@ class ThrowableObject extends MovableObject {
         this.width = 70;
         this.height = 70;
         this.loadImages(this.flyingAxeImages);
-        this.loadImages(this.redSplash);
         this.throw();
         this.animate();
     };
 
 
-    throw(){
+    throw() {
         this.speedY = 20;
         this.applyGravity();
-        setInterval( () => {
-
-                if (this.otherDirection) {
-                    if (this.collision) {
-                        this.x - 30;
-                        this.speedY = 0;
-                    } else{
-                        this.x -= 30;
-                    }
-                } else if (!this.otherDirection) {
-                    if (this.collision) {
-                        this.x + 30;
-                        this.speedY = 0;
-                    } else {
-                        this.x += 30;
-                    }
-                }
+        setInterval(() => {
+            if (this.otherDirection) {
+                this.x -= 30;
+            } else {
+                this.x += 30;
+            }
         }, 25);
     }
 
-
+// continue here: ThrowableObject needs to disappear after hit.
     animate() {
-        const animationInterval = setInterval(() => {
-            if (this.collision) {
-                this.playSingleAnimation(this.redSplash);
-                clearInterval(animationInterval);
-
-            } else {
-                this.playAnimation(this.flyingAxeImages);
-            }
+        setInterval(() => {
+            this.playAnimation(this.flyingAxeImages);
         }, 50);
     }
 }

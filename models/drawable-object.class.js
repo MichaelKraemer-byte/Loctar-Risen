@@ -9,6 +9,8 @@ class DrawableObject {
     currentImage = 0;
     cooldown = false;
     RECHARGE_TIME = 500;
+    currentImageIndex = 0;
+
 
     drawFrame(ctx){
         if (this instanceof Character || this instanceof Minotaur_1 || this instanceof Endboss ||  this instanceof ThrowableObject) {
@@ -68,12 +70,15 @@ class DrawableObject {
     };
 
 
-    playSingleAnimation(images){
-        for (let i = 0; i < images.length; i++) {
-            let path = images[i];
+    playSingleAnimation(images, animationInterval) {
+        if (this.currentImageIndex < images.length) { // Exclude the last empty string
+            let path = images[this.currentImageIndex];
             this.img = this.imageCache[path];
+            this.currentImageIndex++;
+        } else {
+            clearInterval(animationInterval); // Stop the animation when the last image is reached
         }
-    };
+    }
 
 
     playSound(audio, volume, audioSpeed){

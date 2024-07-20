@@ -171,9 +171,9 @@ class Minotaur_1 extends MovableObject{
 
 
         // HURT Images
-        setInterval(() => {
+        let hurtIntervall = setInterval(() => {
             if (this.damageProcess && this.HP > 0) {
-                this.playAnimation(this.hurtImages);
+                this.playSingleAnimation(this.hurtImages, hurtIntervall);
             }
         }, 70);
 

@@ -33,16 +33,14 @@ class World {
 
             this.level.enemies.forEach( (enemy) => {
                 if (!enemy.isDead() && this.character.isColliding(enemy) ) {
-                    this.character.reduceHP(enemy);
+                    this.character.reduceHP(1, enemy);
                     this.statusBars[0].setPercentage(this.character.HP)
-                    // console.log('character collision with enemy - health points of character:', this.character.HP);
                 }});     
 
             this.level.endboss.forEach( (endboss) => {
                 if (!endboss.isDead() && this.character.isColliding(endboss) ) {
-                    this.character.reduceHP(endboss);
+                    this.character.reduceHP(2, endboss);
                     this.statusBars[0].setPercentage(this.character.HP);
-                    // console.log('character collision with endboss - health points of character:', this.character.HP);
                 }});    
 
             this.level.axe.forEach( (axe) => {
@@ -52,23 +50,29 @@ class World {
                     this.removeAxe(axe); 
                 }});        
 
+
+                // throwable object collision
             if (this.throwableObjects[0]) {
                 this.level.enemies.forEach( (enemy) => {
                     if (!enemy.isDead() && this.throwableObjects[this.throwableObjectIndex].isColliding(enemy) ) {
-                        enemy.reduceHP(this.throwableObjects[this.throwableObjectIndex]);
-                        this.throwableObjects[this.throwableObjectIndex].collision = true;
-                        console.log(this.throwableObjects[this.throwableObjectIndex]);
+                        let throwObjectX = this.throwableObjects[this.throwableObjectIndex].x;
+                        let throwObjectY = this.throwableObjects[this.throwableObjectIndex].y;
+                        let throwObjSpeedY = this.throwableObjects[this.throwableObjectIndex].speedY;
+                        let direction = this.character.direction;
+                        enemy.reduceHP(20, this.throwableObjects[this.throwableObjectIndex]);
+                        this.throwableObjects.splice(this.throwableObjectIndex, 1, new redSplash(throwObjectX, throwObjectY, throwObjSpeedY));
                     }});
 
                 this.level.endboss.forEach( (endboss) => {
                     if (!endboss.isDead() && this.throwableObjects[this.throwableObjectIndex].isColliding(endboss) ) {
-                        endboss.reduceHP(this.throwableObjects[this.throwableObjectIndex]);
-                        this.throwableObjects[this.throwableObjectIndex].collision = true;
-                        console.log(this.throwableObjects[this.throwableObjectIndex].collison);
+                        let throwObjectX = this.throwableObjects[this.throwableObjectIndex].x;
+                        let throwObjectY = this.throwableObjects[this.throwableObjectIndex].y;
+                        let throwObjSpeedY = this.throwableObjects[this.throwableObjectIndex].speedY;
+                        let direction = this.character.direction;
+                        endboss.reduceHP(20, this.throwableObjects[this.throwableObjectIndex]);
+                        this.throwableObjects.splice(this.throwableObjectIndex, 1, new redSplash(throwObjectX, throwObjectY, throwObjSpeedY));
                     }});
             }
-
-
     };
 
 
