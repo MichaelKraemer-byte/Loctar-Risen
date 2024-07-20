@@ -24,7 +24,10 @@ class MovableObject extends DrawableObject {
         offsetHeight: 0
     };
 
-    
+    dies(){
+        this.HP = 0;
+    }
+
 
     reduceHP(damage, obj){
         if (!(obj instanceof redSplash)) {
@@ -79,12 +82,28 @@ class MovableObject extends DrawableObject {
         //     this.offset.offsetWidth < obj.offset.offsetHeight // B zu T
     }
 
+    isStampingOn(obj) {
+        let characterBottom = this.y + this.height - this.offset.bottom;
+        let enemyTop = obj.y + obj.offset.top;
+    
+        return (
+            characterBottom > enemyTop && // Der Charakter muss sich über dem Feind befinden
+            this.y + this.offset.top < obj.y + obj.height - obj.offset.bottom // Der Charakter muss sich innerhalb des Feindes vertikal befinden
+        );
+    }
+
+    stampJump(){
+        this.speedY = 30;
+    }
+
+
     refreshOffset(){
         this.offset.offsetX = this.x + this.offset.left + this.offset.right;
         this.offset.offsetY = this.y + this.offset.top + this.offset.bottom;
         this.offset.offsetWidth = this.width - this.offset.right - this.offset.left;
         this.offset.offsetHeight = this.height - this.offset.bottom - this.offset.top;
     }
+
 
     // isColliding(obj){
     //     return this.x + this.width - this.offset.right > obj.x + obj.offset.left && // R zu L

@@ -21,7 +21,6 @@ class redSplash extends MovableObject {
         this.speedY = speedY - speedY;
         this.y = y;
         this.currentImageIndex = 0; 
-
         this.animate();
     }
 

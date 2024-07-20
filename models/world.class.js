@@ -33,8 +33,13 @@ class World {
 
             this.level.enemies.forEach( (enemy) => {
                 if (!enemy.isDead() && this.character.isColliding(enemy) ) {
-                    this.character.reduceHP(1, enemy);
-                    this.statusBars[0].setPercentage(this.character.HP)
+                    if (this.character.isStampingOn(enemy)) {
+                        this.character.stampJump();
+                        enemy.dies();
+                    } else {
+                        this.character.reduceHP(1, enemy);
+                        this.statusBars[0].setPercentage(this.character.HP)
+                    }
                 }});     
 
             this.level.endboss.forEach( (endboss) => {
@@ -58,7 +63,6 @@ class World {
                         let throwObjectX = this.throwableObjects[this.throwableObjectIndex].x;
                         let throwObjectY = this.throwableObjects[this.throwableObjectIndex].y;
                         let throwObjSpeedY = this.throwableObjects[this.throwableObjectIndex].speedY;
-                        let direction = this.character.direction;
                         enemy.reduceHP(20, this.throwableObjects[this.throwableObjectIndex]);
                         this.throwableObjects.splice(this.throwableObjectIndex, 1, new redSplash(throwObjectX, throwObjectY, throwObjSpeedY));
                     }});
@@ -68,7 +72,6 @@ class World {
                         let throwObjectX = this.throwableObjects[this.throwableObjectIndex].x;
                         let throwObjectY = this.throwableObjects[this.throwableObjectIndex].y;
                         let throwObjSpeedY = this.throwableObjects[this.throwableObjectIndex].speedY;
-                        let direction = this.character.direction;
                         endboss.reduceHP(20, this.throwableObjects[this.throwableObjectIndex]);
                         this.throwableObjects.splice(this.throwableObjectIndex, 1, new redSplash(throwObjectX, throwObjectY, throwObjSpeedY));
                     }});
