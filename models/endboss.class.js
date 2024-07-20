@@ -89,7 +89,7 @@ class Endboss extends MovableObject {
         }, 1000 / 40);
 
         setInterval(() => {
-            if (this.HP > 0) {
+            if (this.HP > 0 && !this.damageProcess) {
                 this.playAnimation(this.walkImages);
             };
         }, 70);
@@ -99,7 +99,7 @@ class Endboss extends MovableObject {
             if (this.damageProcess && this.HP > 0) {
                 this.playAnimation(this.hurtImages);
             }
-        }, 120);
+        }, 70);
 
         // DYING Images
         setInterval(() => {

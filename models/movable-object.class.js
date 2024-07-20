@@ -6,7 +6,8 @@ class MovableObject extends DrawableObject {
     acceleration = 5;
     HP = 100;
     damageProcess = false;
-    RECHARGE_TIME = 1200;
+    damageProcessTime = 1200;
+    collision = false;
     world;
     axes = 0;
 
@@ -35,7 +36,7 @@ class MovableObject extends DrawableObject {
             this.HP -= 1;
         };
         if (collisionObject instanceof ThrowableObject) {
-            this.HP -= 50;
+            this.HP -= 10;
         };
         this.checkAndStartDamageProcess();
         if (this.HP < 0) {
@@ -59,7 +60,7 @@ class MovableObject extends DrawableObject {
         };
         if (this.axes > 100) {
             this.axes = 100;
-        }
+        };
     }
 
 
@@ -72,7 +73,7 @@ class MovableObject extends DrawableObject {
         this.damageProcess = true;
         setTimeout (() => { 
             this.damageProcess = false
-        }, this.RECHARGE_TIME);
+        }, this.damageProcessTime);
     }
 
 

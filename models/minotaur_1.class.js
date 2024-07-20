@@ -155,7 +155,7 @@ class Minotaur_1 extends MovableObject{
 
         // WALK
         setInterval(() => {
-            if (this.isVisible() && this.HP > 0) {
+            if (this.isVisible() && this.HP > 0 && !this.damageProcess) {
                 this.walkLeft();
                 // this.playSound(this.walkSound, 0.02, 1);
         //     } else if (!this.isVisible()) {
@@ -164,7 +164,7 @@ class Minotaur_1 extends MovableObject{
         }, 1000 / 25);
 
         setInterval(() => {
-            if (this.HP > 0) {
+            if (this.HP > 0 && !this.damageProcess) {
                 this.playAnimation(this.walkImages);
             };
         }, 50);
@@ -175,7 +175,7 @@ class Minotaur_1 extends MovableObject{
             if (this.damageProcess && this.HP > 0) {
                 this.playAnimation(this.hurtImages);
             }
-        }, 120);
+        }, 70);
 
 
         // DYING Images

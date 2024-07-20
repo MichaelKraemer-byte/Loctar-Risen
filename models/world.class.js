@@ -1,18 +1,17 @@
 class World {
     character = new Character();
     level = level_1;
-    drawableObject = new DrawableObject();
     statusBars = [
         new HPstatusBar(),
         new AxeStatusBar(),
         new CoinStatusBar()
     ];
     throwableObjects = [];
+    throwableObjectIndex = -1;
     canvas;
     ctx;
     keyboard;
     camera_x = 0;
-    throwableObjectIndex = -1;
 
     constructor(canvas, keyboard){
         this.ctx = canvas.getContext('2d');
@@ -57,29 +56,37 @@ class World {
                 this.level.enemies.forEach( (enemy) => {
                     if (!enemy.isDead() && this.throwableObjects[this.throwableObjectIndex].isColliding(enemy) ) {
                         enemy.reduceHP(this.throwableObjects[this.throwableObjectIndex]);
+                        this.throwableObjects[this.throwableObjectIndex].collision = true;
+                        console.log(this.throwableObjects[this.throwableObjectIndex]);
                     }});
 
                 this.level.endboss.forEach( (endboss) => {
                     if (!endboss.isDead() && this.throwableObjects[this.throwableObjectIndex].isColliding(endboss) ) {
                         endboss.reduceHP(this.throwableObjects[this.throwableObjectIndex]);
-                    }});                
+                        this.throwableObjects[this.throwableObjectIndex].collision = true;
+                        console.log(this.throwableObjects[this.throwableObjectIndex].collison);
+                    }});
             }
+
+
     };
 
 
     checkThrowObjects(){
-        if (this.keyboard.E && !this.character.isDead() && this.character.axes !== 0 ) {
+        if (this.keyboard.E && !this.character.isDead() && this.character.axes !== 0 && !this.character.cooldown) {
             let axe = new ThrowableObject(this.character.x, this.character.y, this.character.otherDirection);
             this.throwableObjects.push(axe);
             this.throwableObjectIndex++;
             this.character.axes -= 20;
             this.statusBars[1].setPercentage(this.character.axes);
+            this.character.checkAndStartCooldown();
         }
     }
 
 
     setWorld(){
         this.character.world = this;
+        this.throwableObjects.world = this;
 
         this.level.enemies.forEach(enemy => {
             enemy.world = this;
@@ -103,8 +110,8 @@ class World {
         this.drawBackgroundLayer(this.level.foregrounds);
 
         // Zeichne andere Objekte
-        this.addObjectsToMap(this.level.enemies);
         this.addObjectsToMap(this.level.endboss);
+        this.addObjectsToMap(this.level.enemies);
         this.addObjectsToMap(this.level.axe);
         this.addMultipleFixedObjectsToMap(this.statusBars);
 
@@ -123,8 +130,11 @@ class World {
     }
 
 
-    //         // console.log('axes left:', this.throwableObjects.length)
-    //         // this.throwableObjects.splice(0, 1);
+    // throwableObjectsToMap(throwableObjects){
+    //     if (!this.collison){ /// why does the axe still appear?
+    //         this.addObjectsToMap(throwableObjects);
+    //     }
+    // }
 
 
     drawBackgroundLayer(layer) {
@@ -185,6 +195,15 @@ class World {
         movableObject.x = movableObject.x * -1;
         this.ctx.restore();
     }
+
+
+    // throwingObjectCollisionEffect(obj){
+    //     let index = this.throwingObject.indexOf(obj);
+    
+    //     if (index !== -1) {
+    //         this.throwingObject.splice(index, 1, new CollisionEffect);
+    //     }
+    // }
 
 
     removeAxe(axeToRemove) {

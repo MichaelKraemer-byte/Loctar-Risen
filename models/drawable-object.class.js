@@ -7,6 +7,8 @@ class DrawableObject {
     width = 200;
     imageCache = {};
     currentImage = 0;
+    cooldown = false;
+    RECHARGE_TIME = 500;
 
     drawFrame(ctx){
         if (this instanceof Character || this instanceof Minotaur_1 || this instanceof Endboss ||  this instanceof ThrowableObject) {
@@ -88,4 +90,17 @@ class DrawableObject {
     pauseSound(audio){
         audio.pause();
     };
+
+    startCooldown() {
+        this.cooldown = true;
+        setTimeout (() => { 
+            this.cooldown = false
+        }, this.RECHARGE_TIME);
+    }
+
+    checkAndStartCooldown() {
+        if (!this.cooldown) {
+            this.startCooldown();
+        }
+    }
 }
