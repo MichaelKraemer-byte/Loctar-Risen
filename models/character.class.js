@@ -198,10 +198,9 @@ class Character extends MovableObject{
     };
 
 
-
     constructor(){
         super();
-        // keyboard = world.keyboard;
+        this.speed = 3;
         this.loadImages(this.idleImages);
         this.loadImages(this.walkImages);
         this.loadImages(this.runImages);
@@ -223,7 +222,7 @@ class Character extends MovableObject{
             this.walkSound.pause();
             if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x && this.HP > 0) {
                 this.walkRight();
-                this.speed = 0.15;
+                this.speed = 3;
 
                 // RUN
                 if (this.world.keyboard.SHIFT) {
@@ -235,7 +234,7 @@ class Character extends MovableObject{
             // walk LEFT
             if (this.world.keyboard.LEFT && this.x > -300 && this.HP > 0) {
                 this.walkLeft();
-                this.speed = 0.15;
+                this.speed = 3;
 
                 // RUN
                 if (this.world.keyboard.SHIFT) {
@@ -262,7 +261,7 @@ class Character extends MovableObject{
         
         // RUN Images
                 if (this.world.keyboard.SHIFT && !this.isAboveGround()) {
-                    if (this.HP > 0) {
+                    if (this.HP > 0 && !this.damageProcess) {
                         this.playAnimation(this.runImages);
                     }
                 }

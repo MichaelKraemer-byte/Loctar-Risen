@@ -14,13 +14,22 @@ class Axe extends DrawableObject {
     };
 
 
-    constructor(x, y){
+    constructor(x, y) {
         super();
         this.loadImage('assets/crafties/orcs/throwable-objects/axe/Axe-1.png');
+        // this.initialX = x; // Ursprüngliche X-Position speichern
         this.x = x;
         this.y = y;
         this.width = 70;
         this.height = 70;
+        this.speed = 0; 
+
+        // Geschwindigkeit der Axt, die der des Vordergrunds entspricht
+        // this.x = this.initialX; // Anfangsposition
     }
+
+    // updatePosition(cameraX) {
+    //     this.x = this.initialX - (cameraX * this.speed / 4); // Berechne die Position mit Parallaxeneffekt
+    // }
 
 }

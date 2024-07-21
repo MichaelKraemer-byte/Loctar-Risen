@@ -2,6 +2,7 @@ class Level {
     enemies;
     endboss;
     axe;
+    throwableObjects;
     skies;
     backDecors;
     middleDecors;
@@ -10,10 +11,11 @@ class Level {
     level_end_x = 1800;
 
 
-    constructor(enemies, endboss, axe, skies, backDecors, middleDecors, foregrounds, grounds) {
+    constructor(enemies, endboss, axe, throwableObjects, skies, backDecors, middleDecors, foregrounds, grounds) {
         this.enemies = enemies;
         this.endboss = endboss;
         this.axe = axe;
+        this.throwableObjects = throwableObjects;
         this.skies = skies;
         this.backDecors = backDecors;
         this.middleDecors = middleDecors;

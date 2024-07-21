@@ -13,7 +13,7 @@ class DrawableObject {
 
 
     drawFrame(ctx){
-        if (this instanceof Character || this instanceof Minotaur_1 || this instanceof Endboss ||  this instanceof ThrowableObject) {
+        if (this instanceof Character || this instanceof Minotaur_1 || this instanceof Endboss ||  this instanceof ThrowableObject || this instanceof Axe) {
             ctx.beginPath();
             ctx.lineWidth = "4";
             ctx.strokeStyle = "green";
@@ -22,7 +22,7 @@ class DrawableObject {
         };
 
         //offset-rectangle-form
-        if (this instanceof Character || this instanceof Minotaur_1 || this instanceof Endboss ||  this instanceof ThrowableObject) {
+        if (this instanceof Character || this instanceof Minotaur_1 || this instanceof Endboss ||  this instanceof ThrowableObject || this instanceof Axe) {
             ctx.beginPath();
             ctx.lineWidth = "4";
             ctx.strokeStyle = "red";

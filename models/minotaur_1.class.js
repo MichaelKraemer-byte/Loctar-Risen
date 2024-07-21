@@ -136,7 +136,7 @@ class Minotaur_1 extends MovableObject{
         this.loadImages(this.hurtImages);
         this.loadImages(this.dyingImages);
         this.x = this.spawnPoint();
-        this.speed = 0.15 + Math.random() * 0.4;
+        this.speed = 2 + Math.random() * 0.4;
         this.animate();
     };
 

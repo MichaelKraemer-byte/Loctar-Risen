@@ -7,6 +7,16 @@ class ThrowableObject extends MovableObject {
         'assets/crafties/orcs/throwable-objects/axe/Axe-1.png'
     ];
 
+    redSplashImages = [
+        'assets/el_pollo_locco/6_salsa_bottle/bottle_rotation/bottle_splash/1_bottle_splash.png',
+        'assets/el_pollo_locco/6_salsa_bottle/bottle_rotation/bottle_splash/2_bottle_splash.png',
+        'assets/el_pollo_locco/6_salsa_bottle/bottle_rotation/bottle_splash/3_bottle_splash.png',
+        'assets/el_pollo_locco/6_salsa_bottle/bottle_rotation/bottle_splash/4_bottle_splash.png',
+        'assets/el_pollo_locco/6_salsa_bottle/bottle_rotation/bottle_splash/5_bottle_splash.png',
+        'assets/el_pollo_locco/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png',
+        ''
+    ];
+
     offset = {
         top: 5,
         bottom: 5,
@@ -25,33 +35,43 @@ class ThrowableObject extends MovableObject {
 
         super();
         this.otherDirection = direction;
-        this.collision = false;
         this.x = x + 100;
         this.y = y + 80;
         this.width = 70;
         this.height = 70;
+        this.speedY = 20;
         this.loadImages(this.flyingAxeImages);
-        this.throw();
+        this.loadImages(this.redSplashImages);
         this.animate();
     };
 
+    animate() {
 
-    throw() {
-        this.speedY = 20;
-        this.applyGravity();
-        setInterval(() => {
-            if (this.otherDirection) {
-                this.x -= 30;
-            } else {
-                this.x += 30;
-            }
-        }, 25);
+        let throwableObjectIntervall = setInterval(() =>{
+            if (!this.collision) {
+                this.playAnimation(this.flyingAxeImages);
+            } else if (this.collision) {
+                this.used = true;
+                this.x += 0;
+                this.speedY = 0;
+                this.playSingleAnimation(this.redSplashImages, throwableObjectIntervall);
+            } 
+        }, 50);
+
+        this.throw();
     }
 
-// continue here: ThrowableObject needs to disappear after hit.
-    animate() {
-        setInterval(() => {
-            this.playAnimation(this.flyingAxeImages);
-        }, 50);
+
+    throw() {
+        this.applyGravity();
+        setInterval( () => {
+            if (!this.collision) {
+                if (this.otherDirection) {
+                    this.x -= 30;
+                } else {
+                    this.x += 30;
+                }
+            }
+        }, 25);
     }
 }

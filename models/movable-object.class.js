@@ -10,6 +10,7 @@ class MovableObject extends DrawableObject {
     collision = false;
     world;
     axes = 0;
+    used = false;
 
 
     offset = {
@@ -30,8 +31,8 @@ class MovableObject extends DrawableObject {
     }
 
 
-    reduceHP(damage, obj){
-        if (!(obj instanceof redSplash)) {
+    reduceHP(damage, object){
+        if (object != object.used  || (object instanceof Minotaur_1) || (object instanceof Endboss)) {
             this.checkAndStartDamageProcess();
             this.HP -= damage;
         };
@@ -133,13 +134,13 @@ class MovableObject extends DrawableObject {
 
     walkLeft(){
         this.otherDirection = true;
-        this.x -= this.speed + 2;
+        this.x -= this.speed;
     };
 
 
     walkRight(){
         this.otherDirection = false;
-        this.x += this.speed + 2;
+        this.x += this.speed;
     };
 
 
@@ -192,7 +193,7 @@ class MovableObject extends DrawableObject {
 
 
     run(){
-        this.speed = 5;
+        this.speed = 5.5;
         this.playSound(this.walkSound, 0.35, 3);
     }
 }

@@ -3,12 +3,11 @@ class MiddleDecor extends MovableObject {
     height = 480;
     x = 0;
     y = 0;
-    speed = 0.4;
 
-    constructor(path, x, speed){
+    constructor(path, x){
         super();
         this.loadImage(path);
         this.x = x;
-        this.speed = speed || 0.6;
+        this.speed = 0.05;
     };
 }

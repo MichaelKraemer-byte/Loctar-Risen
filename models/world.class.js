@@ -6,8 +6,6 @@ class World {
         new AxeStatusBar(),
         new CoinStatusBar()
     ];
-    throwableObjects = [];
-    throwableObjectIndex = -1;
     canvas;
     ctx;
     keyboard;
@@ -26,55 +24,61 @@ class World {
         setInterval(()=> {
             this.checkThrowObjects();
             this.checkCollisions();
+            this.removeThrowableObjects();
         }, 50);
     };
 
     checkCollisions(){
 
-            this.level.enemies.forEach( (enemy) => {
-                if (!enemy.isDead() && this.character.isColliding(enemy) ) {
-                    if (this.character.isStandingOn(enemy) && this.character.isFalling()) {
-                        this.character.stampJump();
-                        enemy.dies();
-                    } else {
-                        this.character.reduceHP(1, enemy);
-                        this.statusBars[0].setPercentage(this.character.HP)
+        this.level.enemies.forEach( (enemy) => {
+            if (!enemy.isDead() && this.character.isColliding(enemy) ) {
+                if (this.character.isStandingOn(enemy) && this.character.isFalling()) {
+                    this.character.stampJump();
+                    enemy.dies();
+                } else {
+                    this.character.reduceHP(1, enemy);
+                    this.statusBars[0].setPercentage(this.character.HP)
+                }
+            }});     
+
+        this.level.endboss.forEach( (endboss) => {
+            if (!endboss.isDead() && this.character.isColliding(endboss) ) {
+                this.character.reduceHP(2, endboss);
+                this.statusBars[0].setPercentage(this.character.HP);
+            }});    
+
+        this.level.axe.forEach( (axe) => {
+            if (this.character.isColliding(axe) ) {
+                this.character.increaseAxes(axe);
+                this.statusBars[1].setPercentage(this.character.axes);
+                this.removeAxe(axe); 
+            }});        
+
+
+        if (this.level.throwableObjects[0] || this.keyboard.E) {
+            // throwable object collision
+            this.level.throwableObjects.forEach((throwObject) => {
+                if (throwObject && !throwObject.used) {
+                    this.level.enemies.forEach((enemy) => {
+                        if (!enemy.isDead() && throwObject.isColliding(enemy)) {
+                            throwObject.collision = true;
+                            enemy.reduceHP(40, throwObject.used);
+                        }
+                    });
+                }
+            });
+
+            // throwable object collision
+            this.level.throwableObjects.forEach((throwObject) => {
+                if (throwObject && !throwObject.used) {
+                    this.level.endboss.forEach((endboss) => {
+                        if (!endboss.isDead() && throwObject.isColliding(endboss)) {
+                            throwObject.collision = true;
+                            endboss.reduceHP(40, throwObject.used);
+                            }
+                        });
                     }
-                }});     
-
-            this.level.endboss.forEach( (endboss) => {
-                if (!endboss.isDead() && this.character.isColliding(endboss) ) {
-                    this.character.reduceHP(2, endboss);
-                    this.statusBars[0].setPercentage(this.character.HP);
-                }});    
-
-            this.level.axe.forEach( (axe) => {
-                if (this.character.isColliding(axe) ) {
-                    this.character.increaseAxes(axe);
-                    this.statusBars[1].setPercentage(this.character.axes);
-                    this.removeAxe(axe); 
-                }});        
-
-
-                // throwable object collision
-            if (this.throwableObjects[0]) {
-                this.level.enemies.forEach( (enemy) => {
-                    if (!enemy.isDead() && this.throwableObjects[this.throwableObjectIndex].isColliding(enemy) ) {
-                        let throwObjectX = this.throwableObjects[this.throwableObjectIndex].x;
-                        let throwObjectY = this.throwableObjects[this.throwableObjectIndex].y;
-                        let throwObjSpeedY = this.throwableObjects[this.throwableObjectIndex].speedY;
-                        enemy.reduceHP(40, this.throwableObjects[this.throwableObjectIndex]);
-                        this.throwableObjects.splice(this.throwableObjectIndex, 1, new redSplash(throwObjectX, throwObjectY, throwObjSpeedY));
-                    }});
-
-                this.level.endboss.forEach( (endboss) => {
-                    if (!endboss.isDead() && this.throwableObjects[this.throwableObjectIndex].isColliding(endboss) ) {
-                        let throwObjectX = this.throwableObjects[this.throwableObjectIndex].x;
-                        let throwObjectY = this.throwableObjects[this.throwableObjectIndex].y;
-                        let throwObjSpeedY = this.throwableObjects[this.throwableObjectIndex].speedY;
-                        endboss.reduceHP(40, this.throwableObjects[this.throwableObjectIndex]);
-                        this.throwableObjects.splice(this.throwableObjectIndex, 1, new redSplash(throwObjectX, throwObjectY, throwObjSpeedY));
-                    }});
+                });                
             }
     };
 
@@ -82,18 +86,30 @@ class World {
     checkThrowObjects(){
         if (this.keyboard.E && !this.character.isDead() && this.character.axes !== 0 && !this.character.cooldown) {
             let axe = new ThrowableObject(this.character.x, this.character.y, this.character.otherDirection);
-            this.throwableObjects.push(axe);
-            this.throwableObjectIndex++;
+            this.level.throwableObjects.push(axe);
             this.character.axes -= 20;
             this.statusBars[1].setPercentage(this.character.axes);
             this.character.checkAndStartCooldown();
-        }
+        };
+    }
+
+
+    removeThrowableObjects(){
+        this.level.throwableObjects.forEach((throwObject) => {
+            if(!this.character.cooldown){
+                if (!throwObject.isVisible() || throwObject.used) {
+                    const index = this.level.throwableObjects.indexOf(throwObject);
+                    if (index > -1) {
+                        this.level.throwableObjects.splice(index, 1);
+                    }
+                }
+            }
+        });
     }
 
 
     setWorld(){
         this.character.world = this;
-        this.throwableObjects.world = this;
 
         this.level.enemies.forEach(enemy => {
             enemy.world = this;
@@ -107,28 +123,27 @@ class World {
     draw(){
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-        this.ctx.save(); // Speichert den aktuellen Zustand der Transformationen
+        this.ctx.save(); 
 
         this.ctx.translate(this.camera_x, 0);
-        // Zeichne Hintergrundebenen mit unterschiedlichen Geschwindigkeiten
+
         this.drawBackgroundLayer(this.level.skies);
         this.drawBackgroundLayer(this.level.backDecors);
         this.drawBackgroundLayer(this.level.middleDecors);
         this.drawBackgroundLayer(this.level.foregrounds);
 
-        // Zeichne andere Objekte
         this.addObjectsToMap(this.level.endboss);
         this.addObjectsToMap(this.level.enemies);
-        this.addObjectsToMap(this.level.axe);
+        // this.addCollectableObjectsToMap(this.level.axe);
+        this.drawBackgroundLayer(this.level.axe);
         this.addMultipleFixedObjectsToMap(this.statusBars);
-
-        this.addObjectsToMap(this.throwableObjects);
+        this.addThrowableObjectsToMap(this.level.throwableObjects);
         this.addToMap(this.character);
 
         this.drawBackgroundLayer(this.level.grounds);
 
 
-        this.ctx.restore(); // Stellt den gespeicherten Zustand der Transformationen wieder her
+        this.ctx.restore(); 
 
         let self = this;
         requestAnimationFrame(function () {
@@ -137,16 +152,30 @@ class World {
     }
 
 
-    // throwableObjectsToMap(throwableObjects){
-    //     if (!this.collison){ /// why does the axe still appear?
-    //         this.addObjectsToMap(throwableObjects);
-    //     }
+    // addCollectableObjectsToMap(CollectableObjects){
+    // // Aktualisiere die Position der Axt-Objekte
+    // CollectableObjects.forEach((axe) => {
+    //     axe.updatePosition(this.camera_x); // Aktualisiere die Position basierend auf der Kamera
+    // });
+
+    // // Zeichne Axt-Objekte
+    // CollectableObjects.forEach(axe => {
+    //     this.ctx.save();
+    //     this.ctx.translate(axe.x, 0);
+    //     this.addToMap(axe);
+    //     this.ctx.restore();
+    // });
     // }
 
+    addThrowableObjectsToMap(throwableObjects){
+        if (throwableObjects[0]) {
+            this.addObjectsToMap(throwableObjects);
+        }
+    }
 
     drawBackgroundLayer(layer) {
         layer.forEach(bg => {
-            let adjustedX = bg.speed * (this.camera_x / 4); // Anpassen der Geschwindigkeit für Parallaxen-Effekt
+            let adjustedX = bg.speed * this.camera_x; // Anpassen der Geschwindigkeit für Parallaxen-Effekt
             this.ctx.save(); // Speichert den Zustand vor der Verschiebung
             this.ctx.translate(adjustedX, 0); // Hintergrund basierend auf Geschwindigkeit verschieben
             this.addToMap(bg);
@@ -202,15 +231,6 @@ class World {
         movableObject.x = movableObject.x * -1;
         this.ctx.restore();
     }
-
-
-    // throwingObjectCollisionEffect(obj){
-    //     let index = this.throwingObject.indexOf(obj);
-    
-    //     if (index !== -1) {
-    //         this.throwingObject.splice(index, 1, new CollisionEffect);
-    //     }
-    // }
 
 
     removeAxe(axeToRemove) {
