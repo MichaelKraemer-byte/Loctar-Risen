@@ -109,14 +109,16 @@ class Character extends MovableObject{
         'assets/crafties/orcs/Orc/PNG/PNG Sequences/Jump Start/0_Orc_Jump Start_002.png',
         'assets/crafties/orcs/Orc/PNG/PNG Sequences/Jump Start/0_Orc_Jump Start_003.png',
         'assets/crafties/orcs/Orc/PNG/PNG Sequences/Jump Start/0_Orc_Jump Start_004.png',
-        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Jump Start/0_Orc_Jump Start_005.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Jump Start/0_Orc_Jump Start_005.png'
+    ];
 
+    fallImages = [
         'assets/crafties/orcs/Orc/PNG/PNG Sequences/Falling Down/0_Orc_Falling Down_000.png',
         'assets/crafties/orcs/Orc/PNG/PNG Sequences/Falling Down/0_Orc_Falling Down_001.png',
         'assets/crafties/orcs/Orc/PNG/PNG Sequences/Falling Down/0_Orc_Falling Down_002.png',
         'assets/crafties/orcs/Orc/PNG/PNG Sequences/Falling Down/0_Orc_Falling Down_003.png',
         'assets/crafties/orcs/Orc/PNG/PNG Sequences/Falling Down/0_Orc_Falling Down_004.png',
-        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Falling Down/0_Orc_Falling Down_005.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Falling Down/0_Orc_Falling Down_005.png'
     ];
 
     hurtImages = [
@@ -205,6 +207,7 @@ class Character extends MovableObject{
         this.loadImages(this.walkImages);
         this.loadImages(this.runImages);
         this.loadImages(this.jumpImages);
+        this.loadImages(this.fallImages);
         this.loadImages(this.hurtImages);
         this.loadImages(this.dyingImages);
         this.loadImages(this.throwImages);
@@ -254,8 +257,8 @@ class Character extends MovableObject{
         // Images
         setInterval(() => {
         // WALK Images
-            if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT && !this.isAboveGround()) {
-                if (!this.damageProcess && !this.world.keyboard.SHIFT && this.HP > 0) {
+            if (!this.isAboveGround() && this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
+                if (!this.isAboveGround() && !this.damageProcess && !this.world.keyboard.SHIFT && this.HP > 0) {
                     this.playAnimation(this.walkImages);
                 };
         
@@ -279,12 +282,17 @@ class Character extends MovableObject{
 
         // JUMP Images
         setInterval(() => {
-            if (this.isAboveGround() && this.world.keyboard.SPACE) {
+            if (this.isJumping() && this.world.keyboard.SPACE) {
                 if (!this.damageProcess && this.HP > 0) {
                     this.playAnimation(this.jumpImages);                    
                 }
             }
-        }, 120);
+            if (this.isFalling() && this.world.keyboard.SPACE) {
+                if (!this.damageProcess && this.HP > 0) {
+                    this.playAnimation(this.fallImages);                    
+                }
+            }
+        }, 70);
 
         // HURT Images
         setInterval(() => {
@@ -302,7 +310,7 @@ class Character extends MovableObject{
 
         // THROW Images
         setInterval( () => {
-            if (this.world.keyboard.E && !this.isDead()) {
+            if (this.world.keyboard.E && !this.isDead() && !this.axes == 0) {
                 this.playAnimation(this.throwImages);
             }
         }, 15)

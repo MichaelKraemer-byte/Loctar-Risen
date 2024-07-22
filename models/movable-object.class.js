@@ -26,6 +26,11 @@ class MovableObject extends DrawableObject {
         offsetHeight: 0
     };
 
+    isJumping() {
+        return this.speedY > 0;
+    }
+
+
 
     dies(){
         this.HP = 0;
