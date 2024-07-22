@@ -10,6 +10,7 @@ class MovableObject extends DrawableObject {
     collision = false;
     world;
     axes = 0;
+    coins = 0;
     used = false;
 
 
@@ -50,12 +51,18 @@ class MovableObject extends DrawableObject {
     }
 
 
-    increaseAxes(collisionObject) {
+    increaseInventoryOf(collisionObject) {
         if (collisionObject instanceof Axe) {
             this.axes += 20;
+            if (this.axes > 100) {
+                this.axes = 100;
+            };
         };
-        if (this.axes > 100) {
-            this.axes = 100;
+        if (collisionObject instanceof Coin) {
+            this.coins += 25;
+            if (this.coins > 100) {
+                this.coins = 100;
+            };
         };
     }
 

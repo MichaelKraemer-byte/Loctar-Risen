@@ -16,6 +16,14 @@ const level_1 = new Level (
         new Axe(1200, 280)
     ],
     [
+        // throwableObjects will  be pushed in here.
+    ],
+    [
+        new Coin(200, 150),
+        new Coin(500, 150),
+        new Coin(700, 150),
+        new Coin(900, 150),
+        new Coin(1400, 150)
     ],
     [
         new Sky('assets/crafties/forest-backgrounds/forest/PNG/Cartoon_Forest_BG_01/Layers/Sky.png', -720),

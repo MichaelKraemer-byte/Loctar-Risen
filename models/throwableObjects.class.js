@@ -17,6 +17,18 @@ class ThrowableObject extends MovableObject {
         ''
     ];
 
+    redSmashImages = [
+        'assets/effects/PNG/5/1.png',
+        'assets/effects/PNG/5/2.png',
+        'assets/effects/PNG/5/3.png',
+        'assets/effects/PNG/5/4.png',
+        'assets/effects/PNG/5/5.png',
+        'assets/effects/PNG/5/6.png',
+        'assets/effects/PNG/5/7.png',
+        'assets/effects/PNG/5/8.png',
+        ''
+    ];
+
     offset = {
         top: 5,
         bottom: 5,
@@ -42,6 +54,7 @@ class ThrowableObject extends MovableObject {
         this.speedY = 20;
         this.loadImages(this.flyingAxeImages);
         this.loadImages(this.redSplashImages);
+        this.loadImages(this.redSmashImages);
         this.animate();
     };
 
@@ -54,7 +67,9 @@ class ThrowableObject extends MovableObject {
                 this.used = true;
                 this.x += 0;
                 this.speedY = 0;
-                this.playSingleAnimation(this.redSplashImages, throwableObjectIntervall);
+                this.width = 140;
+                this.height = 140;
+                this.playSingleAnimation(this.redSmashImages, throwableObjectIntervall);
             } 
         }, 50);
 

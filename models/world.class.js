@@ -49,10 +49,17 @@ class World {
 
         this.level.axe.forEach( (axe) => {
             if (this.character.isColliding(axe) ) {
-                this.character.increaseAxes(axe);
+                this.character.increaseInventoryOf(axe);
                 this.statusBars[1].setPercentage(this.character.axes);
-                this.removeAxe(axe); 
+                this.removeCollectableObject(axe); 
             }});        
+
+        this.level.coin.forEach( (coin) => {
+            if (this.character.isColliding(coin) ) {
+                this.character.increaseInventoryOf(coin);
+                this.statusBars[2].setPercentage(this.character.coins);
+                this.removeCollectableObject(coin);
+            }});    
 
 
         if (this.level.throwableObjects[0] || this.keyboard.E) {
@@ -127,20 +134,21 @@ class World {
 
         this.ctx.translate(this.camera_x, 0);
 
-        this.drawBackgroundLayer(this.level.skies);
-        this.drawBackgroundLayer(this.level.backDecors);
-        this.drawBackgroundLayer(this.level.middleDecors);
-        this.drawBackgroundLayer(this.level.foregrounds);
+        this.drawObjectInParallaxEffect(this.level.skies);
+        this.drawObjectInParallaxEffect(this.level.backDecors);
+        this.drawObjectInParallaxEffect(this.level.middleDecors);
+        this.drawObjectInParallaxEffect(this.level.foregrounds);
 
         this.addObjectsToMap(this.level.endboss);
         this.addObjectsToMap(this.level.enemies);
         // this.addCollectableObjectsToMap(this.level.axe);
-        this.drawBackgroundLayer(this.level.axe);
+        this.drawObjectInParallaxEffect(this.level.axe);
+        this.drawObjectInParallaxEffect(this.level.coin);
         this.addMultipleFixedObjectsToMap(this.statusBars);
         this.addThrowableObjectsToMap(this.level.throwableObjects);
         this.addToMap(this.character);
 
-        this.drawBackgroundLayer(this.level.grounds);
+        this.drawObjectInParallaxEffect(this.level.grounds);
 
 
         this.ctx.restore(); 
@@ -173,7 +181,7 @@ class World {
         }
     }
 
-    drawBackgroundLayer(layer) {
+    drawObjectInParallaxEffect(layer) {
         layer.forEach(bg => {
             let adjustedX = bg.speed * this.camera_x; // Anpassen der Geschwindigkeit für Parallaxen-Effekt
             this.ctx.save(); // Speichert den Zustand vor der Verschiebung
@@ -233,13 +241,17 @@ class World {
     }
 
 
-    removeAxe(axeToRemove) {
-        // Finde den Index des zu entfernenden "axe"
-        let index = this.level.axe.indexOf(axeToRemove);
-    
-        if (index !== -1) {
-            // Entferne das "axe" aus dem Array
-            this.level.axe.splice(index, 1);
+    removeCollectableObject(objectToRemove) {
+        if (objectToRemove instanceof Axe) {
+            let index = this.level.axe.indexOf(objectToRemove);
+            if (index !== -1) {
+                this.level.axe.splice(index, 1);
+            }
+        } else if (objectToRemove instanceof Coin) {
+            let index = this.level.coin.indexOf(objectToRemove);
+            if (index !== -1) {
+                this.level.coin.splice(index, 1);
+            }
         }
     }
 }
