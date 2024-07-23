@@ -12,6 +12,10 @@ class MovableObject extends DrawableObject {
     axes = 0;
     coins = 0;
     used = false;
+    meleeAttackProcess = false;
+    meleeRangeToCharacter = false;
+    initialSpeed = 0;
+
 
 
     offset = {
@@ -90,12 +94,82 @@ class MovableObject extends DrawableObject {
             this.y + this.height - this.offset.bottom > obj.y + obj.offset.top && // T zu B
             this.x + this.offset.left < obj.x + obj.width - obj.offset.right &&  // L zu R
             this.y + this.offset.top < obj.y + obj.height - obj.offset.bottom // B zu T
-        // return this.x + this.offset.offsetY > obj.offset.offsetX && // R zu L
-        //     this.y + this.offset.offsetHeight > obj.offset.offsetWidth && // T zu B
-        //     this.offset.offsetX < obj.offset.offsetY &&  // L zu R
-        //     this.offset.offsetWidth < obj.offset.offsetHeight // B zu T
+    };
+
+    isInMeleeRangeForMinotaur(obj) {
+        // Angriffsradius auf der X-Achse und Y-Achse
+        const attackRangeX = 10; 
+        const attackRangeY = 10; 
+    
+        // Berechne den Angriffsradius horizontal
+        const horizontalRange = (this.x + this.width - this.offset.right > obj.x + obj.offset.left - attackRangeX &&
+                                 this.x + this.offset.left < obj.x + obj.width - obj.offset.right + attackRangeX);
+    
+        // Überprüfe, ob der Charakter innerhalb der vertikalen Reichweite des Angriffsradius liegt
+        const isVerticalHit = this.y + this.height > obj.y + obj.offset.top - attackRangeY &&
+                              this.y < obj.y + obj.height - obj.offset.bottom + attackRangeY;
+    
+        return horizontalRange  && isVerticalHit;
     }
 
+    
+    isInMeleeRangeForEndboss(obj) {
+        // Angriffsradius auf der X-Achse und Y-Achse
+        const attackRangeX = 50; 
+        const attackRangeY = 50; 
+    
+        // Berechne den Angriffsradius horizontal
+        const horizontalRange = (this.x + this.width - this.offset.right > obj.x + obj.offset.left - attackRangeX &&
+                                 this.x + this.offset.left < obj.x + obj.width - obj.offset.right + attackRangeX);
+    
+        // Überprüfe, ob der Charakter innerhalb der vertikalen Reichweite des Angriffsradius liegt
+        const isVerticalHit = this.y + this.height > obj.y + obj.offset.top - attackRangeY &&
+                              this.y < obj.y + obj.height - obj.offset.bottom + attackRangeY;
+    
+        return horizontalRange  && isVerticalHit;
+    }
+
+        
+    isInMeleeRangeForCharacter(obj) {
+        // Angriffsradius auf der X-Achse und Y-Achse
+        const attackRangeX = 50; 
+        const attackRangeY = 30; 
+    
+        // Berechne den Angriffsradius horizontal
+        const horizontalRange = (this.x + this.width - this.offset.right > obj.x + obj.offset.left - attackRangeX &&
+                                 this.x + this.offset.left < obj.x + obj.width - obj.offset.right + attackRangeX);
+    
+        // Überprüfe, ob der Charakter innerhalb der vertikalen Reichweite des Angriffsradius liegt
+        const isVerticalHit = this.y + this.height > obj.y + obj.offset.top - attackRangeY &&
+                              this.y < obj.y + obj.height - obj.offset.bottom + attackRangeY;
+    
+        return horizontalRange  && isVerticalHit;
+    }
+    
+    // isWithinYAttackZone(obj, attackYRange) {
+    //     return (this.y + this.height - this.offset.bottom < obj.y + obj.height - obj.offset.bottom + attackYRange &&
+    //             this.y + this.offset.top > obj.y + obj.offset.top - attackYRange);
+    // }
+
+
+    hitBy(obj){
+        if (obj instanceof Minotaur_1) {
+            return this.img.src.includes('assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Slashing/0_Minotaur_Slashing_004.png') ||
+                    this.img.src.includes('assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Slashing/0_Minotaur_Slashing_005.png') ||
+                    this.img.src.includes('assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Slashing/0_Minotaur_Slashing_006.png');            
+        };
+        if (obj instanceof Endboss) {
+            return this.img.src.includes('assets/trolls/_PNG/2_TROLL/Troll_02_1_ATTACK_006.png') ||
+                    this.img.src.includes('assets/trolls/_PNG/2_TROLL/Troll_02_1_ATTACK_007.png');
+        };
+    }
+
+
+
+
+    resetSpeed(){
+        this.speed = this.initialSpeed;
+    }
 
     isStandingOn(obj) {
         // Berechnung der relevanten Kanten
@@ -128,12 +202,12 @@ class MovableObject extends DrawableObject {
     }
 
 
-    refreshOffset(){
-        this.offset.offsetX = this.x + this.offset.left + this.offset.right;
-        this.offset.offsetY = this.y + this.offset.top + this.offset.bottom;
-        this.offset.offsetWidth = this.width - this.offset.right - this.offset.left;
-        this.offset.offsetHeight = this.height - this.offset.bottom - this.offset.top;
-    }
+    // refreshOffset(){
+    //     this.offset.offsetX = this.x + this.offset.left + this.offset.right;
+    //     this.offset.offsetY = this.y + this.offset.top + this.offset.bottom;
+    //     this.offset.offsetWidth = this.width - this.offset.right - this.offset.left;
+    //     this.offset.offsetHeight = this.height - this.offset.bottom - this.offset.top;
+    // }
 
 
     // isColliding(obj){

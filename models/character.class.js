@@ -184,6 +184,21 @@ class Character extends MovableObject{
         'assets/crafties/orcs/Orc/PNG/PNG Sequences/Throwing in The Air/0_Orc_Throwing in The Air_011.png'
     ];
 
+    meleeAttackImages = [
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Slashing/0_Orc_Slashing_000.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Slashing/0_Orc_Slashing_001.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Slashing/0_Orc_Slashing_002.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Slashing/0_Orc_Slashing_003.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Slashing/0_Orc_Slashing_004.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Slashing/0_Orc_Slashing_005.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Slashing/0_Orc_Slashing_006.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Slashing/0_Orc_Slashing_007.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Slashing/0_Orc_Slashing_008.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Slashing/0_Orc_Slashing_009.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Slashing/0_Orc_Slashing_010.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Slashing/0_Orc_Slashing_011.png'
+    ];
+
     world;
     walkSound = new Audio('assets/audio/walking/walking-on-tall-grass.wav');
     y = 280;
@@ -211,6 +226,7 @@ class Character extends MovableObject{
         this.loadImages(this.hurtImages);
         this.loadImages(this.dyingImages);
         this.loadImages(this.throwImages);
+        this.loadImages(this.meleeAttackImages);
         this.applyGravity();
         this.animate();
     };
@@ -220,22 +236,25 @@ class Character extends MovableObject{
 
         // Moving & Sound
         setInterval(() => {
-            this.refreshOffset();
+            // this.refreshOffset();
             // walk RIGHT 
             this.walkSound.pause();
-            if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x && this.HP > 0) {
-                this.walkRight();
-                this.speed = 3;
+            if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
+                if (this.HP > 0 && !this.meleeAttackProcess) {
+                    this.walkRight();
+                    this.speed = 3;
 
-                // RUN
-                if (this.world.keyboard.SHIFT) {
-                    this.run();}
-                // } else {
-                //     this.playSound(this.walkSound, 0.35, 1);
-                // }
+                    // RUN
+                    if (this.world.keyboard.SHIFT) {
+                        this.run();}
+                    // } else {
+                    //     this.playSound(this.walkSound, 0.35, 1);
+                    // }                    
+                }
+
             };
             // walk LEFT
-            if (this.world.keyboard.LEFT && this.x > -300 && this.HP > 0) {
+            if (this.world.keyboard.LEFT && this.x > -300 && this.HP > 0 && !this.meleeAttackProcess) {
                 this.walkLeft();
                 this.speed = 3;
 
@@ -257,10 +276,13 @@ class Character extends MovableObject{
         // Images
         setInterval(() => {
         // WALK Images
-            if (!this.isAboveGround() && this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
+        if (!this.isAboveGround() && !this.meleeAttackProcess) {
+            if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
                 if (!this.isAboveGround() && !this.damageProcess && !this.world.keyboard.SHIFT && this.HP > 0) {
                     this.playAnimation(this.walkImages);
-                };
+                };            
+        }
+
         
         // RUN Images
                 if (this.world.keyboard.SHIFT && !this.isAboveGround()) {
@@ -273,7 +295,7 @@ class Character extends MovableObject{
 
         // IDLE Images
         setInterval(() => {
-            if (this.world.keyboard.NONE  && !this.isAboveGround() && !this.world.keyboard.RIGHT && !this.world.keyboard.LEFT ) {
+            if (this.world.keyboard.NONE && !this.isAboveGround() && !this.world.keyboard.RIGHT && !this.world.keyboard.LEFT && !this.meleeAttackProcess) {
                 if (!this.damageProcess && this.HP > 0) {
                     this.playAnimation(this.idleImages);
                 }
@@ -302,18 +324,34 @@ class Character extends MovableObject{
         }, 120);
 
         // DYING Images
-        setInterval(() => {
+        let dyingIntervall = setInterval(() => {
             if (this.isDead()) {
-                this.playSingleAnimation(this.dyingImages);
+                this.playSingleAnimation(this.dyingImages, dyingIntervall);
             };
         }, 100);
 
         // THROW Images
-        setInterval( () => {
-            if (this.world.keyboard.E && !this.isDead() && !this.axes == 0) {
+        setInterval(() => {
+            if (this.axes !== 0 && !this.throwAttackProcess && this.world.keyboard.E && !this.isDead() ) {
                 this.playAnimation(this.throwImages);
+                this.throwAttackProcess = true;
+                setTimeout(() => {
+                    this.throwAttackProcess = false;
+                }, 1000 / 30);
             }
-        }, 15)
+        }, 15);
+
+        // MELEE ATTACK Images
+        setInterval(() => {
+            if (this.world.keyboard.Q && !this.isDead()) {
+                this.playAnimation(this.meleeAttackImages);
+                this.speed = 0;
+                this.meleeAttackProcess = true;
+                setTimeout(() => {
+                    this.meleeAttackProcess = false;
+                }, 300); 
+            }
+        }, 25);
 
     };
 

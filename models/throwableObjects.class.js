@@ -33,12 +33,7 @@ class ThrowableObject extends MovableObject {
         top: 5,
         bottom: 5,
         right: 5,
-        left: 5,
-
-        offsetX: 0,
-        offsetY: 0,
-        offsetWidth: 0,
-        offsetHeight: 0
+        left: 5
     };
 
 

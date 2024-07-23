@@ -114,8 +114,22 @@ class Minotaur_1 extends MovableObject{
         'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Dying/0_Minotaur_Dying_014.png'
     ];
 
+    meleeAttackImages = [
+        'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Slashing/0_Minotaur_Slashing_000.png',
+        'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Slashing/0_Minotaur_Slashing_001.png',
+        'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Slashing/0_Minotaur_Slashing_002.png',
+        'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Slashing/0_Minotaur_Slashing_003.png',
+        'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Slashing/0_Minotaur_Slashing_004.png',
+        'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Slashing/0_Minotaur_Slashing_005.png',
+        'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Slashing/0_Minotaur_Slashing_006.png',
+        'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Slashing/0_Minotaur_Slashing_007.png',
+        'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Slashing/0_Minotaur_Slashing_008.png',
+        'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Slashing/0_Minotaur_Slashing_009.png',
+        'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Slashing/0_Minotaur_Slashing_010.png',
+        'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Slashing/0_Minotaur_Slashing_011.png'
+    ];
 
-    world;
+
     walkSound = new Audio('assets/audio/walking/walking-on-crunchy-road.wav');
     offset = {
         top: 60,
@@ -132,30 +146,32 @@ class Minotaur_1 extends MovableObject{
 
     constructor(){
         super(); //ruft variablen und constructor funktionen auf (MovableObject)
+        this.x = this.spawnPoint();
+        this.speed = 2 + Math.random() * 0.4;
+        this.initialSpeed = this.speed;
         this.loadImages(this.walkImages);
         this.loadImages(this.hurtImages);
         this.loadImages(this.dyingImages);
-        this.x = this.spawnPoint();
-        this.speed = 2 + Math.random() * 0.4;
+        this.loadImages(this.meleeAttackImages);
         this.animate();
     };
 
 
     spawnPoint(){
-        return 800 + Math.random() * 500;
+        return 500 + Math.random() * 1000;
     }
 
 
     animate(){
 
-        // Offset Refresh
-        setInterval(() => {
-            this.refreshOffset();
-        }, 1000 / 25);
+        // // Offset Refresh
+        // setInterval(() => {
+        //     this.refreshOffset();
+        // }, 1000 / 25);
 
         // WALK
         setInterval(() => {
-            if (this.isVisible() && this.HP > 0 && !this.damageProcess) {
+            if (this.isVisible() && this.HP > 0 && !this.damageProcess && this.speed > 0) {
                 this.walkLeft();
                 // this.playSound(this.walkSound, 0.02, 1);
         //     } else if (!this.isVisible()) {
@@ -163,8 +179,9 @@ class Minotaur_1 extends MovableObject{
             }
         }, 1000 / 25);
 
+        // WALK Images
         setInterval(() => {
-            if (this.HP > 0 && !this.damageProcess) {
+            if (!this.meleeAttackProcess && this.HP > 0 && !this.damageProcess && this.speed > 0) {
                 this.playAnimation(this.walkImages);
             };
         }, 50);
@@ -185,8 +202,18 @@ class Minotaur_1 extends MovableObject{
             };
         }, 50);
 
+        
+        // Attack Images
+        setInterval(() => {
+            if (this.meleeRangeToCharacter && !this.isDead()) {
+                this.playAnimation(this.meleeAttackImages);
+                this.speed= 0;
+                this.meleeAttackProcess = true;
+                setTimeout(() => {
+                    this.meleeAttackProcess = false;
+                    this.meleeRangeToCharacter = false;
+                }, 300); 
+            }
+        }, 50);
     };
-    
-
-
 }

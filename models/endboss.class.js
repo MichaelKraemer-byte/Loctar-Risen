@@ -40,13 +40,26 @@ class Endboss extends MovableObject {
         'assets/trolls/_PNG/2_TROLL/Troll_02_1_DIE_009.png'
     ];
 
+    meleeAttackImages = [
+        'assets/trolls/_PNG/2_TROLL/Troll_02_1_ATTACK_000.png',
+        'assets/trolls/_PNG/2_TROLL/Troll_02_1_ATTACK_001.png',
+        'assets/trolls/_PNG/2_TROLL/Troll_02_1_ATTACK_002.png',
+        'assets/trolls/_PNG/2_TROLL/Troll_02_1_ATTACK_003.png',
+        'assets/trolls/_PNG/2_TROLL/Troll_02_1_ATTACK_004.png',
+        'assets/trolls/_PNG/2_TROLL/Troll_02_1_ATTACK_005.png',
+        'assets/trolls/_PNG/2_TROLL/Troll_02_1_ATTACK_006.png',
+        'assets/trolls/_PNG/2_TROLL/Troll_02_1_ATTACK_007.png',
+        'assets/trolls/_PNG/2_TROLL/Troll_02_1_ATTACK_008.png',
+        'assets/trolls/_PNG/2_TROLL/Troll_02_1_ATTACK_009.png'
+    ];
+
 
     world;
     walkSound = new Audio('assets/audio/walking/walking-on-crunchy-road.wav');
     width = 700;
     height = 500;
     y = 22;
-    x = 1600;
+    x = 2000;
     offset = {
         top: 180,
         bottom: 70,
@@ -62,24 +75,26 @@ class Endboss extends MovableObject {
 
     constructor(){
         super(); //ruft variablen und constructor funktionen auf (MovableObject)
+        this.speed = 2 + Math.random() * 0.4;
+        this.initialSpeed = this.speed;
         this.loadImages(this.walkImages);
         this.loadImages(this.hurtImages);
         this.loadImages(this.dyingImages);
-        this.speed = 2 + Math.random() * 0.4;
+        this.loadImages(this.meleeAttackImages);
         this.animate();
     };
 
 
     animate(){
     
-        // Offset Refresh
-        setInterval(() => {
-            this.refreshOffset();
-        }, 1000 / 25);
+        // // Offset Refresh
+        // setInterval(() => {
+        //     this.refreshOffset();
+        // }, 1000 / 25);
 
         // WALK
         setInterval(() => {
-            if (this.isVisible() && this.HP > 0 && !this.damageProcess) {
+            if (this.speed > 0 && this.isVisible() && this.HP > 0 && !this.damageProcess) {
                 this.walkLeft();
         //         this.playSound(this.walkSound, 0.4 , 1);
         //     } else if (!this.isVisible()) {
@@ -88,8 +103,9 @@ class Endboss extends MovableObject {
             }
         }, 1000 / 40);
 
+        // WALK Images
         setInterval(() => {
-            if (this.HP > 0 && !this.damageProcess) {
+            if (!this.meleeAttackProcess && this.HP > 0 && !this.damageProcess && this.speed > 0) {
                 this.playAnimation(this.walkImages);
             };
         }, 70);
@@ -103,12 +119,22 @@ class Endboss extends MovableObject {
 
         // DYING Images
         let dyingIntervall = setInterval(() => {
-            if (this.isDead()) {
+            if (this.HP <= 0) {
                 this.playSingleAnimation(this.dyingImages, dyingIntervall);
             };
         }, 100);
 
+        // Attack Images
+        setInterval(() => {
+            if (this.meleeRangeToCharacter && !this.isDead()) {
+                this.playAnimation(this.meleeAttackImages);
+                this.speed = 0;
+                this.meleeAttackProcess = true;
+                setTimeout(() => {
+                    this.meleeAttackProcess = false;
+                    this.meleeRangeToCharacter = false;
+                }, 500); 
+            }
+        }, 55);
     };
-
-
 }

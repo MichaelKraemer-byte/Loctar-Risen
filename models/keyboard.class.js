@@ -6,6 +6,7 @@ class Keyboard {
     DOWN = false;
     SHIFT = false;
     E = false; //throwing
+    Q = false
 
     NONE = true;
 }

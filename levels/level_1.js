@@ -21,7 +21,7 @@ const level_1 = new Level (
     [
         new Coin(200, 150),
         new Coin(500, 150),
-        new Coin(700, 150),
+        new Coin(800, 150),
         new Coin(900, 150),
         new Coin(1400, 150)
     ],

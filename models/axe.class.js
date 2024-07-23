@@ -6,11 +6,6 @@ class Axe extends DrawableObject {
         bottom: 5,
         right: 46,
         left: 5,
-
-        offsetX: 0,
-        offsetY: 0,
-        offsetWidth: 0,
-        offsetHeight: 0
     };
 
 

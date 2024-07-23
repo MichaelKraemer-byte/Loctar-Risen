@@ -22,13 +22,17 @@ class World {
 
     run(){
         setInterval(()=> {
-            this.checkThrowObjects();
-            this.checkCollisions();
+            this.checkIfThrowingObjects();
+            this.checkBodyToBodyCollisions();
+            this.checkThrowableObjectCollision();
             this.removeThrowableObjects();
         }, 50);
+        setInterval(()=> {
+            this.checkMelee();
+        }, 1000 / 32);
     };
 
-    checkCollisions(){
+    checkBodyToBodyCollisions() {
 
         this.level.enemies.forEach( (enemy) => {
             if (!enemy.isDead() && this.character.isColliding(enemy) ) {
@@ -60,8 +64,9 @@ class World {
                 this.statusBars[2].setPercentage(this.character.coins);
                 this.removeCollectableObject(coin);
             }});    
+    };
 
-
+    checkThrowableObjectCollision(){
         if (this.level.throwableObjects[0] || this.keyboard.E) {
             // throwable object collision
             this.level.throwableObjects.forEach((throwObject) => {
@@ -87,10 +92,65 @@ class World {
                     }
                 });                
             }
-    };
+    }
+
+    checkMelee(){
+        this.characterMelee();
+        this.enemyAndBossMelee();
+    }
+
+    enemyAndBossMelee(){
+        this.level.enemies.forEach((enemy) => {
+            if ( !enemy.meleeAttackProcess && this.character.isInMeleeRangeForMinotaur(enemy) && !enemy.isDead() && !enemy.damageProcess) {
+                enemy.speed = 0;
+                enemy.meleeRangeToCharacter = true;
+                if (enemy.hitBy(enemy)) {
+                    this.character.reduceHP(1, enemy);
+                    this.statusBars[0].setPercentage(this.character.HP);
+                }
+            }else {
+                enemy.resetSpeed();
+            }});   
+
+        this.level.endboss.forEach( (endboss) => {
+            if (!endboss.meleeAttackProcess&& this.character.isInMeleeRangeForEndboss(endboss) && !endboss.isDead() && !enemy.damageProcess) {
+                endboss.speed = 0;
+                endboss.meleeRangeToCharacter = true;
+                    if (endboss.hitBy(endboss)) {
+                        this.character.reduceHP(10, endboss);
+                        this.statusBars[0].setPercentage(this.character.HP);
+                    }
+            }else {
+                endboss.resetSpeed();
+            }});   
+    }
+
+    characterMelee(){
+        this.level.enemies.forEach((enemy) => {
+            if ( !this.character.meleeAttackProcess && enemy.isInMeleeRangeForCharacter(this.character) && !enemy.isDead() && !enemy.damageProcess) {
+                console.log('character is in melee range of enemy to fuck the minotaur');
+                if (this.keyboard.Q) {
+                    console.log('character hits Minotaur');
+                    enemy.reduceHP(30, enemy);
+                }
+            }else {
+                enemy.resetSpeed();
+            }}); 
+
+        this.level.endboss.forEach((endboss) => {
+            if ( !this.character.meleeAttackProcess && endboss.isInMeleeRangeForCharacter(this.character) && !endboss.isDead() && !endboss.damageProcess) {
+                console.log('character is in melee range of enemy to fuck the minotaur');
+                if (this.keyboard.Q) {
+                    console.log('character hits Minotaur');
+                    endboss.reduceHP(30, endboss);
+                }
+            }else {
+                endboss.resetSpeed();
+            }}); 
+    }
 
 
-    checkThrowObjects(){
+    checkIfThrowingObjects(){
         if (this.keyboard.E && !this.character.isDead() && this.character.axes !== 0 && !this.character.cooldown) {
             let axe = new ThrowableObject(this.character.x, this.character.y, this.character.otherDirection);
             this.level.throwableObjects.push(axe);
@@ -139,6 +199,7 @@ class World {
         this.drawObjectInParallaxEffect(this.level.middleDecors);
         this.drawObjectInParallaxEffect(this.level.foregrounds);
 
+        this.addToMap(this.character);
         this.addObjectsToMap(this.level.endboss);
         this.addObjectsToMap(this.level.enemies);
         // this.addCollectableObjectsToMap(this.level.axe);
@@ -146,7 +207,6 @@ class World {
         this.drawObjectInParallaxEffect(this.level.coin);
         this.addMultipleFixedObjectsToMap(this.statusBars);
         this.addThrowableObjectsToMap(this.level.throwableObjects);
-        this.addToMap(this.character);
 
         this.drawObjectInParallaxEffect(this.level.grounds);
 

@@ -38,6 +38,10 @@ window.addEventListener('keydown', (KeyboardEvent) => {
             keyboard.E = true;
             keyboard.NONE = false;
             break;
+        case 'KeyQ':
+            keyboard.Q = true;
+            keyboard.NONE = false;
+            break;
         case 'ShiftLeft':
         case 'ShiftRight':
             keyboard.SHIFT = true;
@@ -75,6 +79,10 @@ window.addEventListener('keyup', (KeyboardEvent) => {
             break;
         case 'KeyE':
             keyboard.E = false;
+            keyboard.NONE = true;
+            break;
+        case 'KeyQ':
+            keyboard.Q = false;
             keyboard.NONE = true;
             break;
         case 'ShiftLeft':
