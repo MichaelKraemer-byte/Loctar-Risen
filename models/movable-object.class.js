@@ -117,56 +117,84 @@ class MovableObject extends DrawableObject {
         // Angriffsradius auf der X-Achse und Y-Achse
         const attackRangeX = 10; 
         const attackRangeY = 10; 
+        
+        // Berechne die horizontalen Grenzen des Angriffsradius des Minotaur
+        const minotaurLeft = obj.x + obj.offset.left - attackRangeX;
+        const minotaurRight = obj.x + obj.width - obj.offset.right + attackRangeX;
+        
+        // Berechne die vertikalen Grenzen des Angriffsradius des Minotaur
+        const minotaurTop = obj.y + obj.offset.top - attackRangeY;
+        const minotaurBottom = obj.y + obj.height - obj.offset.bottom + attackRangeY;
+        
+        // Überprüfe, ob der Charakter innerhalb der horizontalen Reichweite ist
+        const isHorizontalInRange = this.x + this.width - this.offset.right > minotaurLeft &&
+                                    this.x + this.offset.left < minotaurRight;
     
-        // Berechne den Angriffsradius horizontal
-        const horizontalRange = (this.x + this.width - this.offset.right > obj.x + obj.offset.left - attackRangeX &&
-                                 this.x + this.offset.left < obj.x + obj.width - obj.offset.right + attackRangeX);
+        // Überprüfe, ob der Charakter innerhalb der vertikalen Reichweite ist
+        const isVerticalInRange = this.y + this.height - this.offset.bottom > minotaurTop &&
+                                  this.y + this.offset.top < minotaurBottom;
+        
+        // Überprüfe, ob der Charakter sich auf der gleichen oder unteren Ebene befindet
+        const isOnOrBelow = this.y + this.height >= obj.y;
     
-        // Überprüfe, ob der Charakter innerhalb der vertikalen Reichweite des Angriffsradius liegt
-        const isVerticalHit = this.y + this.height > obj.y + obj.offset.top - attackRangeY &&
-                              this.y  < obj.y + obj.height - obj.offset.bottom + attackRangeY;
-    
-        return horizontalRange  && isVerticalHit;
+        return isHorizontalInRange && isVerticalInRange && isOnOrBelow;
     }
-
     
     isInMeleeRangeForEndboss(obj) {
         // Angriffsradius auf der X-Achse und Y-Achse
         const attackRangeX = 50; 
         const attackRangeY = 50; 
-    
-        // Berechne den Angriffsradius horizontal
-        const horizontalRange = (this.x + this.width - this.offset.right > obj.x + obj.offset.left - attackRangeX &&
-                                 this.x + this.offset.left < obj.x + obj.width - obj.offset.right + attackRangeX);
-    
-        // Überprüfe, ob der Charakter innerhalb der vertikalen Reichweite des Angriffsradius liegt
-        const isVerticalHit = this.y + this.height > obj.y + obj.offset.top - attackRangeY &&
-                              this.y < obj.y + obj.height - obj.offset.bottom + attackRangeY;
-    
-        return horizontalRange  && isVerticalHit;
-    }
-
         
+        // Berechne die horizontalen Grenzen des Angriffsradius des Endboss
+        const endbossLeft = obj.x + obj.offset.left - attackRangeX;
+        const endbossRight = obj.x + obj.width - obj.offset.right + attackRangeX;
+        
+        // Berechne die vertikalen Grenzen des Angriffsradius des Endboss
+        const endbossTop = obj.y + obj.offset.top - attackRangeY;
+        const endbossBottom = obj.y + obj.height - obj.offset.bottom + attackRangeY;
+        
+        // Überprüfe, ob der Charakter innerhalb der horizontalen Reichweite ist
+        const isHorizontalInRange = this.x + this.width - this.offset.right > endbossLeft &&
+                                    this.x + this.offset.left < endbossRight;
+    
+        // Überprüfe, ob der Charakter innerhalb der vertikalen Reichweite ist
+        const isVerticalInRange = this.y + this.height - this.offset.bottom > endbossTop &&
+                                  this.y + this.offset.top < endbossBottom;
+        
+        // Überprüfe, ob der Charakter sich auf der gleichen oder unteren Ebene befindet
+        const isOnOrBelow = this.y + this.height >= obj.y;
+    
+        return isHorizontalInRange && isVerticalInRange && isOnOrBelow;
+    }
+    
     isInMeleeRangeForCharacter(obj) {
         // Angriffsradius auf der X-Achse und Y-Achse
         const attackRangeX = 50; 
         const attackRangeY = 30; 
+        
+        // Berechne die horizontalen Grenzen des Angriffsradius des Charakters
+        const characterLeft = obj.x + obj.offset.left - attackRangeX;
+        const characterRight = obj.x + obj.width - obj.offset.right + attackRangeX;
+        
+        // Berechne die vertikalen Grenzen des Angriffsradius des Charakters
+        const characterTop = obj.y + obj.offset.top - attackRangeY;
+        const characterBottom = obj.y + obj.height - obj.offset.bottom + attackRangeY;
+        
+        // Überprüfe, ob der Charakter innerhalb der horizontalen Reichweite ist
+        const isHorizontalInRange = this.x + this.width - this.offset.right > characterLeft &&
+                                    this.x + this.offset.left < characterRight;
     
-        // Berechne den Angriffsradius horizontal
-        const horizontalRange = (this.x + this.width - this.offset.right > obj.x + obj.offset.left - attackRangeX &&
-                                 this.x + this.offset.left < obj.x + obj.width - obj.offset.right + attackRangeX);
+        // Überprüfe, ob der Charakter innerhalb der vertikalen Reichweite ist
+        const isVerticalInRange = this.y + this.height - this.offset.bottom > characterTop &&
+                                  this.y + this.offset.top < characterBottom;
+        
+        // Überprüfe, ob der Charakter sich auf der gleichen oder unteren Ebene befindet
+        const isOnOrBelow = this.y + this.height >= obj.y;
     
-        // Überprüfe, ob der Charakter innerhalb der vertikalen Reichweite des Angriffsradius liegt
-        const isVerticalHit = this.y + this.height > obj.y + obj.offset.top - attackRangeY &&
-                              this.y < obj.y + obj.height - obj.offset.bottom + attackRangeY;
-    
-        return horizontalRange  && isVerticalHit;
+        return isHorizontalInRange && isVerticalInRange && isOnOrBelow;
     }
     
-    // isWithinYAttackZone(obj, attackYRange) {
-    //     return (this.y + this.height - this.offset.bottom < obj.y + obj.height - obj.offset.bottom + attackYRange &&
-    //             this.y + this.offset.top > obj.y + obj.offset.top - attackYRange);
-    // }
+
 
 
     hitBy(obj){
