@@ -17,7 +17,8 @@ class MovableObject extends DrawableObject {
     initialSpeed = 0;
     isStandingOnObstacle = false;
     walkingAnimation = false;
-    currentPlatformY = 280;
+    isOnPlatform = false;
+    currentPlatformY = 0;
 
 
 
@@ -99,6 +100,11 @@ class MovableObject extends DrawableObject {
             this.y + this.offset.top < obj.y + obj.height - obj.offset.bottom // B zu T
     };
 
+    isGroundedOn(obj){
+        return this.x + this.width - this.offset.right > obj.x + obj.offset.left &&  // R zu L
+               this.x + this.offset.left < obj.x + obj.width - obj.offset.right  // L zu R
+    }
+
     isLanding(obj) {
         // Check if the character's bottom is touching the top of the object
         return this.x + this.width - this.offset.right > obj.x + obj.offset.left &&  // R zu L
@@ -118,7 +124,7 @@ class MovableObject extends DrawableObject {
     
         // Überprüfe, ob der Charakter innerhalb der vertikalen Reichweite des Angriffsradius liegt
         const isVerticalHit = this.y + this.height > obj.y + obj.offset.top - attackRangeY &&
-                              this.y < obj.y + obj.height - obj.offset.bottom + attackRangeY;
+                              this.y  < obj.y + obj.height - obj.offset.bottom + attackRangeY;
     
         return horizontalRange  && isVerticalHit;
     }
@@ -177,9 +183,8 @@ class MovableObject extends DrawableObject {
 
 
     runningagainst(obstacle) {
-        let horizontalOverlap = this.x + this.width - this.offset.right > obstacle.x + obstacle.offset.left &&
+        return this.x + this.width - this.offset.right > obstacle.x + obstacle.offset.left &&
         this.x + this.offset.left < obstacle.x + obstacle.width - obstacle.offset.right;
-        return horizontalOverlap;
     }
 
 
@@ -245,24 +250,33 @@ class MovableObject extends DrawableObject {
         this.x += this.speed;
     };
 
+
     setYOnFloor(obstacle) {
         this.y = obstacle.y - this.height + this.offset.bottom;
     }
 
+
     applyGravity() {
         setInterval(() => {
             if (this.isStandingOnObstacle) {
-                this.speedY = 0;
-            } else if (this.isAboveGround() || this instanceof ThrowableObject) {
-                this.y -= this.speedY;
-                this.speedY -= this.acceleration;
+                this.resetSpeedY();
+            } else if (!this.isStandingOnObstacle) {
+                if (this.isAboveGround() || this instanceof ThrowableObject) {
+                    this.y -= this.speedY;
+                    this.speedY -= this.acceleration;
+                }
+                if (this.y > 280 && !(this instanceof ThrowableObject)) {
+                    this.y = 280;
+                }   
             }
-            if (this.y > 280 && !(this instanceof ThrowableObject)) {
-                this.y = 280;
-            }
-
         }, 1000 / 25);
     }
+
+    resetSpeedY(){
+        this.speedY = 0;
+    }
+
+
 
     isAboveGround(){
         if (this.y < 280 || this.speedY > 0) {

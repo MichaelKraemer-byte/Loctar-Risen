@@ -34,41 +34,67 @@ class World {
         setInterval(()=> {
             this.checkMelee();
         }, 1000 / 32);
+        setInterval(()=> {
+            this.checkFallingFromPlatform();
+        }, 80);
     };
 
 
-    checkPlatformCollisions(){
-        this.level.obstacles.forEach( (obstacle) => {
-            
-                    if (this.character.isColliding(obstacle)) {
-                        this.character.isStandingOnObstacle = true;
-                        this.character.y = obstacle.y - this.character.height + this.character.offset.bottom + this.character.offset.top - obstacle.height;
-
-                } 
-        })
+    checkPlatformCollisions() {
+        this.level.obstacles.forEach((obstacle) => {
+            if (this.character.isColliding(obstacle)) {
+                // Calculate character and obstacle bounds
+                const charTop = this.character.y + this.character.offset.top;
+                const charBottom = this.character.y + this.character.height - this.character.offset.bottom;
+                const charLeft = this.character.x + this.character.offset.left;
+                const charRight = this.character.x + this.character.width - this.character.offset.right;
+                
+                const obsTop = obstacle.y + obstacle.offset.top;
+                const obsBottom = obstacle.y + obstacle.height - obstacle.offset.bottom;
+                const obsLeft = obstacle.x + obstacle.offset.left;
+                const obsRight = obstacle.x + obstacle.width - obstacle.offset.right;
+    
+                // Calculate overlaps on each side
+                const overlapTop = charBottom - obsTop;
+                const overlapBottom = obsBottom - charTop;
+                const overlapLeft = charRight - obsLeft;
+                const overlapRight = obsRight - charLeft;
+    
+                // Determine the minimum overlap to find the collision side
+                const minOverlap = Math.min(overlapTop, overlapBottom, overlapLeft, overlapRight);
+    
+                if (minOverlap === overlapTop && overlapTop > 0) {
+                    console.log('Colliding with the top of the obstacle');
+                    this.character.isStandingOnObstacle = true;
+                    // Prevent upward movement
+                    this.character.speedY = 0;
+                    this.character.y = obstacle.y - this.character.height + this.character.offset.bottom;
+                } else if (minOverlap === overlapBottom && overlapBottom > 0) {
+                    console.log('Colliding with the bottom of the obstacle');
+                    // Prevent downward movement
+                    this.character.speedY = 0;
+                    this.character.y = obstacle.y + obstacle.height - this.character.offset.bottom;
+                } else if (minOverlap === overlapLeft && overlapLeft > 0) {
+                    console.log('Colliding with the left side of the obstacle');
+                    // Prevent movement to the left
+                    this.character.x = obstacle.x - this.character.width + this.character.offset.right;
+                } else if (minOverlap === overlapRight && overlapRight > 0) {
+                    console.log('Colliding with the right side of the obstacle');
+                    // Prevent movement to the right
+                    this.character.x = obstacle.x + obstacle.width - this.character.offset.left;
+                }
+            }
+        });
     }
 
+    checkFallingFromPlatform(){
+        this.level.obstacles.forEach( (obstacle) => {
 
-        // checkPlatformCollisions(){
-    //     this.character.isStandingOnObstacle = false;
-    //     this.level.obstacles.forEach( (obstacle) => {
-
-    //             if (this.character.isColliding(obstacle) || this.character.isStandingOnObstacle) {
-    //                 if (this.character.isLanding(obstacle)) {
-    //                     this.character.isStandingOnObstacle = true;
-    //                     this.level.xStop = 2000;
-    //                     if (this.character.speedY > 0 ) { // Set speedY only if the character is not jumping up
-    //                         this.character.speedY = 0;
-    //                         this.character.y = obstacle.y - this.character.height + this.character.offset.bottom;
-    //                     }
-    //                 }
-                    
-    //                 else if (!this.character.isLanding(obstacle)) {
-    //                     this.level.xStop = this.character.x;
-    //                 } 
-    //             }
-    //         }
-    //     )}
+            if (!this.character.isColliding(obstacle)) {
+                this.character.isStandingOnObstacle = false;
+            }
+        })
+    }
 
 
     checkBodyToBodyCollisions() {
@@ -152,7 +178,7 @@ class World {
             }});   
 
         this.level.endboss.forEach( (endboss) => {
-            if (!endboss.meleeAttackProcess&& this.character.isInMeleeRangeForEndboss(endboss) && !endboss.isDead() && !endboss.damageProcess) {
+            if (!endboss.meleeAttackProcess && this.character.isInMeleeRangeForEndboss(endboss) && !endboss.isDead() && !endboss.damageProcess) {
                 endboss.speed = 0;
                 endboss.meleeRangeToCharacter = true;
                     if (endboss.hitBy(endboss)) {
@@ -255,21 +281,6 @@ class World {
     }
 
 
-    // addCollectableObjectsToMap(CollectableObjects){
-    // // Aktualisiere die Position der Axt-Objekte
-    // CollectableObjects.forEach((axe) => {
-    //     axe.updatePosition(this.camera_x); // Aktualisiere die Position basierend auf der Kamera
-    // });
-
-    // // Zeichne Axt-Objekte
-    // CollectableObjects.forEach(axe => {
-    //     this.ctx.save();
-    //     this.ctx.translate(axe.x, 0);
-    //     this.addToMap(axe);
-    //     this.ctx.restore();
-    // });
-    // }
-
     addThrowableObjectsToMap(throwableObjects){
         if (throwableObjects[0]) {
             this.addObjectsToMap(throwableObjects);
@@ -300,7 +311,7 @@ class World {
         };
 
         movableObject.draw(this.ctx);
-        movableObject.drawFrame(this.ctx);
+        // movableObject.drawFrame(this.ctx);
 
         if (movableObject.otherDirection) {
             this.flipImageBack(movableObject);
