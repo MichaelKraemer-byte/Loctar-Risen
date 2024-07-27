@@ -10,7 +10,7 @@ class Level {
     foregrounds;
     grounds;
     obstacles;
-    xStop = 1800;
+    xStop = 4800;
 
 
     constructor(enemies, endboss, axe, throwableObjects, coin, skies, backDecors, middleDecors, foregrounds, grounds, obstacles) {

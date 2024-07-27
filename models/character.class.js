@@ -235,7 +235,7 @@ class Character extends MovableObject{
         setInterval(() => {
             // this.refreshOffset();
             // walk RIGHT 
-            // this.walkSound.pause();
+            this.walkSound.pause();
             if (this.world.keyboard.RIGHT && this.x < this.world.level.xStop) {
                 if (this.HP > 0 && !this.meleeAttackProcess) {
                     this.walkRight();

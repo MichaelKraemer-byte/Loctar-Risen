@@ -129,7 +129,7 @@ class Minotaur_1 extends MovableObject{
         'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Slashing/0_Minotaur_Slashing_011.png'
     ];
 
-
+    world;
     walkSound = new Audio('assets/audio/walking/walking-on-crunchy-road.wav');
     offset = {
         top: 60,
@@ -167,7 +167,11 @@ class Minotaur_1 extends MovableObject{
         // WALK
         setInterval(() => {
             if (this.isVisible() && this.HP > 0 && !this.damageProcess && this.speed > 0) {
-                this.walkLeft();
+                if (this.world.character.x >= this.x) {
+                    this.walkRight();
+                } else {
+                    this.walkLeft();
+                }
                 // this.playSound(this.walkSound, 0.02, 1);
         //     } else if (!this.isVisible()) {
         //         this.pauseSound(this.walkSound);

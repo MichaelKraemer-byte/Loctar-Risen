@@ -1,4 +1,4 @@
-class ThreeBlockPlatform extends DrawableObject {
+class ThreeBlockObstacle extends DrawableObject {
 
     offset = {
         top: -5,

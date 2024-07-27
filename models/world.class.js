@@ -64,22 +64,18 @@ class World {
                 const minOverlap = Math.min(overlapTop, overlapBottom, overlapLeft, overlapRight);
     
                 if (minOverlap === overlapTop && overlapTop > 0) {
-                    console.log('Colliding with the top of the obstacle');
                     this.character.isStandingOnObstacle = true;
                     // Prevent upward movement
                     this.character.speedY = 0;
                     this.character.y = obstacle.y - this.character.height + this.character.offset.bottom;
                 } else if (minOverlap === overlapBottom && overlapBottom > 0) {
-                    console.log('Colliding with the bottom of the obstacle');
                     // Prevent downward movement
                     this.character.speedY = 0;
                     this.character.y = obstacle.y + obstacle.height - this.character.offset.bottom;
                 } else if (minOverlap === overlapLeft && overlapLeft > 0) {
-                    console.log('Colliding with the left side of the obstacle');
                     // Prevent movement to the left
                     this.character.x = obstacle.x - this.character.width + this.character.offset.right;
                 } else if (minOverlap === overlapRight && overlapRight > 0) {
-                    console.log('Colliding with the right side of the obstacle');
                     // Prevent movement to the right
                     this.character.x = obstacle.x + obstacle.width - this.character.offset.left;
                 }

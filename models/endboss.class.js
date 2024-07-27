@@ -97,7 +97,11 @@ class Endboss extends MovableObject {
         // WALK
         setInterval(() => {
             if (this.speed > 0 && this.isVisible() && this.HP > 0 && !this.damageProcess) {
-                this.walkLeft();
+                if (this.world.character.x >= this.x) {
+                    this.walkRight();
+                } else {
+                    this.walkLeft();
+                }
         //         this.playSound(this.walkSound, 0.4 , 1);
         //     } else if (!this.isVisible()) {
         //         this.pauseSound(this.walkSound);
