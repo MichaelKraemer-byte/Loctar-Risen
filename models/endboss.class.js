@@ -96,8 +96,8 @@ class Endboss extends MovableObject {
 
         // WALK
         setInterval(() => {
-            if (this.speed > 0 && this.isVisible() && this.HP > 0 && !this.damageProcess) {
-                if (this.world.character.x >= this.x) {
+            if (this.isVisible() && this.HP > 0 && !this.damageProcess && this.speed > 0) {
+                if (this.world.character.x - this.world.character.offset.right >= this.x + this.offset.left) {
                     this.walkRight();
                 } else {
                     this.walkLeft();
