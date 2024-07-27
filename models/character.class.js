@@ -201,23 +201,18 @@ class Character extends MovableObject{
 
     world;
     walkSound = new Audio('assets/audio/walking/walking-on-tall-grass.wav');
-    y = 280;
     offset = {
         top: 60,
         bottom: 40,
         right: 70,
-        left: 60,
-
-        offsetX: 0,
-        offsetY: 0,
-        offsetWidth: 0,
-        offsetHeight: 0
+        left: 60
     };
 
 
     constructor(){
         super();
         this.speed = 3;
+        this.y = 280;
         this.loadImages(this.idleImages);
         this.loadImages(this.walkImages);
         this.loadImages(this.runImages);
@@ -232,14 +227,16 @@ class Character extends MovableObject{
     };
 
 
+
+
     animate(){
 
         // Moving & Sound
         setInterval(() => {
             // this.refreshOffset();
             // walk RIGHT 
-            this.walkSound.pause();
-            if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
+            // this.walkSound.pause();
+            if (this.world.keyboard.RIGHT && this.x < this.world.level.xStop) {
                 if (this.HP > 0 && !this.meleeAttackProcess) {
                     this.walkRight();
                     this.speed = 3;
@@ -266,8 +263,11 @@ class Character extends MovableObject{
                 // }
             };
             // jump
-            if (this.world.keyboard.SPACE && !this.isAboveGround() && this.HP > 0) {
-                this.jump();
+            if (this.world.keyboard.SPACE && this.HP > 0) {
+                if (this.isStandingOnObstacle || !this.isAboveGround()) {
+                    this.isStandingOnObstacle = false;
+                    this.jump();
+                }
             };
             this.world.camera_x = -this.x + 20;
         }, 1000 / 60);
@@ -275,29 +275,35 @@ class Character extends MovableObject{
 
         // Images
         setInterval(() => {
-        // WALK Images
-        if (!this.isAboveGround() && !this.meleeAttackProcess) {
-            if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
-                if (!this.isAboveGround() && !this.damageProcess && !this.world.keyboard.SHIFT && this.HP > 0) {
-                    this.playAnimation(this.walkImages);
-                };            
-        }
-
-        
-        // RUN Images
-                if (this.world.keyboard.SHIFT && !this.isAboveGround()) {
-                    if (this.HP > 0 && !this.damageProcess) {
-                        this.playAnimation(this.runImages);
+            // WALK Images
+            if (!this.meleeAttackProcess) {
+                if (!this.isAboveGround() || this.isOnObstacle()){
+                    if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
+                        if (!this.damageProcess && !this.world.keyboard.SHIFT && this.HP > 0) {
+                            this.playAnimation(this.walkImages);
+                        };            
                     }
                 }
-        }}, 35);
+
+            // RUN Images
+                if (this.world.keyboard.SHIFT) {
+                    if (!this.isAboveGround() || this.isOnObstacle()){
+                        if (this.HP > 0 && !this.damageProcess) {
+                            this.playAnimation(this.runImages);
+                        }
+                    }
+                }
+            }
+        }, 35);
         
 
         // IDLE Images
         setInterval(() => {
-            if (this.world.keyboard.NONE && !this.isAboveGround() && !this.world.keyboard.RIGHT && !this.world.keyboard.LEFT && !this.meleeAttackProcess) {
-                if (!this.damageProcess && this.HP > 0) {
-                    this.playAnimation(this.idleImages);
+            if (this.world.keyboard.NONE && !this.world.keyboard.RIGHT && !this.world.keyboard.LEFT && !this.meleeAttackProcess) {
+                if (!this.isAboveGround() || this.isOnObstacle()){
+                    if (!this.damageProcess && this.HP > 0) {
+                        this.playAnimation(this.idleImages);
+                    }
                 }
             }
         }, 80);
@@ -305,12 +311,12 @@ class Character extends MovableObject{
         // JUMP Images
         setInterval(() => {
             if (this.isJumping() && this.world.keyboard.SPACE) {
-                if (!this.damageProcess && this.HP > 0) {
+                if (!this.damageProcess && this.HP > 0 && !this.isStandingOnObstacle) {
                     this.playAnimation(this.jumpImages);                    
                 }
             }
             if (this.isFalling() && this.world.keyboard.SPACE) {
-                if (!this.damageProcess && this.HP > 0) {
+                if (!this.damageProcess && this.HP > 0 && !this.isStandingOnObstacle) {
                     this.playAnimation(this.fallImages);                    
                 }
             }

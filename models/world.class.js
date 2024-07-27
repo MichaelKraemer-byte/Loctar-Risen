@@ -20,7 +20,11 @@ class World {
         this.run();
     };
 
+
     run(){
+        setInterval(()=> {
+            this.checkPlatformCollisions();
+        }, 1000 / 32);
         setInterval(()=> {
             this.checkIfThrowingObjects();
             this.checkBodyToBodyCollisions();
@@ -31,6 +35,41 @@ class World {
             this.checkMelee();
         }, 1000 / 32);
     };
+
+
+    checkPlatformCollisions(){
+        this.level.obstacles.forEach( (obstacle) => {
+            
+                    if (this.character.isColliding(obstacle)) {
+                        this.character.isStandingOnObstacle = true;
+                        this.character.y = obstacle.y - this.character.height + this.character.offset.bottom + this.character.offset.top - obstacle.height;
+
+                } 
+        })
+    }
+
+
+        // checkPlatformCollisions(){
+    //     this.character.isStandingOnObstacle = false;
+    //     this.level.obstacles.forEach( (obstacle) => {
+
+    //             if (this.character.isColliding(obstacle) || this.character.isStandingOnObstacle) {
+    //                 if (this.character.isLanding(obstacle)) {
+    //                     this.character.isStandingOnObstacle = true;
+    //                     this.level.xStop = 2000;
+    //                     if (this.character.speedY > 0 ) { // Set speedY only if the character is not jumping up
+    //                         this.character.speedY = 0;
+    //                         this.character.y = obstacle.y - this.character.height + this.character.offset.bottom;
+    //                     }
+    //                 }
+                    
+    //                 else if (!this.character.isLanding(obstacle)) {
+    //                     this.level.xStop = this.character.x;
+    //                 } 
+    //             }
+    //         }
+    //     )}
+
 
     checkBodyToBodyCollisions() {
 
@@ -113,7 +152,7 @@ class World {
             }});   
 
         this.level.endboss.forEach( (endboss) => {
-            if (!endboss.meleeAttackProcess&& this.character.isInMeleeRangeForEndboss(endboss) && !endboss.isDead() && !enemy.damageProcess) {
+            if (!endboss.meleeAttackProcess&& this.character.isInMeleeRangeForEndboss(endboss) && !endboss.isDead() && !endboss.damageProcess) {
                 endboss.speed = 0;
                 endboss.meleeRangeToCharacter = true;
                     if (endboss.hitBy(endboss)) {
@@ -128,9 +167,7 @@ class World {
     characterMelee(){
         this.level.enemies.forEach((enemy) => {
             if ( !this.character.meleeAttackProcess && enemy.isInMeleeRangeForCharacter(this.character) && !enemy.isDead() && !enemy.damageProcess) {
-                console.log('character is in melee range of enemy to fuck the minotaur');
                 if (this.keyboard.Q) {
-                    console.log('character hits Minotaur');
                     enemy.reduceHP(30, enemy);
                 }
             }else {
@@ -139,9 +176,7 @@ class World {
 
         this.level.endboss.forEach((endboss) => {
             if ( !this.character.meleeAttackProcess && endboss.isInMeleeRangeForCharacter(this.character) && !endboss.isDead() && !endboss.damageProcess) {
-                console.log('character is in melee range of enemy to fuck the minotaur');
                 if (this.keyboard.Q) {
-                    console.log('character hits Minotaur');
                     endboss.reduceHP(30, endboss);
                 }
             }else {
@@ -204,12 +239,12 @@ class World {
         this.addObjectsToMap(this.level.enemies);
         // this.addCollectableObjectsToMap(this.level.axe);
         this.drawObjectInParallaxEffect(this.level.axe);
-        this.drawObjectInParallaxEffect(this.level.coin);
-        this.addMultipleFixedObjectsToMap(this.statusBars);
         this.addThrowableObjectsToMap(this.level.throwableObjects);
+        this.drawObjectInParallaxEffect(this.level.coin);
+        this.addObjectsToMap(this.level.obstacles);
+        this.addMultipleFixedObjectsToMap(this.statusBars);
 
         this.drawObjectInParallaxEffect(this.level.grounds);
-
 
         this.ctx.restore(); 
 
@@ -265,7 +300,7 @@ class World {
         };
 
         movableObject.draw(this.ctx);
-        // movableObject.drawFrame(this.ctx);
+        movableObject.drawFrame(this.ctx);
 
         if (movableObject.otherDirection) {
             this.flipImageBack(movableObject);

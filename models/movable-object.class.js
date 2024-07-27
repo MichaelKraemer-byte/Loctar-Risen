@@ -15,6 +15,9 @@ class MovableObject extends DrawableObject {
     meleeAttackProcess = false;
     meleeRangeToCharacter = false;
     initialSpeed = 0;
+    isStandingOnObstacle = false;
+    walkingAnimation = false;
+    currentPlatformY = 280;
 
 
 
@@ -30,10 +33,10 @@ class MovableObject extends DrawableObject {
         offsetHeight: 0
     };
 
-    isJumping() {
-        return this.speedY > 0;
-    }
 
+    setYOnFloor(obstacle) {
+        this.y = obstacle.y - this.height + this.offset.bottom;
+    }
 
 
     dies(){
@@ -95,6 +98,14 @@ class MovableObject extends DrawableObject {
             this.x + this.offset.left < obj.x + obj.width - obj.offset.right &&  // L zu R
             this.y + this.offset.top < obj.y + obj.height - obj.offset.bottom // B zu T
     };
+
+    isLanding(obj) {
+        // Check if the character's bottom is touching the top of the object
+        return this.x + this.width - this.offset.right > obj.x + obj.offset.left &&  // R zu L
+               this.x + this.offset.left < obj.x + obj.width - obj.offset.right &&  // L zu R
+               this.y + this.height - this.offset.bottom >= obj.y + obj.offset.top && // T zu B
+               this.y + this.height - this.offset.bottom <= obj.y + obj.offset.top + obj.height * 0.1; // T zu B, kleines Delta
+    }
 
     isInMeleeRangeForMinotaur(obj) {
         // Angriffsradius auf der X-Achse und Y-Achse
@@ -165,6 +176,11 @@ class MovableObject extends DrawableObject {
     }
 
 
+    runningagainst(obstacle) {
+        let horizontalOverlap = this.x + this.width - this.offset.right > obstacle.x + obstacle.offset.left &&
+        this.x + this.offset.left < obstacle.x + obstacle.width - obstacle.offset.right;
+        return horizontalOverlap;
+    }
 
 
     resetSpeed(){
@@ -229,24 +245,24 @@ class MovableObject extends DrawableObject {
         this.x += this.speed;
     };
 
+    setYOnFloor(obstacle) {
+        this.y = obstacle.y - this.height + this.offset.bottom;
+    }
 
-    applyGravity(){
-        setInterval(()=> {
-            if (this.isAboveGround() || this instanceof ThrowableObject) {
+    applyGravity() {
+        setInterval(() => {
+            if (this.isStandingOnObstacle) {
+                this.speedY = 0;
+            } else if (this.isAboveGround() || this instanceof ThrowableObject) {
                 this.y -= this.speedY;
                 this.speedY -= this.acceleration;
-            };
+            }
             if (this.y > 280 && !(this instanceof ThrowableObject)) {
                 this.y = 280;
             }
+
         }, 1000 / 25);
-    };
-
-
-    isFalling(){
-        return this.speedY <= 0;
     }
-
 
     isAboveGround(){
         if (this.y < 280 || this.speedY > 0) {
@@ -254,11 +270,33 @@ class MovableObject extends DrawableObject {
         } else {
             return false;
         }
+    };    
+
+    
+    isJumping() {
+        return this.speedY > 0;
+    }
+
+
+    isFalling(){
+        return this.speedY <= 0;
+    }
+
+
+
+
+
+    isOnObstacle(){
+        if (this.isStandingOnObstacle) {
+                return true;
+            } else {
+                return false;
+            }            
     };
 
 
     jump(){
-        this.speedY = 38;
+        this.speedY = 45;
     };
 
     // // Bessere Formel zur Kollisionsberechnung (Genauer)

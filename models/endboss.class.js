@@ -64,12 +64,7 @@ class Endboss extends MovableObject {
         top: 180,
         bottom: 70,
         right: 235,
-        left: 235,
-        
-        offsetX: 0,
-        offsetY: 0,
-        offsetWidth: 0,
-        offsetHeight: 0
+        left: 235
     }
 
 
@@ -87,6 +82,13 @@ class Endboss extends MovableObject {
 
     animate(){
     
+        // DYING Images
+        let dyingIntervall = setInterval(() => {
+            if (this.isDead()) {
+                this.playSingleAnimation(this.dyingImages, dyingIntervall);
+            };
+        }, 1000 /50);
+        
         // // Offset Refresh
         // setInterval(() => {
         //     this.refreshOffset();
@@ -105,10 +107,19 @@ class Endboss extends MovableObject {
 
         // WALK Images
         setInterval(() => {
-            if (!this.meleeAttackProcess && this.HP > 0 && !this.damageProcess && this.speed > 0) {
-                this.playAnimation(this.walkImages);
+            if (!this.meleeAttackProcess && this.HP > 0) {
+                if (!this.damageProcess && this.speed > 0) {
+                    this.playAnimation(this.walkImages);
+                }
             };
         }, 70);
+
+        // set Dead Control: 
+        setInterval (() => {
+            if (this.HP == 0) {
+                this.damageProcess = false;
+            }
+        }, 50);
 
         // HURT Images
         let hurtIntervall = setInterval(() => {
@@ -116,13 +127,6 @@ class Endboss extends MovableObject {
                 this.playSingleAnimation(this.hurtImages, hurtIntervall);
             }
         }, 70);
-
-        // DYING Images
-        let dyingIntervall = setInterval(() => {
-            if (this.HP <= 0) {
-                this.playSingleAnimation(this.dyingImages, dyingIntervall);
-            };
-        }, 100);
 
         // Attack Images
         setInterval(() => {

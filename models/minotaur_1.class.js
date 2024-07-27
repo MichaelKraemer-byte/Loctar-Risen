@@ -135,12 +135,7 @@ class Minotaur_1 extends MovableObject{
         top: 60,
         bottom: 40,
         right: 70,
-        left: 60,
-
-        offsetX: 0,
-        offsetY: 0,
-        offsetWidth: 0,
-        offsetHeight: 0
+        left: 60
     }
     
 
