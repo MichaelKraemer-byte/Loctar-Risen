@@ -24,8 +24,10 @@ class World {
     run(){
         setInterval(()=> {
             this.checkObstacleCollisions();
+        }, 1000 / 24);
+        setInterval(()=> {
             this.checkPlatformCollisions();
-        }, 1000 / 42);
+        }, 1000 / 40);
         setInterval(()=> {
             this.checkIfThrowingObjects();
             this.checkBodyToBodyCollisions();
