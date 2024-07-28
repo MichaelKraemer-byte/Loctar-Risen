@@ -359,8 +359,6 @@ class Character extends MovableObject{
                 }, 300); 
             }
         }, 25);
-
     };
-
 
 }

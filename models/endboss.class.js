@@ -112,7 +112,8 @@ class Endboss extends MovableObject {
                         const distance = Math.abs(this.x - this.world.character.x);
                         if (distance <= 250) {
                             this.objectViewsCharacter = true;
-                            if (this.world.character.x - this.world.character.offset.right >= this.x + this.offset.left) {
+                            this.isWalking = true;
+                            if (this.world.character.x - this.world.character.offset.right >= this.x + this.offset.left && this.characterIsOnHeight()) {
                                 this.walkRight();
                             } else {
                                 this.walkLeft();

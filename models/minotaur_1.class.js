@@ -196,7 +196,7 @@ class Minotaur_1 extends MovableObject{
                     if (distance <= 450) {
                         this.objectViewsCharacter = true;
                         this.isWalking = true;
-                        if (this.world.character.x > this.x) {
+                        if (this.world.character.x > this.x  && this.characterIsOnHeight()) {
                             this.walkRight();
                         } else {
                             this.walkLeft();
@@ -204,7 +204,7 @@ class Minotaur_1 extends MovableObject{
                     } else {
                         // If character is out of range, walk back to initialX
                         this.objectViewsCharacter = false;
-                        if (this.x < this.initialX) {
+                        if (this.x < this.initialX ) {
                             this.walkRight();
                         } else if (this.x > this.initialX) {
                             this.walkLeft();

@@ -33,8 +33,8 @@ class MovableObject extends DrawableObject {
 
     characterIsOnHeight(){
         return this.world.character.bodyBottom == this.bodyBottom || 
-            (this.world.character.bodyBottom + 10 >= this.bodyBottom - 10 && 
-            this.world.character.bodyBottom - 10 <= this.bodyBottom + 10)
+            (this.world.character.bodyBottom + 50 >= this.bodyBottom - 50 && 
+            this.world.character.bodyBottom - 50 <= this.bodyBottom + 50)
     }
 
     setBodyVariables(){
