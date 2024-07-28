@@ -350,7 +350,7 @@ class MovableObject extends DrawableObject {
 
 
     jump(){
-        this.speedY = 45;
+        this.speedY = 38;
     };
 
     // // Bessere Formel zur Kollisionsberechnung (Genauer)

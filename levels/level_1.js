@@ -20,10 +20,9 @@ const level_1 = new Level (
     ],
     [
         new Coin(200, 150),
-        new Coin(500, 150),
-        new Coin(800, 150),
-        new Coin(900, 150),
-        new Coin(1400, 150)
+        new Coin(1650, 80),
+        new Coin(1730, 80),
+        new Coin(1810, 80)
     ],
     [
         new Sky('assets/crafties/forest-backgrounds/forest/PNG/Cartoon_Forest_BG_01/Layers/Sky.png', -720),
@@ -63,13 +62,9 @@ const level_1 = new Level (
     ],
     [
         new Foreground('assets/crafties/forest-backgrounds/forest/PNG/Cartoon_Forest_BG_01/Layers/Foreground.png', -720),
-        new RuinDecor('assets/ruins-tileset/PNG/Environment/Decor_Ruins_01.png', 0),
-
         new Foreground('assets/crafties/forest-backgrounds/forest/PNG/Cartoon_Forest_BG_01/Layers/Foreground.png', 0),
-        new RuinDecor('assets/ruins-tileset/PNG/Environment/Decor_Ruins_01.png', 0),
+        new RuinDecor('assets/ruins-tileset/PNG/Environment/Decor_Ruins_01.png', -30),
         new Foreground('assets/crafties/forest-backgrounds/forest/PNG/Cartoon_Forest_BG_01/Layers/Foreground.png', 720),
-        new RuinDecor('assets/ruins-tileset/PNG/Environment/Decor_Ruins_01.png', 0),
-
         new Foreground('assets/crafties/forest-backgrounds/forest/PNG/Cartoon_Forest_BG_01/Layers/Foreground.png', 1440),
         new Foreground('assets/crafties/forest-backgrounds/forest/PNG/Cartoon_Forest_BG_01/Layers/Foreground.png', 2160),
         new Foreground('assets/crafties/forest-backgrounds/forest/PNG/Cartoon_Forest_BG_01/Layers/Foreground.png', 2880),
@@ -91,10 +86,12 @@ const level_1 = new Level (
         new Ground('assets/crafties/forest-backgrounds/forest/PNG/Cartoon_Forest_BG_01/Layers/Ground.png', 5760)
     ],
     [
-        new ThreeBlockPlatform(600, 180),
-        new ThreeBlockPlatform(900, 80)
+        new OneBlockStepRock(1100, 200),
+        new OneBlockStepRock(1300, 160),
+        new OneBlockStepRock(1450, 160),
+        new ThreeBlockPlatform(1600, 170)
     ],
     [
-        new OneBlockRockObstacle(400, 330)
+        new OneBlockRockObstacle(1000, 325)
     ],
 )

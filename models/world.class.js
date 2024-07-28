@@ -25,7 +25,7 @@ class World {
         setInterval(()=> {
             this.checkObstacleCollisions();
             this.checkPlatformCollisions();
-        }, 1000 / 32);
+        }, 1000 / 42);
         setInterval(()=> {
             this.checkIfThrowingObjects();
             this.checkBodyToBodyCollisions();

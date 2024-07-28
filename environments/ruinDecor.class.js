@@ -1,8 +1,8 @@
-class RuinDecor extends MovableObject {
-    width = 120;
-    height = 280;
+class RuinDecor extends DrawableObject {
+    width = 340;
+    height = 380;
     x = 0;
-    y = 380;
+    y = 70;
 
     constructor(path, x){
         super();
