@@ -89,7 +89,6 @@ class World {
     checkObstacleCollisions() {
         this.level.obstacles.forEach((obstacle) => {
             if (this.character.isColliding(obstacle)) {
-                console.log('ObstacleCollision');
                 // Calculate character and obstacle bounds
                 const charTop = this.character.y + this.character.offset.top;
                 const charBottom = this.character.y + this.character.height - this.character.offset.bottom;
@@ -121,10 +120,10 @@ class World {
                     this.character.y = obstacle.y + obstacle.height - this.character.offset.bottom;
                 } else if (minOverlap === overlapLeft && overlapLeft > 0) {
                     // Prevent movement to the left
-                    this.character.x = obstacle.x - this.character.width + this.character.offset.right + 20;
+                    this.character.x = obstacle.x - this.character.width + this.character.offset.right;
                 } else if (minOverlap === overlapRight && overlapRight > 0) {
                     // Prevent movement to the right
-                    this.character.x = obstacle.x + obstacle.width - this.character.offset.left  + 20;
+                    this.character.x = obstacle.x + obstacle.width - this.character.offset.left;
                 }
             }
         });
@@ -134,8 +133,7 @@ class World {
     checkPlatformCollisions(){
         this.level.platforms.forEach( (platform) => {
 
-            if (this.character.isColliding(platform)) {
-                console.log('PlatformCollision');
+            if (this.character.isColliding(platform) && this.character.bodyBottom <= platform.y) {
                 this.character.isStandingOnObstacle = true;
                 this.character.y = platform.y - this.character.height + this.character.offset.bottom;
             }

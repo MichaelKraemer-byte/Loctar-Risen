@@ -189,13 +189,15 @@ class Minotaur_1 extends MovableObject{
 
         // WALK
         setInterval(() => {
-            if (this.isVisible() && this.HP > 0 && !this.damageProcess && this.speed > 0) {
-                if (this.characterIsOnHeight() && !this.meleeAttackProcess) {
-                    if (this.world.character.x >= this.x) {
-                        this.walkRight();
-                    } else {
-                        this.walkLeft();
-                    }                    
+            if (this.HP > 0 && !this.damageProcess && this.speed > 0) {
+                if (this.characterIsOnHeight() ||this.world.keyboard.SPACE) {
+                    if(!this.meleeAttackProcess) {
+                        if (this.world.character.x >= this.x) {
+                            this.walkRight();
+                        } else {
+                            this.walkLeft();
+                        }     
+                    }               
                 } else {
                     this.speed = 0;
                 }
@@ -208,8 +210,10 @@ class Minotaur_1 extends MovableObject{
         // WALK Images
         setInterval(() => {
             if (!this.meleeAttackProcess && this.HP > 0 && !this.damageProcess) {
-                if (this.speed > 0 && this.characterIsOnHeight()) {
-                    this.playAnimation(this.walkImages);
+                if (this.world.keyboard.SPACE || this.characterIsOnHeight()) {
+                    if (this.speed > 0) {
+                        this.playAnimation(this.walkImages);
+                    }
                 }
             };
         }, 50);

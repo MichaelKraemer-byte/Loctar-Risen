@@ -3,8 +3,8 @@ class OneBlockRockObstacle extends DrawableObject {
     offset = {
         top: -5,
         bottom: 0,
-        right: 0,
-        left: 0
+        right: 10,
+        left: 10
     };
 
     constructor(x, y) {

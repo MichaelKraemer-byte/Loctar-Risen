@@ -72,6 +72,7 @@ class Endboss extends MovableObject {
         super(); //ruft variablen und constructor funktionen auf (MovableObject)
         this.speed = 2 + Math.random() * 0.4;
         this.initialSpeed = this.speed;
+        this.setBodyVariables();
         this.loadImages(this.walkImages);
         this.loadImages(this.hurtImages);
         this.loadImages(this.dyingImages);
@@ -96,13 +97,16 @@ class Endboss extends MovableObject {
 
         // WALK
         setInterval(() => {
-            if (this.isVisible() && this.HP > 0 && !this.damageProcess && this.speed > 0) {
-                if (this.characterIsOnHeight() && !this.meleeAttackProcess) {
-                    if (this.world.character.x - this.world.character.offset.right >= this.x + this.offset.left) {
-                        this.walkRight();
-                    } else {
-                        this.walkLeft();
+            if (this.HP > 0 && !this.damageProcess && this.speed > 0) {
+                if (this.characterIsOnHeight() || this.world.keyboard.SPACE) {
+                    if(!this.meleeAttackProcess) {
+                        if (this.world.character.x - this.world.character.offset.right >= this.x + this.offset.left) {
+                            this.walkRight();
+                        } else {
+                            this.walkLeft();
+                        }                       
                     }
+
                 } else {
                     this.speed = 0;
                 }
@@ -115,9 +119,11 @@ class Endboss extends MovableObject {
 
         // WALK Images
         setInterval(() => {
-            if (!this.meleeAttackProcess && this.HP > 0) {
-                if (!this.damageProcess && this.speed > 0) {
-                    this.playAnimation(this.walkImages);
+            if (!this.meleeAttackProcess && this.HP > 0 && !this.damageProcess) {
+                if (this.world.keyboard.SPACE || this.characterIsOnHeight()) {
+                    if (this.speed > 0) {
+                        this.playAnimation(this.walkImages);
+                    }
                 }
             };
         }, 70);
