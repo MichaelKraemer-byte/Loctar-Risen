@@ -114,6 +114,27 @@ class Minotaur_1 extends MovableObject{
         'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Dying/0_Minotaur_Dying_014.png'
     ];
 
+    idleImages = [
+        'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Idle/0_Minotaur_Idle_000.png',
+        'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Idle/0_Minotaur_Idle_001.png',
+        'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Idle/0_Minotaur_Idle_002.png',
+        'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Idle/0_Minotaur_Idle_003.png',
+        'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Idle/0_Minotaur_Idle_004.png',
+        'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Idle/0_Minotaur_Idle_005.png',
+        'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Idle/0_Minotaur_Idle_006.png',
+        'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Idle/0_Minotaur_Idle_007.png',
+        'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Idle/0_Minotaur_Idle_008.png',
+        'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Idle/0_Minotaur_Idle_009.png',
+        'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Idle/0_Minotaur_Idle_010.png',
+        'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Idle/0_Minotaur_Idle_011.png',
+        'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Idle/0_Minotaur_Idle_012.png',
+        'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Idle/0_Minotaur_Idle_013.png',
+        'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Idle/0_Minotaur_Idle_014.png',
+        'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Idle/0_Minotaur_Idle_015.png',
+        'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Idle/0_Minotaur_Idle_016.png',
+        'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Idle/0_Minotaur_Idle_017.png'
+    ];
+
     meleeAttackImages = [
         'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Slashing/0_Minotaur_Slashing_000.png',
         'assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Slashing/0_Minotaur_Slashing_001.png',
@@ -144,6 +165,8 @@ class Minotaur_1 extends MovableObject{
         this.x = this.spawnPoint();
         this.speed = 2 + Math.random() * 0.4;
         this.initialSpeed = this.speed;
+        this.setBodyVariables();
+        this.loadImages(this.idleImages);
         this.loadImages(this.walkImages);
         this.loadImages(this.hurtImages);
         this.loadImages(this.dyingImages);
@@ -167,10 +190,14 @@ class Minotaur_1 extends MovableObject{
         // WALK
         setInterval(() => {
             if (this.isVisible() && this.HP > 0 && !this.damageProcess && this.speed > 0) {
-                if (this.world.character.x >= this.x) {
-                    this.walkRight();
+                if (this.characterIsOnHeight() && !this.meleeAttackProcess) {
+                    if (this.world.character.x >= this.x) {
+                        this.walkRight();
+                    } else {
+                        this.walkLeft();
+                    }                    
                 } else {
-                    this.walkLeft();
+                    this.speed = 0;
                 }
                 // this.playSound(this.walkSound, 0.02, 1);
         //     } else if (!this.isVisible()) {
@@ -180,11 +207,21 @@ class Minotaur_1 extends MovableObject{
 
         // WALK Images
         setInterval(() => {
-            if (!this.meleeAttackProcess && this.HP > 0 && !this.damageProcess && this.speed > 0) {
-                this.playAnimation(this.walkImages);
+            if (!this.meleeAttackProcess && this.HP > 0 && !this.damageProcess) {
+                if (this.speed > 0 && this.characterIsOnHeight()) {
+                    this.playAnimation(this.walkImages);
+                }
             };
         }, 50);
 
+        // IDLE Images
+        setInterval(() => {
+            if (!this.meleeAttackProcess && this.speed == 0) {
+                if (!this.damageProcess && this.HP > 0) {
+                    this.playAnimation(this.idleImages);
+                }
+            }
+        }, 80);
 
         // HURT Images
         let hurtIntervall = setInterval(() => {
@@ -204,9 +241,9 @@ class Minotaur_1 extends MovableObject{
         
         // Attack Images
         setInterval(() => {
-            if (this.meleeRangeToCharacter && !this.isDead()) {
+            if (this.meleeRangeToCharacter && !this.isDead() && !this.world.character.isDead()) {
                 this.playAnimation(this.meleeAttackImages);
-                this.speed= 0;
+                this.speed = 0;
                 this.meleeAttackProcess = true;
                 setTimeout(() => {
                     this.meleeAttackProcess = false;

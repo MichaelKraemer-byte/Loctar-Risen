@@ -86,7 +86,10 @@ const level_1 = new Level (
         new Ground('assets/crafties/forest-backgrounds/forest/PNG/Cartoon_Forest_BG_01/Layers/Ground.png', 5760)
     ],
     [
-        new ThreeBlockObstacle(600, 180),
-        new ThreeBlockObstacle(900, 80)
-    ]
+        new ThreeBlockPlatform(600, 180),
+        new ThreeBlockPlatform(900, 80)
+    ],
+    [
+        new OneBlockRockObstacle(400, 330)
+    ],
 )

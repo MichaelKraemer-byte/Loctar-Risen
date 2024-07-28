@@ -213,6 +213,7 @@ class Character extends MovableObject{
         super();
         this.speed = 3;
         this.y = 280;
+        this.setBodyVariables();
         this.loadImages(this.idleImages);
         this.loadImages(this.walkImages);
         this.loadImages(this.runImages);

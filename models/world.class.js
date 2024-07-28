@@ -23,6 +23,7 @@ class World {
 
     run(){
         setInterval(()=> {
+            this.checkObstacleCollisions();
             this.checkPlatformCollisions();
         }, 1000 / 32);
         setInterval(()=> {
@@ -30,8 +31,6 @@ class World {
             this.checkBodyToBodyCollisions();
             this.checkThrowableObjectCollision();
             this.removeThrowableObjects();
-        }, 50);
-        setInterval(()=> {
             this.checkMelee();
         }, 1000 / 32);
         setInterval(()=> {
@@ -40,9 +39,57 @@ class World {
     };
 
 
-    checkPlatformCollisions() {
+    setWorld(){
+        this.character.world = this;
+
+        this.level.enemies.forEach(enemy => {
+            enemy.world = this;
+        });
+        this.level.endboss.forEach(endboss => {
+            endboss.world = this;
+        });
+    }
+
+
+    draw(){
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+        this.ctx.save(); 
+
+        this.ctx.translate(this.camera_x, 0);
+
+        this.drawObjectInParallaxEffect(this.level.skies);
+        this.drawObjectInParallaxEffect(this.level.backDecors);
+        this.drawObjectInParallaxEffect(this.level.middleDecors);
+        this.drawObjectInParallaxEffect(this.level.foregrounds);
+
+        this.addObjectsToMap(this.level.obstacles);
+        this.addObjectsToMap(this.level.platforms);
+        this.addToMap(this.character);
+        this.addObjectsToMap(this.level.endboss);
+        this.addObjectsToMap(this.level.enemies);
+        // this.addCollectableObjectsToMap(this.level.axe);
+        this.drawObjectInParallaxEffect(this.level.axe);
+        this.addThrowableObjectsToMap(this.level.throwableObjects);
+        this.drawObjectInParallaxEffect(this.level.coin);
+        this.addMultipleFixedObjectsToMap(this.statusBars);
+
+        this.drawObjectInParallaxEffect(this.level.grounds);
+
+        this.ctx.restore(); 
+
+        let self = this;
+        requestAnimationFrame(function () {
+            self.draw();
+        })
+    }
+
+
+    
+    checkObstacleCollisions() {
         this.level.obstacles.forEach((obstacle) => {
             if (this.character.isColliding(obstacle)) {
+                console.log('ObstacleCollision');
                 // Calculate character and obstacle bounds
                 const charTop = this.character.y + this.character.offset.top;
                 const charBottom = this.character.y + this.character.height - this.character.offset.bottom;
@@ -67,31 +114,49 @@ class World {
                     this.character.isStandingOnObstacle = true;
                     // Prevent upward movement
                     this.character.speedY = 0;
-                    this.character.y = obstacle.y - this.character.height + this.character.offset.bottom;
+                    this.character.y = obstacle.y - this.character.height + this.character.offset.bottom + 10;
                 } else if (minOverlap === overlapBottom && overlapBottom > 0) {
                     // Prevent downward movement
                     this.character.speedY = 0;
                     this.character.y = obstacle.y + obstacle.height - this.character.offset.bottom;
                 } else if (minOverlap === overlapLeft && overlapLeft > 0) {
                     // Prevent movement to the left
-                    this.character.x = obstacle.x - this.character.width + this.character.offset.right;
+                    this.character.x = obstacle.x - this.character.width + this.character.offset.right + 20;
                 } else if (minOverlap === overlapRight && overlapRight > 0) {
                     // Prevent movement to the right
-                    this.character.x = obstacle.x + obstacle.width - this.character.offset.left;
+                    this.character.x = obstacle.x + obstacle.width - this.character.offset.left  + 20;
                 }
             }
         });
     }
 
-    checkFallingFromPlatform(){
-        this.level.obstacles.forEach( (obstacle) => {
 
-            if (!this.character.isColliding(obstacle)) {
-                this.character.isStandingOnObstacle = false;
+    checkPlatformCollisions(){
+        this.level.platforms.forEach( (platform) => {
+
+            if (this.character.isColliding(platform)) {
+                console.log('PlatformCollision');
+                this.character.isStandingOnObstacle = true;
+                this.character.y = platform.y - this.character.height + this.character.offset.bottom;
             }
         })
     }
 
+
+    checkFallingFromPlatform(){
+        this.level.obstacles.forEach( (obstacle) => {
+            if (!this.character.isColliding(obstacle)) {
+                this.character.isStandingOnObstacle = false;
+            }
+        });
+        
+        this.level.platforms.forEach( (platform) => {
+            if (!this.character.isColliding(platform)) {
+                this.character.isStandingOnObstacle = false;
+            }
+        });
+    }
+    
 
     checkBodyToBodyCollisions() {
 
@@ -229,51 +294,6 @@ class World {
                 }
             }
         });
-    }
-
-
-    setWorld(){
-        this.character.world = this;
-
-        this.level.enemies.forEach(enemy => {
-            enemy.world = this;
-        });
-        this.level.endboss.forEach(endboss => {
-            endboss.world = this;
-        });
-    }
-
-
-    draw(){
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-        this.ctx.save(); 
-
-        this.ctx.translate(this.camera_x, 0);
-
-        this.drawObjectInParallaxEffect(this.level.skies);
-        this.drawObjectInParallaxEffect(this.level.backDecors);
-        this.drawObjectInParallaxEffect(this.level.middleDecors);
-        this.drawObjectInParallaxEffect(this.level.foregrounds);
-
-        this.addToMap(this.character);
-        this.addObjectsToMap(this.level.endboss);
-        this.addObjectsToMap(this.level.enemies);
-        // this.addCollectableObjectsToMap(this.level.axe);
-        this.drawObjectInParallaxEffect(this.level.axe);
-        this.addThrowableObjectsToMap(this.level.throwableObjects);
-        this.drawObjectInParallaxEffect(this.level.coin);
-        this.addObjectsToMap(this.level.obstacles);
-        this.addMultipleFixedObjectsToMap(this.statusBars);
-
-        this.drawObjectInParallaxEffect(this.level.grounds);
-
-        this.ctx.restore(); 
-
-        let self = this;
-        requestAnimationFrame(function () {
-            self.draw();
-        })
     }
 
 

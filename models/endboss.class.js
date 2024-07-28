@@ -97,10 +97,14 @@ class Endboss extends MovableObject {
         // WALK
         setInterval(() => {
             if (this.isVisible() && this.HP > 0 && !this.damageProcess && this.speed > 0) {
-                if (this.world.character.x - this.world.character.offset.right >= this.x + this.offset.left) {
-                    this.walkRight();
+                if (this.characterIsOnHeight() && !this.meleeAttackProcess) {
+                    if (this.world.character.x - this.world.character.offset.right >= this.x + this.offset.left) {
+                        this.walkRight();
+                    } else {
+                        this.walkLeft();
+                    }
                 } else {
-                    this.walkLeft();
+                    this.speed = 0;
                 }
         //         this.playSound(this.walkSound, 0.4 , 1);
         //     } else if (!this.isVisible()) {

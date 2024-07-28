@@ -1,5 +1,5 @@
-class ThreeBlockObstacle extends DrawableObject {
-
+class OneBlockRockObstacle extends DrawableObject {
+    
     offset = {
         top: -5,
         bottom: 0,
@@ -9,11 +9,11 @@ class ThreeBlockObstacle extends DrawableObject {
 
     constructor(x, y) {
         super();
-        this.loadImage('assets/created-obstacle/grounds/3-blocks.png');
+        this.loadImage('assets/ruins-tileset/PNG/Environment/Little_Wreckage.png');
         this.x = x;
         this.y = y;
-        this.width = 300;
-        this.height = 70;
+        this.width = 100;
+        this.height = 120;
         this.speed = 0; 
     }
 }

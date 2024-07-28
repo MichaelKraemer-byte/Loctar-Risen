@@ -20,19 +20,26 @@ class MovableObject extends DrawableObject {
     isOnPlatform = false;
     currentPlatformY = 0;
 
-
+    bodyBottom = 280;
 
     offset = {
         top: 0,
         bottom: 0,
         right: 0,
         left: 0,
-
-        offsetX: 0,
-        offsetY: 0,
-        offsetWidth: 0,
-        offsetHeight: 0
     };
+
+    characterIsOnHeight(){
+        return this.world.character.bodyBottom == this.bodyBottom && 
+            this.world.character.bodyBottom + 10 >= this.bodyBottom - 10 && 
+            this.world.character.bodyBottom - 10 <= this.bodyBottom + 10
+    }
+
+    setBodyVariables(){
+        setInterval (()=> {
+            this.bodyBottom = this.y + this.height - this.offset.bottom;
+        }, 100);
+    }
 
 
     setYOnFloor(obstacle) {
