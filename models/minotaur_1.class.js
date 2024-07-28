@@ -163,6 +163,7 @@ class Minotaur_1 extends MovableObject{
     constructor(){
         super(); //ruft variablen und constructor funktionen auf (MovableObject)
         this.x = this.spawnPoint();
+        this.initialX = this.x;
         this.speed = 2 + Math.random() * 0.4;
         this.initialSpeed = this.speed;
         this.setBodyVariables();
@@ -189,41 +190,50 @@ class Minotaur_1 extends MovableObject{
 
         // WALK
         setInterval(() => {
-            if (this.HP > 0 && !this.damageProcess && this.speed > 0) {
-                if (this.characterIsOnHeight() ||this.world.keyboard.SPACE) {
-                    if(!this.meleeAttackProcess) {
-                        if (this.world.character.x >= this.x) {
+            if (this.HP > 0 && !this.damageProcess) {
+                const distance = Math.abs(this.x - this.world.character.x);
+                if (!this.meleeAttackProcess) {
+                    if (distance <= 450) {
+                        this.objectViewsCharacter = true;
+                        this.isWalking = true;
+                        if (this.world.character.x > this.x) {
                             this.walkRight();
                         } else {
                             this.walkLeft();
-                        }     
-                    }               
+                        }
+                    } else {
+                        // If character is out of range, walk back to initialX
+                        this.objectViewsCharacter = false;
+                        if (this.x < this.initialX) {
+                            this.walkRight();
+                        } else if (this.x > this.initialX) {
+                            this.walkLeft();
+                        } else {
+                            // Stop moving when at initialX
+                            this.isWalking = false;
+                            this.speed = 0;
+                            clearInterval(startIdleAnimation);
+                            this.playAnimation(this.idleImages);
+                        }
+                    }
                 } else {
+                    this.isWalking = false;
                     this.speed = 0;
                 }
-                // this.playSound(this.walkSound, 0.02, 1);
-        //     } else if (!this.isVisible()) {
-        //         this.pauseSound(this.walkSound);
             }
-        }, 1000 / 25);
+        }, 1000 / 20);
 
         // WALK Images
         setInterval(() => {
-            if (!this.meleeAttackProcess && this.HP > 0 && !this.damageProcess) {
-                if (this.world.keyboard.SPACE || this.characterIsOnHeight()) {
-                    if (this.speed > 0) {
-                        this.playAnimation(this.walkImages);
-                    }
-                }
-            };
+            if (this.isWalking && this.HP > 0 && !this.damageProcess && !this.meleeAttackProcess) {
+                this.playAnimation(this.walkImages);
+            }
         }, 50);
 
         // IDLE Images
-        setInterval(() => {
-            if (!this.meleeAttackProcess && this.speed == 0) {
-                if (!this.damageProcess && this.HP > 0) {
-                    this.playAnimation(this.idleImages);
-                }
+        let startIdleAnimation = setInterval(() => {
+            if (!this.isWalking && this.HP > 0 && !this.damageProcess && !this.meleeAttackProcess) {
+                this.playAnimation(this.idleImages);
             }
         }, 80);
 

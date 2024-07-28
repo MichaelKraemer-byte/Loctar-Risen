@@ -53,6 +53,19 @@ class Endboss extends MovableObject {
         'assets/trolls/_PNG/2_TROLL/Troll_02_1_ATTACK_009.png'
     ];
 
+    idleImages = [
+        'assets/trolls/_PNG/2_TROLL/Troll_02_1_IDLE_000.png',
+        'assets/trolls/_PNG/2_TROLL/Troll_02_1_IDLE_001.png',
+        'assets/trolls/_PNG/2_TROLL/Troll_02_1_IDLE_002.png',
+        'assets/trolls/_PNG/2_TROLL/Troll_02_1_IDLE_003.png',
+        'assets/trolls/_PNG/2_TROLL/Troll_02_1_IDLE_004.png',
+        'assets/trolls/_PNG/2_TROLL/Troll_02_1_IDLE_005.png',
+        'assets/trolls/_PNG/2_TROLL/Troll_02_1_IDLE_006.png',
+        'assets/trolls/_PNG/2_TROLL/Troll_02_1_IDLE_007.png',
+        'assets/trolls/_PNG/2_TROLL/Troll_02_1_IDLE_008.png',
+        'assets/trolls/_PNG/2_TROLL/Troll_02_1_IDLE_009.png'
+    ];
+
 
     world;
     walkSound = new Audio('assets/audio/walking/walking-on-crunchy-road.wav');
@@ -72,61 +85,75 @@ class Endboss extends MovableObject {
         super(); //ruft variablen und constructor funktionen auf (MovableObject)
         this.speed = 2 + Math.random() * 0.4;
         this.initialSpeed = this.speed;
+        this.initialX = this.x;
         this.setBodyVariables();
         this.loadImages(this.walkImages);
         this.loadImages(this.hurtImages);
         this.loadImages(this.dyingImages);
+        this.loadImages(this.idleImages);
         this.loadImages(this.meleeAttackImages);
         this.animate();
     };
 
 
-    animate(){
-    
+    animate() {
         // DYING Images
-        let dyingIntervall = setInterval(() => {
+        let dyingInterval = setInterval(() => {
             if (this.isDead()) {
-                this.playSingleAnimation(this.dyingImages, dyingIntervall);
-            };
-        }, 1000 /50);
+                this.playSingleAnimation(this.dyingImages, dyingInterval);
+            }
+        }, 1000 / 50);
         
-        // // Offset Refresh
-        // setInterval(() => {
-        //     this.refreshOffset();
-        // }, 1000 / 25);
-
         // WALK
         setInterval(() => {
             if (this.HP > 0 && !this.damageProcess && this.speed > 0) {
                 if (this.characterIsOnHeight() || this.world.keyboard.SPACE) {
-                    if(!this.meleeAttackProcess) {
-                        if (this.world.character.x - this.world.character.offset.right >= this.x + this.offset.left) {
-                            this.walkRight();
+                    if (!this.meleeAttackProcess) {
+                        const distance = Math.abs(this.x - this.world.character.x);
+                        if (distance <= 250) {
+                            this.objectViewsCharacter = true;
+                            if (this.world.character.x - this.world.character.offset.right >= this.x + this.offset.left) {
+                                this.walkRight();
+                            } else {
+                                this.walkLeft();
+                            }
                         } else {
-                            this.walkLeft();
-                        }                       
+                            // If character is out of range, walk back to initialX
+                            this.objectViewsCharacter = false;
+                            if (this.x < this.initialX) {
+                                this.walkRight();
+                            } else if (this.x > this.initialX) {
+                                this.walkLeft();
+                            } else {
+                                // Stop moving when at initialX
+                                this.isWalking = false;
+                                this.speed = 0;
+                                clearInterval(startIdleAnimation);
+                                this.playAnimation(this.idleImages);
+                            }
+                        }
+                    } else {
+                        this.isWalking = false;
+                        this.speed = 0;
                     }
-
-                } else {
-                    this.speed = 0;
                 }
-        //         this.playSound(this.walkSound, 0.4 , 1);
-        //     } else if (!this.isVisible()) {
-        //         this.pauseSound(this.walkSound);
-        //     }
             }
-        }, 1000 / 40);
+        }, 1000 / 60);
 
         // WALK Images
         setInterval(() => {
-            if (!this.meleeAttackProcess && this.HP > 0 && !this.damageProcess) {
-                if (this.world.keyboard.SPACE || this.characterIsOnHeight()) {
-                    if (this.speed > 0) {
-                        this.playAnimation(this.walkImages);
-                    }
-                }
-            };
+            if (this.isWalking && this.HP > 0 && !this.damageProcess && !this.meleeAttackProcess) {
+                this.playAnimation(this.walkImages);
+            }
         }, 70);
+
+        // IDLE Images
+        let startIdleAnimation = setInterval(() => {
+            if (!this.isWalking && this.HP > 0 && !this.damageProcess && !this.meleeAttackProcess) {
+                this.playAnimation(this.idleImages);
+            }
+        }, 80);
+    
 
         // set Dead Control: 
         setInterval (() => {
@@ -144,7 +171,7 @@ class Endboss extends MovableObject {
 
         // Attack Images
         setInterval(() => {
-            if (this.meleeRangeToCharacter && !this.isDead()) {
+            if (this.meleeRangeToCharacter && !this.isDead() && !this.world.character.isDead()) {
                 this.playAnimation(this.meleeAttackImages);
                 this.speed = 0;
                 this.meleeAttackProcess = true;

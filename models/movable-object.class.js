@@ -19,6 +19,8 @@ class MovableObject extends DrawableObject {
     walkingAnimation = false;
     isOnPlatform = false;
     currentPlatformY = 0;
+    objectViewsCharacter = false;
+    isWalking = false;
 
     bodyBottom = 280;
 
@@ -31,8 +33,8 @@ class MovableObject extends DrawableObject {
 
     characterIsOnHeight(){
         return this.world.character.bodyBottom == this.bodyBottom || 
-            this.world.character.bodyBottom + 10 >= this.bodyBottom - 10 && 
-            this.world.character.bodyBottom - 10 <= this.bodyBottom + 10
+            (this.world.character.bodyBottom + 10 >= this.bodyBottom - 10 && 
+            this.world.character.bodyBottom - 10 <= this.bodyBottom + 10)
     }
 
     setBodyVariables(){
@@ -276,14 +278,17 @@ class MovableObject extends DrawableObject {
 
     walkLeft(){
         this.otherDirection = true;
+        this.isWalking = true;
         this.x -= this.speed;
     };
 
 
     walkRight(){
         this.otherDirection = false;
+        this.isWalking = true;
         this.x += this.speed;
     };
+
 
 
     setYOnFloor(obstacle) {

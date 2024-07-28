@@ -1,5 +1,6 @@
 class DrawableObject {
 
+    initialX = 0;
     x = 0;
     y = 280;
     img;
