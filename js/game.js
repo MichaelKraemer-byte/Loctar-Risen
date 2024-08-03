@@ -1,12 +1,25 @@
 let canvas;
 let world;
 let keyboard = new Keyboard();
+let lastTouchLeft = 0;
+let lastTouchRight = 0;
+const container = document.getElementById('container');
+const gameCanvas = document.getElementById('canvas');
 
 function init() {
     canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard);
+    // resizeCanvas();
 }
 
+// function resizeCanvas() {
+//     const canvas = document.getElementById('canvas');
+//     canvas.width = window.innerWidth;
+//     canvas.height = window.innerHeight;
+// }
+
+// window.addEventListener('resize', resizeCanvas);
+// resizeCanvas();
 
 window.addEventListener('keydown', (KeyboardEvent) => {
     switch (KeyboardEvent.code) {
@@ -103,3 +116,225 @@ $('#toggle_fullscreen').on('click', function(){
       $('#canvas').get(0).requestFullscreen();
     }
   });
+
+
+//   const container = document.getElementById('container');
+  
+//   document.getElementById('canvas').addEventListener('mouseover', function() {
+//       container.style.display = 'block';
+//   });
+  
+//   document.getElementById('canvas').addEventListener('mouseout', function() {
+//       container.style.display = 'none';
+//   });
+  
+
+
+// Funktion, um den Fullscreen-Button basierend auf der Bildschirmgröße ein- oder auszublenden
+function updateFullscreenVisibility() {
+    if (window.innerWidth > 720) {
+        container.style.display = 'block'; // Button anzeigen, wenn Bildschirm größer als 720px
+    } else {
+        container.style.display = 'none';  // Button ausblenden, wenn Bildschirm kleiner oder gleich 720px
+    }
+}
+
+// Funktion, um den Container anzuzeigen
+function showContainer() {
+    if (window.innerWidth > 720) {
+        container.style.display = 'block';
+    }
+}
+
+// Funktion, um den Container auszublenden
+function hideContainer() {
+    // Verzögerung hinzufügen, um das Flimmern zu vermeiden
+    setTimeout(() => {
+        if (!container.matches(':hover') && !gameCanvas.matches(':hover')) {
+            container.style.display = 'none';
+        }
+    }, 100);
+}
+
+// Event-Listener für Canvas
+gameCanvas.addEventListener('mouseover', showContainer);
+gameCanvas.addEventListener('mouseout', hideContainer);
+
+// Event-Listener für Container
+container.addEventListener('mouseover', showContainer);
+container.addEventListener('mouseout', hideContainer);
+
+// Event-Listener für Fullscreen-Toggle
+container.addEventListener('click', function() {
+    if (document.fullscreenElement) {
+        document.exitFullscreen();
+    } else {
+        gameCanvas.requestFullscreen();
+    }
+});
+
+// Initiale Überprüfung der Bildschirmgröße
+updateFullscreenVisibility();
+
+// Event-Listener für Fenstergrößenänderung
+window.addEventListener('resize', updateFullscreenVisibility);
+
+
+document.getElementById('touchLeft').addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    const currentTime = new Date().getTime();
+    if (currentTime - lastTouchLeft < 300) {
+        keyboard.SHIFT = true;
+        keyboard.LEFT = true;
+
+    } else {
+        keyboard.LEFT = true;
+        keyboard.SHIFT = false;
+    }
+    lastTouchLeft = currentTime;
+    keyboard.NONE = false;
+});
+
+document.getElementById('touchLeft').addEventListener('touchend', (e) => {
+    e.preventDefault();
+    keyboard.LEFT = false;
+    keyboard.SHIFT = false;
+    keyboard.NONE = true;
+});
+
+document.getElementById('touchRight').addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    const currentTime = new Date().getTime();
+    if (currentTime - lastTouchRight < 300) {
+        keyboard.SHIFT = true;
+        keyboard.RIGHT = true;
+    } else {
+        keyboard.RIGHT = true;
+        keyboard.SHIFT = false;
+    }
+    lastTouchRight = currentTime;
+    keyboard.NONE = false;
+});
+
+document.getElementById('touchRight').addEventListener('touchend', (e) => {
+    e.preventDefault();
+    keyboard.RIGHT = false;
+    keyboard.SHIFT = false;
+    keyboard.NONE = true;
+});
+
+
+// Handle touch start events
+function handleTouchStart(buttonId) {
+    const button = document.getElementById(buttonId);
+    button.style.boxShadow = 'inset 5px 5px 15px rgba(0, 0, 0, 0.5)';
+    button.style.transform = 'scale(0.95)'; // Optional: Simulate a pressed effect
+    button.classList.add('active'); // Optionally add an additional class if needed
+    switch (buttonId) {
+        case 'touchE':
+            keyboard.E = true;
+            keyboard.NONE = false;
+            break;
+        case 'touchQ':
+            keyboard.Q = true;
+            keyboard.NONE = false;
+            break;
+        case 'touchSpace':
+            keyboard.SPACE = true;
+            keyboard.NONE = false;
+            break;
+    }
+}
+
+// Handle touch end and touch cancel events
+function handleTouchEnd(buttonId) {
+    const button = document.getElementById(buttonId);
+    button.style.boxShadow = ''; // Reset the box-shadow
+    button.style.transform = ''; // Reset the transform
+    button.classList.remove('active'); // Optionally remove an additional class if needed
+    switch (buttonId) {
+        case 'touchE':
+            keyboard.E = false;
+            break;
+        case 'touchQ':
+            keyboard.Q = false;
+            break;
+        case 'touchSpace':
+            keyboard.SPACE = false;
+            break;
+    }
+    // Ensure NONE is true if no buttons are active
+    keyboard.NONE = !(keyboard.LEFT || keyboard.RIGHT || keyboard.SPACE || keyboard.UP || keyboard.DOWN || keyboard.SHIFT || keyboard.E || keyboard.Q);
+}
+
+// Add event listeners to buttons
+document.querySelectorAll('.buttonWrapper').forEach(button => {
+    button.addEventListener('touchstart', (e) => {
+        e.preventDefault(); // Prevent default touch action
+        handleTouchStart(button.id);
+    });
+
+    button.addEventListener('touchend', (e) => {
+        e.preventDefault(); // Prevent default touch action
+        handleTouchEnd(button.id);
+    });
+
+    button.addEventListener('touchcancel', (e) => {
+        e.preventDefault(); // Prevent default touch action
+        handleTouchEnd(button.id);
+    });
+});
+
+
+function hideLandingScreen(){
+    let landingScreen = document.getElementById('landingScreen');
+    landingScreen.style.animation = 'fadeOut 0.5s ease-in-out forwards';
+
+    setTimeout(()=> {
+        landingScreen.style.display = 'none';
+    }, 500);
+}
+
+function slideInControls(){
+    let popUp = document.getElementById('popUp');
+    let greyBackground = document.getElementById('greyBackground');
+
+    popUp.innerHTML = renderKeyboardControls();
+    greyBackground.style.display = 'block';
+    greyBackground.style.animation = 'fadeIn 0.5s ease-in-out forwards';
+    popUp.style.animation = 'slideIn 0.5s ease-in-out forwards';
+}
+
+function slideInStory(){
+    let storyPopUp = document.getElementById('storyPopUp');
+    storyPopUp.style.animation = 'slideIn 0.5s ease-in-out forwards';
+}
+
+function closePopUp(){
+    let greyBackground = document.getElementById('greyBackground');
+    let popUp = document.getElementById('popUp');
+
+
+    greyBackground.style.animation = 'fadeOut 0.5s ease-in-out forwards';
+    popUp.style.animation = 'slideOut 0.5s ease-in-out forwards';
+
+    setTimeout(()=> {
+        greyBackground.style.display = 'none';
+        popUp.innerHTML = '';
+    }, 500);
+}
+
+function renderKeyboardControls(){
+    return /*html*/`
+    <div id="controlsPopUp" class="controlsPopUp">
+      <div>
+        <button>Keyboard</button>
+        <button>Tablet / Mobile</button>
+      </div>
+      <!-- Keyboard Controls -->
+      <div class="keyboardControls"></div>
+      <!-- Tablet / Mobile Controls -->
+      <div class="mobileControls"></div>
+    </div>
+    `
+}

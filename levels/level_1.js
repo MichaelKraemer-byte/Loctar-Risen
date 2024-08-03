@@ -87,7 +87,7 @@ const level_1 = new Level (
     ],
     [
         new OneBlockStepRock(1100, 200),
-        new OneBlockStepRock(1300, 160),
+        new OneBlockStepRock(1300, 140),
         new OneBlockStepRock(1450, 160),
         new ThreeBlockPlatform(1600, 170)
     ],

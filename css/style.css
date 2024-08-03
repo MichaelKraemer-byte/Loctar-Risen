@@ -1,3 +1,18 @@
+@font-face {
+    font-family: 'lifecraft';
+    src:    url('../fonts/LifeCraft_Font.ttf') format('truetype'); /* Chrome 4+, Firefox 3.5, Opera 10+, Safari 3—5 */
+} 
+
+@font-face {
+    font-family: 'folkard';
+    src:    url('../fonts/folkard_.ttf') format('truetype'); /* Chrome 4+, Firefox 3.5, Opera 10+, Safari 3—5 */
+} 
+
+@font-face {
+    font-family: 'morpheus';
+    src:    url('../fonts/MORPHEUS.TTF') format('truetype'); /* Chrome 4+, Firefox 3.5, Opera 10+, Safari 3—5 */
+} 
+
 body{
     margin: 0px;
     text-align: center;
@@ -6,15 +21,392 @@ body{
     display: flex;
     flex-direction: column;
     height: 100vh;
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-family: 'lifecraft', Arial, Helvetica, sans-serif;
+    overflow: hidden; 
+    background-image: url('../assets/WebImages/sunnyforestway.jpg');
+    background-position: center;
+    background-size: cover;
+    -webkit-text-stroke-width: 0.4px;
+    -webkit-text-stroke-color: rgb(0, 0, 0);
+}
+
+.title-canvas-container {
+    margin-top: -112px;
+}
+
+#canvasContainer {
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    border: 3.2px solid rgb(4, 30, 5);
+    border-radius: 12px;
+    box-shadow: rgba(255, 255, 255, 0.35) 0px 5px 15px;;
 }
 
 canvas {
     background-color: black;
+    position: relative;
+    border-radius: 8px;
+    
 }
 
-#container{
-    border:1px solid rgb(53, 201, 97);
-    border-radius: .5em;
-    padding:10px;
+#container {
+    position: absolute;
+    z-index: 1;
+    bottom: 10px;
+    right: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    padding: 10px;
+    cursor: pointer;
+    display: none; /* Start hidden */
+}
+
+.title {
+    display: block;
+    font-size: 96px;
+    margin-bottom: 24px;
+    text-align: center;
+    color: rgba(210, 255, 74, 0.902);
+    word-spacing: 24px;
+    letter-spacing: 12px;
+    text-shadow: 3px 4px 3px rgba(0, 0, 0, 0.5);
+}
+
+.fullscreen-icon{
+    margin-top: 6px;
+    width: 32px;
+    height: 32px;
+}
+
+.fullscreen-button-container{
+    height: 40px;
+    width: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.rightTouchButtons {
+    display: none;
+}
+
+.leftTouchButtons{
+    display: none;
+}
+
+.landingScreen {
+    background-image: url(../assets/WebImages/forest-orc-castle.jpg);
+    background-position: center;
+    background-size: cover;
+    height: 100vh;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+}
+
+@media screen and (max-width: 1024px) {
+    body {
+        justify-content: unset;
+        align-items: unset;
+        flex-direction: unset;
+        display: block;
+    }
+
+    .fullscreen-button-container{
+        display: none !important;
+    }
+
+    .title-canvas-container {
+    margin-top: 0px;
+    }
+
+    canvas {
+        transform-origin: 0 0;
+        transform: rotate(90deg) translate(0, -100%);
+        width: 100vh;
+        height: 100vw;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+    #canvasContainer{
+        height: 100vh;
+        width: 100vw;
+        border: 0px;
+    }
+
+    .title {
+        display: none;
+    }
+
+    .leftTouchButtons{
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: 1;
+        display: block;
+    }
+
+    #touchLeft {
+        width: 100vw;
+        height: 12vh;
+        background-color: black;
+        opacity: 0.5;
+        position: relative;
+
+    }
+
+    #touchRight {
+        width: 100vw;
+        height: 24vh;
+        background-color: rgb(118, 118, 118);
+        opacity: 0.5;
+        position: relative;
+    }
+
+
+    .rightTouchButtons {
+        position: absolute;
+        z-index: 1;
+        display: flex;
+        align-items: end;
+        flex-direction: column;
+        gap: 24px;
+        transform-origin: 0 0;
+        transform: rotate(90deg) translate(0, -100%);
+        bottom: 5vw;
+        left: 2vh;
+    }
+
+    .touchQandSpaceContainer{
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 24px;
+    }
+
+    .buttonWrapper {
+        width: 14vw;
+        height: 8vh;
+        position: relative;
+        display: inline-block;
+        border-radius: 40px;
+        border: 1px solid #1e160e; /* Optional border */
+        overflow: hidden; /* Hide overflow to ensure the shadow is visible */
+        transition: box-shadow 0.2s ease;
+    }
+    
+    .buttonWrapper::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;    
+        transform: scale(0.95); /* Optional: Simulate a pressed effect */
+    
+        /* pointer-events: none; Ensure the pseudo-element does not interfere with button clicks */
+    }
+    
+    .joystickButton {
+        width: 100%;
+        height: 100%;
+        display: block;
+        border-radius: 12px;
+    }
+    
+    .buttonWrapper:active::after {
+        box-shadow: inset 5px 5px 15px rgba(0, 0, 0, 0.5);
+    }
+}
+
+.landingHeroContent{
+    display: flex;
+    flex-direction: column;
+    top: 47%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    gap: 80px;
+    opacity: 1;
+
+}
+
+
+.btn-flip {
+    opacity: 1;
+    outline: 0;
+    color: #fff;
+    line-height: 40px;
+    position: relative;
+    text-align: center;
+    letter-spacing: 1px;
+    display: inline-block;
+    text-decoration: none;
+    font-family: 'Open Sans';
+    text-transform: uppercase;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .btn-flip:hover:after {
+    opacity: 1;
+    transform: translateY(0) rotateX(0);
+  }
+  
+  .btn-flip:hover:before {
+    opacity: 0;
+    transform: translateY(50%) rotateX(90deg);
+  }
+  
+  .btn-flip:after {
+    top: 0;
+    left: 0;
+    opacity: 0;
+    width: 100%;
+    color: #323237;
+    display: block;
+    transition: 0.5s;
+    position: absolute;
+    background: rgb(193,235,70);
+    content: attr(data-back);
+    transform: translateY(-50%) rotateX(90deg);
+    font-size: 32px;
+    box-sizing: border-box;
+    padding: 24px;
+    margin: 0px;
+    text-shadow: 1px 1px 6px rgb(34, 255, 0);
+    border-radius: 4px;
+    box-shadow: rgb(222, 255, 121) 0px 0px 15px;
+    font-family: 'morpheus', Arial, Helvetica, sans-serif;
+    letter-spacing: 12px;
+    padding-left: 42px;
+    width: 100%;
+    white-space: nowrap;
+  }
+  
+  .btn-flip:before {
+    top: 0;
+    left: 0;
+    opacity: 1;
+    color: rgb(193,235,70);
+    font-size: 32px;
+    box-sizing: border-box;
+    padding: 24px;
+    text-shadow: 1px 1px 6px rgb(34, 255, 0);
+    margin: 0px;
+    border-radius: 4px;
+    display: block;
+    transition: 0.5s;
+    position: relative;
+    background: rgba(37, 37, 36, 0.473);
+    content: attr(data-front);
+    transform: translateY(0) rotateX(0);
+    box-shadow: rgb(222, 255, 121) 0px 0px 15px;
+    font-family: 'morpheus', Arial, Helvetica, sans-serif;
+    letter-spacing: 16px;
+    width: 100%;
+    text-align: center;
+    padding-left: 42px;
+    white-space: nowrap;
+  }
+
+  .landingTitle{
+    font-size: 160px;
+  }
+
+  .landingPlayButtonContainer{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 80px;
+  }
+
+  .landingButtonsContainer{
+    display: flex;
+    flex-direction: column;
+    gap: 64px;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .controlsPopUp {
+    background-image: url(../assets/WebImages/controllparchment-removebg-preview.png);
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    overflow: hidden;
+    width: 50vw;
+    height: 75vh;
+}
+
+
+#greyBackground{
+    height: 100%;
+    width: 100%;
+    background-color: black;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    display: none;
+}
+
+#popUp {
+    z-index: 3;
+    position: absolute;
+    right: -100%; 
+    top: 50%; 
+    transform: translate(-50%, -50%);
+}
+
+@keyframes slideIn {
+    from {
+        right: -100%; 
+        transform: translateX(-100%) translateY(-50%); 
+    }
+    to {
+        right: 0%;
+        transform: translate(-50%, -50%); 
+    }
+}
+
+
+@keyframes slideOut {
+    from {
+        right: 0%; 
+        transform: translateX(-50%) translateY(-50%); 
+    }
+    to {
+        right: -100%;
+        transform: translate(-100%, -50%); 
+    }
+}
+
+@keyframes fadeOut {
+    from {
+
+        opacity: 0.3;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 0.3;
+    }
 }

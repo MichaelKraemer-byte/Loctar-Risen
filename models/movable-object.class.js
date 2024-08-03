@@ -21,6 +21,7 @@ class MovableObject extends DrawableObject {
     currentPlatformY = 0;
     objectViewsCharacter = false;
     isWalking = false;
+    isAttacking = false;
 
     bodyBottom = 280;
 
@@ -124,7 +125,7 @@ class MovableObject extends DrawableObject {
 
     isInMeleeRangeForMinotaur(obj) {
         // Angriffsradius auf der X-Achse und Y-Achse
-        const attackRangeX = 10; 
+        const attackRangeX = 30; 
         const attackRangeY = 10; 
         
         // Berechne die horizontalen Grenzen des Angriffsradius des Minotaur
@@ -178,8 +179,8 @@ class MovableObject extends DrawableObject {
     
     isInMeleeRangeForCharacter(obj) {
         // Angriffsradius auf der X-Achse und Y-Achse
-        const attackRangeX = 50; 
-        const attackRangeY = 30; 
+        const attackRangeX = 40; 
+        const attackRangeY = 10; 
         
         // Berechne die horizontalen Grenzen des Angriffsradius des Charakters
         const characterLeft = obj.x + obj.offset.left - attackRangeX;
@@ -202,20 +203,21 @@ class MovableObject extends DrawableObject {
     
         return isHorizontalInRange && isVerticalInRange && isOnOrBelow;
     }
-    
 
 
 
-    hitBy(obj){
+    hitBy(obj) {
         if (obj instanceof Minotaur_1) {
-            return this.img.src.includes('assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Slashing/0_Minotaur_Slashing_004.png') ||
-                    this.img.src.includes('assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Slashing/0_Minotaur_Slashing_005.png') ||
-                    this.img.src.includes('assets/crafties/minotaur/Minotaur_1/PNG/PNG Sequences/Slashing/0_Minotaur_Slashing_006.png');            
-        };
+
+            return this.img.src.includes('assets/crafties/minotaur/Minotaur_1/PNG/PNGSequences/Slashing/0_Minotaur_Slashing_004.png') ||
+                   this.img.src.includes('assets/crafties/minotaur/Minotaur_1/PNG/PNGSequences/Slashing/0_Minotaur_Slashing_005.png') ||
+                   this.img.src.includes('assets/crafties/minotaur/Minotaur_1/PNG/PNGSequences/Slashing/0_Minotaur_Slashing_006.png');
+        }
         if (obj instanceof Endboss) {
             return this.img.src.includes('assets/trolls/_PNG/2_TROLL/Troll_02_1_ATTACK_006.png') ||
-                    this.img.src.includes('assets/trolls/_PNG/2_TROLL/Troll_02_1_ATTACK_007.png');
-        };
+                   this.img.src.includes('assets/trolls/_PNG/2_TROLL/Troll_02_1_ATTACK_007.png');
+        }
+        return false;
     }
 
 
@@ -309,7 +311,7 @@ class MovableObject extends DrawableObject {
                     this.y = 280;
                 }   
             }
-        }, 1000 / 25);
+        }, 1000 / 22);
     }
 
     resetSpeedY(){

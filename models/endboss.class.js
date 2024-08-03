@@ -66,6 +66,11 @@ class Endboss extends MovableObject {
         'assets/trolls/_PNG/2_TROLL/Troll_02_1_IDLE_009.png'
     ];
 
+    slashingFrames = [
+        'Troll_02_1_ATTACK_006.png',
+        'Troll_02_1_ATTACK_007.png'
+    ]
+
 
     world;
     walkSound = new Audio('assets/audio/walking/walking-on-crunchy-road.wav');
@@ -143,7 +148,7 @@ class Endboss extends MovableObject {
 
         // WALK Images
         setInterval(() => {
-            if (this.isWalking && this.HP > 0 && !this.damageProcess && !this.meleeAttackProcess) {
+            if (this.isWalking && this.HP > 0 && !this.damageProcess && !this.meleeAttackProcess & !this.world.character.isDead()) {
                 this.playAnimation(this.walkImages);
             }
         }, 70);
@@ -182,5 +187,15 @@ class Endboss extends MovableObject {
                 }, 500); 
             }
         }, 55);
+
+        // Check attack Images
+        setInterval(() => {
+            const currentFrame = this.img.src.split('/').pop(); // Nur der Dateiname
+            if (this.slashingFrames.includes(currentFrame)) {
+                this.isAttacking = true;
+            } else {
+                this.isAttacking = false;
+            }
+        }, 1000 / 32);
     };
 }

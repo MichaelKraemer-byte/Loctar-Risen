@@ -9,17 +9,64 @@
 </head>
 <body onload="init()">
     
-    <h1>Loctar Risen</h1>
+    <div id="landingScreen" class="landingScreen">
+      <div class="landingHeroContent">
+        <h1 class="title landingTitle">Loctar Risen</h1>
+        <div class="landingButtonsContainer">
+          <div class="landingPlayButtonContainer" onclick="hideLandingScreen()">
+            <a href="#" class="btn-flip landingPlayButton" data-back="Let's go" data-front="Play Game"></a>
+          </div>
 
-    <canvas id="canvas" width="720px" height="480px">
+          <div onclick="slideInControls()">
+            <a href="#" class="btn-flip landingSubButtons" data-back="Gameplay" data-front="Controls"></a>
+          </div>
+          <div onclick="slideInStory()">
+            <a href="#" class="btn-flip landingSubButtons" data-back="About" data-front="Story"></a>
+          </div>    
+        </div>      
+      </div>
+    </div>
 
-    </canvas>
+    <div id="greyBackground" onclick="closePopUp()"></div>
 
-    <div id="container">
-      <p>
-        <a href="#" id="toggle_fullscreen">Toggle Fullscreen</a>
-      </p>
-      I will be fullscreen, yay!
+    <div id="popUp">
+    </div>
+
+
+
+    <div id="storyPopUp" class="storyPopUp">
+    </div>
+
+    <div class="title-canvas-container">
+      <h1 id="title" class="title">Loctar Risen</h1>
+
+      <div id="canvasContainer">
+        <section class="leftTouchButtons">
+          <div id="touchLeft"></div>
+          <div id="touchRight"></div>
+        </section>
+
+        <section class="rightTouchButtons">
+          <div class="buttonWrapper" id="touchE">
+              <img class="joystickButton" src="assets/buttons/controller/E.png" alt="E Button">
+          </div>
+          <div class="touchQandSpaceContainer">
+              <div class="buttonWrapper" id="touchQ">
+                  <img class="joystickButton" src="assets/buttons/controller/Q.png" alt="Q Button">
+              </div>
+              <div class="buttonWrapper" id="touchSpace">
+                  <img class="joystickButton" src="assets/buttons/controller/jump.png" alt="Jump Button">
+              </div>
+          </div>
+        </section>
+        <canvas id="canvas" width="720px" height="480px"></canvas>
+        <div class="fullscreen-button-container" id="container">
+          <a href="#">
+            <div id="toggle_fullscreen">
+              <img class="fullscreen-icon" src="assets/touch-screen.png">
+            </div>
+          </a>
+        </div>
     </div>
 
 

@@ -9,7 +9,7 @@ class ThreeBlockPlatform extends DrawableObject {
 
     constructor(x, y) {
         super();
-        this.loadImage('assets/created-obstacle/grounds/3-blocks.png');
+        this.loadImage('./assets/created-obstacle/grounds/3-blocks.png');
         this.x = x;
         this.y = y;
         this.width = 300;
