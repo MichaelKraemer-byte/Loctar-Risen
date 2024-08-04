@@ -60,7 +60,7 @@ canvas {
     border-radius: 50%;
     padding: 10px;
     cursor: pointer;
-    display: none; /* Start hidden */
+    display: none;
 }
 
 .title {
@@ -101,130 +101,11 @@ canvas {
     background-position: center;
     background-size: cover;
     height: 100vh;
-    width: 100%;
+    width: 100vw;
     position: absolute;
     top: 0;
     left: 0;
     z-index: 2;
-}
-
-@media screen and (max-width: 1024px) {
-    body {
-        justify-content: unset;
-        align-items: unset;
-        flex-direction: unset;
-        display: block;
-    }
-
-    .fullscreen-button-container{
-        display: none !important;
-    }
-
-    .title-canvas-container {
-    margin-top: 0px;
-    }
-
-    canvas {
-        transform-origin: 0 0;
-        transform: rotate(90deg) translate(0, -100%);
-        width: 100vh;
-        height: 100vw;
-        position: absolute;
-        top: 0;
-        left: 0;
-    }
-
-    #canvasContainer{
-        height: 100vh;
-        width: 100vw;
-        border: 0px;
-    }
-
-    .title {
-        display: none;
-    }
-
-    .leftTouchButtons{
-        position: absolute;
-        left: 0;
-        top: 0;
-        z-index: 1;
-        display: block;
-    }
-
-    #touchLeft {
-        width: 100vw;
-        height: 12vh;
-        background-color: black;
-        opacity: 0.5;
-        position: relative;
-
-    }
-
-    #touchRight {
-        width: 100vw;
-        height: 24vh;
-        background-color: rgb(118, 118, 118);
-        opacity: 0.5;
-        position: relative;
-    }
-
-
-    .rightTouchButtons {
-        position: absolute;
-        z-index: 1;
-        display: flex;
-        align-items: end;
-        flex-direction: column;
-        gap: 24px;
-        transform-origin: 0 0;
-        transform: rotate(90deg) translate(0, -100%);
-        bottom: 5vw;
-        left: 2vh;
-    }
-
-    .touchQandSpaceContainer{
-        position: relative;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 24px;
-    }
-
-    .buttonWrapper {
-        width: 14vw;
-        height: 8vh;
-        position: relative;
-        display: inline-block;
-        border-radius: 40px;
-        border: 1px solid #1e160e; /* Optional border */
-        overflow: hidden; /* Hide overflow to ensure the shadow is visible */
-        transition: box-shadow 0.2s ease;
-    }
-    
-    .buttonWrapper::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;    
-        transform: scale(0.95); /* Optional: Simulate a pressed effect */
-    
-        /* pointer-events: none; Ensure the pseudo-element does not interfere with button clicks */
-    }
-    
-    .joystickButton {
-        width: 100%;
-        height: 100%;
-        display: block;
-        border-radius: 12px;
-    }
-    
-    .buttonWrapper:active::after {
-        box-shadow: inset 5px 5px 15px rgba(0, 0, 0, 0.5);
-    }
 }
 
 .landingHeroContent{
@@ -238,7 +119,6 @@ canvas {
     opacity: 1;
 
 }
-
 
 .btn-flip {
     opacity: 1;
@@ -262,6 +142,16 @@ canvas {
   }
   
   .btn-flip:hover:before {
+    opacity: 0;
+    transform: translateY(50%) rotateX(90deg);
+  }
+
+  .description-btn-flip:hover:after {
+    opacity: 1;
+    transform: translateY(0) rotateX(0);
+  }
+  
+  .description-btn-flip:hover:before {
     opacity: 0;
     transform: translateY(50%) rotateX(90deg);
   }
@@ -320,13 +210,21 @@ canvas {
 
   .landingTitle{
     font-size: 160px;
+    display: block;
+    margin-bottom: 24px;
+    text-align: center;
+    color: rgba(210, 255, 74, 0.902);
+    word-spacing: 24px;
+    letter-spacing: 12px;
+    text-shadow: 3px 4px 3px rgba(0, 0, 0, 0.5);
   }
 
   .landingPlayButtonContainer{
     display: flex;
     justify-content: center;
-    width: 100%;
     margin-bottom: 80px;
+    background: rgba(37, 37, 36, 0.858);
+
   }
 
   .landingButtonsContainer{
@@ -339,15 +237,32 @@ canvas {
   }
 
   .controlsPopUp {
-    background-image: url(../assets/WebImages/controllparchment-removebg-preview.png);
-    background-position: center;
-    background-size: contain;
-    background-repeat: no-repeat;
-    overflow: hidden;
-    width: 50vw;
+    width: 80vw;
     height: 75vh;
+    display: flex; /* Zentriere den Inhalt des Containers */
+    justify-content: center; /* Horizontale Zentrierung */
+    align-items: center; /* Vertikale Zentrierung */
+    position: relative;
 }
 
+.noticePopUp{
+    width: 80vw;
+    height: 32vh;
+    display: flex; /* Zentriere den Inhalt des Containers */
+    justify-content: center; /* Horizontale Zentrierung */
+    align-items: center; /* Vertikale Zentrierung */
+    position: relative;
+}
+
+.horizontalParchment{
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.adviceSentence{
+    position: absolute;
+}
 
 #greyBackground{
     height: 100%;
@@ -364,31 +279,448 @@ canvas {
 #popUp {
     z-index: 3;
     position: absolute;
-    right: -100%; 
+    right: -100%;
     top: 50%; 
     transform: translate(-50%, -50%);
 }
 
-@keyframes slideIn {
-    from {
-        right: -100%; 
-        transform: translateX(-100%) translateY(-50%); 
+.parchmentTitle{
+    font-size: clamp(32px, 4vw, 64px);
+    font-family: 'Morpheus', Arial, Helvetica, sans-serif;
+    color: #251e16;
+    margin: 0px;
+    width: 60vw;
+    padding-bottom: 16px;
+}
+
+.parchmentText{
+    font-size: clamp(20px, 4vw, 24px);
+    font-family: 'Morpheus', Arial, Helvetica, sans-serif;
+    color: #251e16;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin: 8px;
+    flex-direction: row;
+    gap: 8px;
+    white-space: nowrap;
+}
+
+.parchmentSubtitle{
+    font-size: clamp(20px, 2.6vw, 24px);
+    font-family: 'Morpheus', Arial, Helvetica, sans-serif;
+    color: #251e16;
+    display: flex;
+    margin: 8px;
+    text-align: center;
+}
+
+.explainIntro{
+    width: auto;
+    display: flex;
+    justify-content: start;
+    white-space: nowrap;
+}
+
+.explainAnswer{
+    display: flex;
+    justify-content: end;
+    width: 100%;
+    height: auto;
+}
+
+.verticalParchment{
+    width: 100vw;
+    height: 88vh;
+    position: absolute;
+
+}
+
+.mobileControlDescriptionContainer{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    padding: 0px 16px 0px 16px;
+    margin-top:  -24px;
+}
+
+.mobileControlDescriptionContainer p {
+    margin: 0px;
+}
+
+.mobileWalkExplain-Image{
+    position: relative;
+    width: 50vw;
+    border-radius: 4px;
+    opacity: 0.9;
+    margin-top: 8px;
+    border: 0.8px solid #1e160ea0;
+}
+
+
+@media screen and (max-width: 1024px) {
+    body {
+        justify-content: unset;
+        align-items: unset;
+        flex-direction: unset;
+        display: block;
     }
-    to {
-        right: 0%;
-        transform: translate(-50%, -50%); 
+
+    .fullscreen-button-container{
+        display: none !important;
+    }
+
+    .title-canvas-container {
+    margin-top: 0px;
+    }
+
+    canvas {
+        /* transform-origin: 0 0;
+        transform: rotate(90deg) translate(0, -100%); */
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+    #canvasContainer{
+        height: 100vh;
+        width: 100vw;
+        border: 0px;
+    }
+
+    .title {
+        display: none;
+    }
+
+    .leftTouchButtons{
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: 1;
+        display: block;
+        display: flex;
+    }
+
+    
+    .rightTouchButtons {
+        position: absolute;
+        z-index: 1;
+        display: flex;
+        align-items: end;
+        flex-direction: column;
+        gap: 16px;
+        /* transform-origin: 0 0;
+        transform: rotate(90deg) translate(0, -100%); */
+        bottom: 3vw;
+        right: 4vh;
+        justify-content: end;
+        width: 20%;
+    }
+
+    #touchLeft {
+        width: 12vw;
+        height: 100vh;
+        background-color: black;
+        opacity: 0.6;
+        position: relative;
+        z-index: 3;
+    }
+
+    #touchRight {
+        width: 24vw;
+        height: 100vh;
+        background-color: rgb(217, 217, 217);
+        opacity: 0.5;
+        position: relative;
+        z-index: 3;
+    }
+
+    .touchQandSpaceContainer{
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .buttonWrapper {
+        width: 8vw;
+        height: 14vh;
+        position: relative;
+        display: inline-block;
+        border-radius: 40px;
+        border: 1px solid #1e160e; /* Optional border */
+        overflow: hidden; /* Hide overflow to ensure the shadow is visible */
+        transition: box-shadow 0.2s ease;
+    }
+    
+    .buttonWrapper::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;    
+        transform: scale(0.95); /* Optional: Simulate a pressed effect */
+    
+        /* pointer-events: none; Ensure the pseudo-element does not interfere with button clicks */
+    }
+    
+    .joystickButton {
+        width: 100%;
+        height: 100%;
+        display: block;
+        border-radius: 12px;
+    }
+    
+    .buttonWrapper:active::after {
+        box-shadow: inset 5px 5px 15px rgba(0, 0, 0, 0.5);
+    }
+
+    .landingTitle{
+    font-size: clamp(96px, 3.6vw, 160px);
+    }
+
+    .btn-flip:after,
+    .btn-flip:before {
+    letter-spacing: 8px;
+    padding: 8px 32px 8px 36px;
+    font-size: clamp(20px, 2vw, 32px);
+    }
+
+    .landingPlayButtonContainer{
+    margin-bottom: 16px;
+    }
+
+    .descriptionContainerSecondPage{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        gap: 8px;
+        width: 80%;
+    }
+
+    .mobileSecondDescriptionRow{
+        display: flex;
+        width: 50%;
+    }
+}
+
+/* Querformat Mobile */
+@media screen and (orientation: landscape)  {
+
+    .landingPlayButtonContainer {
+        margin-bottom: 16px;
+        background: rgba(37, 37, 36, 0.858);
+    }
+
+    .landingButtonsContainer {
+        padding-top: 48px;
+        gap: 24px;
+    }
+
+    .landingHeroContent {
+        gap: 12%;
+        flex-direction: row;
+    }
+
+    .noticePopUp{
+        width: 60vw;
+        height: 80vh;
+    }
+
+    .horizontalParchment{
+        width: 88vw;
+        height: 88vh;
+        position: absolute;
+    }
+
+    .parchmentTitle{
+        font-size: clamp(32px, 4vw, 64px);
+        padding-bottom: 4px;
+    }
+    
+    .parchmentText{
+        font-size: clamp(20px, 2vw, 24px);
+    }
+    
+    .mobileControlDescriptionContainer{
+        gap: 16px;
+    }
+    
+    .mobileWalkExplain-Image{
+        width: 24vw;
+    }
+
+    .descriptionContainer{
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        opacity: 1;
+    }
+
+    .descriptionAndImageContainer{
+        display: flex;
+        gap: 24px;
+    }
+
+    .descriptionAndButtonContainer{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 16px;
+        width: 100%;
+        height: 100%;
+    }
+
+    .description-btn-flip:after,
+    .description-btn-flip:before {
+        letter-spacing: 4px;
+        padding: 0px 24px 0px 30px;
+        font-size: 16px;
+        width: fit-content;
+        text-align: center;
+    }
+    
+    .description-btn-flip:after {
+        top: 0;
+        left: 0;
+        opacity: 0.88;
+        color: rgb(0, 0, 0);
+        display: block;
+        transition: 0.5s;
+        position: absolute;
+        background: #625c3d61;
+        content: attr(data-back);
+        transform: translateY(-50%) rotateX(90deg);
+        font-size: 16px;
+        box-sizing: border-box;
+        margin: 0px;
+        border-radius: 4px;
+        border: 0.8px solid rgba(37, 37, 36, 0.815);
+        box-shadow: rgba(33, 33, 33, 0.352) 0px 0px 15px;
+        font-family: 'morpheus', Arial, Helvetica, sans-serif;
+        white-space: nowrap;
+    }
+    
+    .description-btn-flip:before {
+        top: 0;
+        left: 0;
+        transform: translate(-50%, 0%);
+        opacity: 0.88;
+        color: rgb(0, 0, 0);
+        font-size: 16px;
+        box-sizing: border-box;
+        text-shadow: rgb(222, 255, 121) 0px 0px 15px;
+        margin: 0px;
+        border-radius: 4px;
+        display: block;
+        transition: 0.5s;
+        position: absolute;
+        background: #625c3d61;
+        border: 0.8px solid rgba(37, 37, 36, 0.815);
+        box-shadow: rgba(33, 33, 33, 0.352) 0px 0px 15px;
+        content: attr(data-front);
+        transform: translateY(0) rotateX(0);
+        font-family: 'morpheus', Arial, Helvetica, sans-serif;
+        white-space: nowrap;
+    }
+    
+    .mobileWalkExplain-Image {
+        padding: 0px;
+    }
+    
+    .description-btn-flip-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 40px;
+        text-align: center;
+    }
+
+
+    .description-btn-flip {
+        opacity: 1;
+        outline: 0;
+        color: #fff;
+        line-height: 36px;
+        letter-spacing: 1px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        text-decoration: none;
+        text-transform: uppercase;
+        text-align: center;
+        width: 100%;
+        height: 40px;
+        position: relative;
+    }
+
+    .explainImg{
+        width: 40px;
+        height: 40px;
+    }
+
+    .align-center-column {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .explainImgContainer {
+        width: 400px;
+        display: flex;
+        justify-content: end;
+    }
+}
+
+/* Desktop */
+@media screen and (min-width: 1025px) {
+    .landingPlayButtonContainer {
+        margin-bottom: 16px;
+        background: rgba(37, 37, 36, 0.858);
+    }
+
+    .landingButtonsContainer {
+        padding-top: 48px;
+        gap: 48px;
+    }
+
+    .landingHeroContent {
+        gap: 16%;
+        flex-direction: column;
     }
 }
 
 
-@keyframes slideOut {
+@keyframes slideIn {
     from {
-        right: 0%; 
-        transform: translateX(-50%) translateY(-50%); 
+        right: -100%; /* Start außerhalb des Bildschirms auf der rechten Seite */
+        transform: translateY(-50%); /* Vertikale Zentrierung */
     }
     to {
-        right: -100%;
-        transform: translate(-100%, -50%); 
+        right: 50%; /* Positioniere es in der Mitte des Bildschirms */
+        transform: translateX(50%) translateY(-50%); /* Zentriere es sowohl horizontal als auch vertikal */
+    }
+}
+
+@keyframes slideOut {
+    from {
+        right: 50%; /* Start an der zentrierten Position */
+        transform: translateX(50%) translateY(-50%); /* Zentriere es */
+    }
+    to {
+        right: -100%; /* Bewege es nach außerhalb des Bildschirms */
+        transform: translateY(-50%); /* Vertikale Zentrierung */
     }
 }
 
@@ -408,5 +740,24 @@ canvas {
     }
     to {
         opacity: 0.3;
+    }
+}
+
+@keyframes fullFadeOut {
+    from {
+
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes fullFadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
     }
 }

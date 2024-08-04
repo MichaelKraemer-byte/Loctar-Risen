@@ -10,7 +10,7 @@ const level_1 = new Level (
     [
         new Axe(400, 280),
         new Axe(600, 280),
-        new Axe(100, 200),
+        new Axe(1400, 200),
         new Axe(1000, 200),
         new Axe(700, 150),
         new Axe(1200, 280)
@@ -19,7 +19,7 @@ const level_1 = new Level (
         // throwableObjects will  be pushed in here.
     ],
     [
-        new Coin(200, 150),
+        new Coin(820, 150),
         new Coin(1650, 80),
         new Coin(1730, 80),
         new Coin(1810, 80)

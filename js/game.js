@@ -9,17 +9,9 @@ const gameCanvas = document.getElementById('canvas');
 function init() {
     canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard);
-    // resizeCanvas();
 }
 
-// function resizeCanvas() {
-//     const canvas = document.getElementById('canvas');
-//     canvas.width = window.innerWidth;
-//     canvas.height = window.innerHeight;
-// }
 
-// window.addEventListener('resize', resizeCanvas);
-// resizeCanvas();
 
 window.addEventListener('keydown', (KeyboardEvent) => {
     switch (KeyboardEvent.code) {
@@ -283,7 +275,49 @@ document.querySelectorAll('.buttonWrapper').forEach(button => {
         e.preventDefault(); // Prevent default touch action
         handleTouchEnd(button.id);
     });
-});
+})
+
+function startGame(){
+    if (window.innerWidth > 1024) {
+        hideLandingScreen();
+    } 
+    else if (window.innerWidth < 1024 && window.matchMedia("(orientation: landscape)").matches) {
+        hideLandingScreen();
+        // gameCanvas.requestFullscreen();
+    }
+    else if (/Mobi|Android/i.test(navigator.userAgent) || /iPad|Tablet/i.test(navigator.userAgent)) {
+        slideInTurnDeviceNotice();
+        window.addEventListener('resize', disOrEnableOkButton);
+        window.addEventListener('orientationchange', disOrEnableOkButton);
+    }  else if (window.innerWidth < 1024) {
+        slideInTurnDeviceNotice();
+        window.addEventListener('resize', disOrEnableOkButton);
+        window.addEventListener('orientationchange', disOrEnableOkButton);
+    }
+}
+
+function disOrEnableOkButton() {
+    let button = document.getElementById('OkayButton');
+    if (window.matchMedia("(orientation: landscape)").matches) {
+        button.disabled = false;
+    } else {
+        button.disabled = true;
+    }
+}
+
+window.addEventListener('orientationchange', disOrEnableOkButton);
+
+function slideInTurnDeviceNotice() {
+    let popUp = document.getElementById('popUp');
+    let greyBackground = document.getElementById('greyBackground');
+
+    popUp.innerHTML = renderRotateDeviceNotice();
+    greyBackground.style.display = 'block';
+    greyBackground.style.animation = 'fadeIn 0.5s ease-in-out forwards';
+    popUp.style.animation = 'slideIn 0.5s ease-in-out forwards';
+}
+
+
 
 
 function hideLandingScreen(){
@@ -299,7 +333,7 @@ function slideInControls(){
     let popUp = document.getElementById('popUp');
     let greyBackground = document.getElementById('greyBackground');
 
-    popUp.innerHTML = renderKeyboardControls();
+    popUp.innerHTML = renderControls();
     greyBackground.style.display = 'block';
     greyBackground.style.animation = 'fadeIn 0.5s ease-in-out forwards';
     popUp.style.animation = 'slideIn 0.5s ease-in-out forwards';
@@ -324,17 +358,40 @@ function closePopUp(){
     }, 500);
 }
 
-function renderKeyboardControls(){
-    return /*html*/`
-    <div id="controlsPopUp" class="controlsPopUp">
-      <div>
-        <button>Keyboard</button>
-        <button>Tablet / Mobile</button>
-      </div>
-      <!-- Keyboard Controls -->
-      <div class="keyboardControls"></div>
-      <!-- Tablet / Mobile Controls -->
-      <div class="mobileControls"></div>
-    </div>
-    `
+
+function renderControls() {
+    if (/Mobi|Android/i.test(navigator.userAgent) || /iPad|Tablet/i.test(navigator.userAgent) || window.innerWidth < 1024) {
+        if (window.matchMedia("(orientation: landscape)").matches) {
+            return renderHorizontalMobileControls();
+        } else {
+            return renderVerticalMobileControls();
+        }
+      } else {
+        return renderKeyboardControls();
+      }
+}
+
+function showSecondPageHorizontalMobileControls(){
+    let descriptionContainer = document.getElementById('descriptionContainer');
+
+    descriptionContainer.style.animation = 'fullFadeOut 0.3s ease-in-out forwards';
+    setTimeout(()=>{
+
+    descriptionContainer.innerHTML = renderSecondPageHorizontalMobileControls();
+    descriptionContainer.style.animation = 'fullFadeIn 0.3s ease-in-out forwards';
+
+}, 300);
+
+}
+
+function showFirstPageHorizontalMobileControls(){
+    let descriptionContainer = document.getElementById('descriptionContainer');
+
+    descriptionContainer.style.animation = 'fullFadeOut 0.3s ease-in-out forwards';
+    setTimeout(()=>{
+        descriptionContainer.innerHTML = renderFirstPageHorizontalMobileControls();
+        descriptionContainer.style.animation = 'fullFadeIn 0.3s ease-in-out forwards';
+
+    }, 300);
+
 }
