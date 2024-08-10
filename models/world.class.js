@@ -48,9 +48,11 @@ class World {
 
         this.level.enemies.forEach(enemy => {
             enemy.world = this;
+            enemy.gameHasStarted = true;
         });
         this.level.endboss.forEach(endboss => {
             endboss.world = this;
+            endboss.gameHasStarted = true;
         });
     }
 

@@ -48,10 +48,9 @@ canvas {
     background-color: black;
     position: relative;
     border-radius: 8px;
-    
 }
 
-#container {
+#fullscreenContainer {
     position: absolute;
     z-index: 1;
     bottom: 10px;
@@ -981,7 +980,25 @@ canvas {
 
     .storyParagraph{
         font-size: 20px;
+    }
+}
 
+
+@media screen and (min-width: 1025px) and (max-width: 1450px) {
+    .btn-flip:before{
+        font-size: 20px;
+        padding: 16px;
+        padding-left: 36px;
+    }
+
+    .btn-flip:after{
+        font-size: 20px;
+        padding: 16px;
+        padding-left: 36px;
+    }
+
+    .landingTitle{
+        font-size: 120px;
     }
 }
 

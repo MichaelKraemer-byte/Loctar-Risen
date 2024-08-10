@@ -7,7 +7,7 @@
     <link rel="icon" type="image/x-icon" href="assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle/0_Orc_Idle_000.png">
     <title>Loctar Risen</title>
 </head>
-<body onload="init()">
+<body>
     
     <div id="landingScreen" class="landingScreen">
       <div class="landingHeroContent">
@@ -56,7 +56,7 @@
           </div>
         </section>
         <canvas id="canvas" width="720px" height="480px"></canvas>
-        <div class="fullscreen-button-container" id="container">
+        <div class="fullscreen-button-container" id="fullscreenContainer">
           <a href="#">
             <div id="toggle_fullscreen">
               <img class="fullscreen-icon" src="assets/touch-screen.png">
@@ -65,9 +65,11 @@
         </div>
     </div>
 
+    <div id="canvasScripts">
+
+    </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-
     <!-- Object Extender -->
     <script src="./models/drawable-object.class.js"></script>
     <script src="./models/keyboard.class.js"></script>
@@ -111,8 +113,9 @@
 
     <!-- Canvas / World -->
     <script src="./models/world.class.js"></script>
-
+    
     <script src="./js/game.js"></script>
+    <script src="./js/index.js"></script>
     <script src="./js/renderHTML.js"></script>
 
 </body>

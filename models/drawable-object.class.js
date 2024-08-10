@@ -11,6 +11,8 @@ class DrawableObject {
     cooldown = false;
     RECHARGE_TIME = 500;
     currentImageIndex = 0;
+    gameHasStarted = false;
+
 
 
     drawFrame(ctx){

@@ -170,7 +170,7 @@ class Minotaur_1 extends MovableObject{
         super(); //ruft variablen und constructor funktionen auf (MovableObject)
         this.x = this.spawnPoint();
         this.initialX = this.x;
-        this.speed = 2 + Math.random() * 0.4;
+        this.speed = 3 + Math.random() * 0.4;
         this.initialSpeed = this.speed;
         this.setBodyVariables();
         this.loadImages(this.idleImages);
@@ -183,7 +183,7 @@ class Minotaur_1 extends MovableObject{
 
 
     spawnPoint(){
-        return 500 + Math.random() * 1000;
+        return 700 + Math.random() * 1000;
     }
 
 
@@ -196,7 +196,7 @@ class Minotaur_1 extends MovableObject{
 
         // WALK
         setInterval(() => {
-            if (this.HP > 0 && !this.damageProcess) {
+            if (this.HP > 0 && !this.damageProcess && this.gameHasStarted) {
                 const distance = Math.abs(this.x - this.world.character.x);
                 if (!this.meleeAttackProcess) {
                     if (this.world.character.isDead()) {
@@ -205,7 +205,7 @@ class Minotaur_1 extends MovableObject{
                         clearInterval(startIdleAnimation);
                         this.playAnimation(this.idleImages);
                     } else {
-                        if (distance <= 450) {
+                        if (distance <= 450 && this.isVisible()) {
                             this.objectViewsCharacter = true;
                             this.isWalking = true;
                             if (this.world.character.x > this.x  && this.characterIsOnHeight()) {

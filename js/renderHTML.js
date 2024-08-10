@@ -1,3 +1,51 @@
+function setCanvasScripts(){
+    document.getElementById('canvasScripts').innerHTML = /*html*/`
+    <!-- Object Extender -->
+    <script src="./models/drawable-object.class.js"></script>
+    <script src="./models/keyboard.class.js"></script>
+    <script src="./models/movable-object.class.js"></script>
+
+    <!-- Character -->
+    <script src="./models/character.class.js"></script>
+
+    <!-- Enemies -->
+    <script src="./models/minotaur_1.class.js"></script>
+    <script src="./models/endboss.class.js"></script>
+
+    <!-- Collectable Objects -->
+    <script src="./models/throwableObjects.class.js"></script>
+    <script src="./models/axe.class.js"></script>
+    <script src="./models/coin.class.js"></script>
+
+    <!-- Statusbars -->
+    <script src="./statusBars/HPstatusBar.class.js"></script>
+    <script src="./statusBars/axeStatusBar.class.js"></script>
+    <script src="./statusBars/coinStatusBar.class.js"></script>
+
+    <!-- Platforms -->
+     <script src="./platforms/1-BlockRockObstacle.class.js"></script>
+     <script src="./platforms/1-BlockStepRock.class.js"></script>
+     <script src="./platforms/3-BlockPlatform.class.js"></script>
+
+    <!-- Backgrounds -->
+    <script src="./backgrounds/sky.class.js"></script>
+    <script src="./backgrounds/backDecor.class.js"></script>
+    <script src="./backgrounds/middleDecor.class.js"></script>
+    <script src="./backgrounds/foreground.class.js"></script>
+    <script src="./backgrounds/ground.class.js"></script>
+
+    <!-- environments -->
+    <script src="./environments/ruinDecor.class.js"></script>
+
+    <!-- Level -->
+    <script src="./models/level.class.js"></script>
+    <script src="./levels/level_1.js"></script>
+
+    <!-- Canvas / World -->
+    <script src="./models/world.class.js"></script>
+    `
+}
+
 function renderRotateDeviceNotice(){
     return /*html*/`
     <div class="noticePopUp">

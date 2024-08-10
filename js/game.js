@@ -1,16 +1,16 @@
 let canvas;
 let world;
-let keyboard = new Keyboard();
+let keyboard;
+keyboard = new Keyboard();
 let lastTouchLeft = 0;
 let lastTouchRight = 0;
-const container = document.getElementById('container');
+const fullscreenContainer = document.getElementById('fullscreenContainer');
 const gameCanvas = document.getElementById('canvas');
 
 function init() {
     canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard);
 }
-
 
 
 window.addEventListener('keydown', (KeyboardEvent) => {
@@ -125,16 +125,16 @@ $('#toggle_fullscreen').on('click', function(){
 // Funktion, um den Fullscreen-Button basierend auf der Bildschirmgröße ein- oder auszublenden
 function updateFullscreenVisibility() {
     if (window.innerWidth > 720) {
-        container.style.display = 'block'; // Button anzeigen, wenn Bildschirm größer als 720px
+        fullscreenContainer.style.display = 'block'; // Button anzeigen, wenn Bildschirm größer als 720px
     } else {
-        container.style.display = 'none';  // Button ausblenden, wenn Bildschirm kleiner oder gleich 720px
+        fullscreenContainer.style.display = 'none';  // Button ausblenden, wenn Bildschirm kleiner oder gleich 720px
     }
 }
 
 // Funktion, um den Container anzuzeigen
-function showContainer() {
+function showFullScreenContainer() {
     if (window.innerWidth > 720) {
-        container.style.display = 'block';
+        fullscreenContainer.style.display = 'block';
     }
 }
 
@@ -142,22 +142,22 @@ function showContainer() {
 function hideContainer() {
     // Verzögerung hinzufügen, um das Flimmern zu vermeiden
     setTimeout(() => {
-        if (!container.matches(':hover') && !gameCanvas.matches(':hover')) {
-            container.style.display = 'none';
+        if (!fullscreenContainer.matches(':hover') && !gameCanvas.matches(':hover')) {
+            fullscreenContainer.style.display = 'none';
         }
     }, 100);
 }
 
 // Event-Listener für Canvas
-gameCanvas.addEventListener('mouseover', showContainer);
+gameCanvas.addEventListener('mouseover', showFullScreenContainer);
 gameCanvas.addEventListener('mouseout', hideContainer);
 
 // Event-Listener für Container
-container.addEventListener('mouseover', showContainer);
-container.addEventListener('mouseout', hideContainer);
+fullscreenContainer.addEventListener('mouseover', showFullScreenContainer);
+fullscreenContainer.addEventListener('mouseout', hideContainer);
 
 // Event-Listener für Fullscreen-Toggle
-container.addEventListener('click', function() {
+fullscreenContainer.addEventListener('click', function() {
     if (document.fullscreenElement) {
         document.exitFullscreen();
     } else {
@@ -294,6 +294,7 @@ function startGame(){
         window.addEventListener('resize', disOrEnableOkButton);
         window.addEventListener('orientationchange', disOrEnableOkButton);
     }
+    init();
 }
 
 function disOrEnableOkButton() {
@@ -424,5 +425,4 @@ function showFirstPageVerticalMobileControls(){
         descriptionContainer.style.animation = 'fullFadeIn 0.3s ease-in-out forwards';
 
     }, 300);
-
 }

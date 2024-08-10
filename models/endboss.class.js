@@ -111,7 +111,7 @@ class Endboss extends MovableObject {
         
         // WALK
         setInterval(() => {
-            if (this.HP > 0 && !this.damageProcess && this.speed > 0) {
+            if (this.HP > 0 && !this.damageProcess && this.speed > 0 && this.gameHasStarted) {
                 if (this.characterIsOnHeight() || this.world.keyboard.SPACE) {
                     if (!this.meleeAttackProcess) {
                         const distance = Math.abs(this.x - this.world.character.x);

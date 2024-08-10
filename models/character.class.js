@@ -300,13 +300,17 @@ class Character extends MovableObject{
 
         // IDLE Images
         setInterval(() => {
-            if (this.world.keyboard.NONE && !this.world.keyboard.RIGHT && !this.world.keyboard.LEFT && !this.meleeAttackProcess) {
-                if (!this.isAboveGround() || this.isOnObstacle()){
-                    if (!this.damageProcess && this.HP > 0) {
-                        this.playAnimation(this.idleImages);
-                    }
-                }
+            // if (!this.meleeAttackProcess) {
+                // if (this.world.keyboard.NONE && !this.world.keyboard.RIGHT && !this.world.keyboard.LEFT) {
+                    // if (!this.isAboveGround() || this.isOnObstacle()){
+                    // // if (!this.isAboveGround()){
+                    //     if (!this.damageProcess && this.HP > 0) {
+            if (this.world.keyboard.NONE && !this.world.keyboard.RIGHT && !this.world.keyboard.LEFT) {
+                this.playAnimation(this.idleImages);
             }
+                    // }
+                // }                
+            // }
         }, 80);
 
         // JUMP Images
