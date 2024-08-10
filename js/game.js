@@ -340,8 +340,13 @@ function slideInControls(){
 }
 
 function slideInStory(){
-    let storyPopUp = document.getElementById('storyPopUp');
-    storyPopUp.style.animation = 'slideIn 0.5s ease-in-out forwards';
+    let popUp = document.getElementById('popUp');
+    let greyBackground = document.getElementById('greyBackground');
+
+    popUp.innerHTML = renderStory();
+    greyBackground.style.display = 'block';
+    greyBackground.style.animation = 'fadeIn 0.5s ease-in-out forwards';
+    popUp.style.animation = 'slideIn 0.5s ease-in-out forwards';
 }
 
 function closePopUp(){
@@ -371,6 +376,7 @@ function renderControls() {
       }
 }
 
+
 function showSecondPageHorizontalMobileControls(){
     let descriptionContainer = document.getElementById('descriptionContainer');
 
@@ -384,12 +390,37 @@ function showSecondPageHorizontalMobileControls(){
 
 }
 
+
 function showFirstPageHorizontalMobileControls(){
     let descriptionContainer = document.getElementById('descriptionContainer');
 
     descriptionContainer.style.animation = 'fullFadeOut 0.3s ease-in-out forwards';
     setTimeout(()=>{
         descriptionContainer.innerHTML = renderFirstPageHorizontalMobileControls();
+        descriptionContainer.style.animation = 'fullFadeIn 0.3s ease-in-out forwards';
+    }, 300);
+}
+
+
+function showSecondPageVerticalMobileControls(){
+    let descriptionContainer = document.getElementById('descriptionContainer');
+
+    descriptionContainer.style.animation = 'fullFadeOut 0.3s ease-in-out forwards';
+    setTimeout(()=>{
+
+    descriptionContainer.innerHTML = renderSecondPageVerticalMobileControls();
+    descriptionContainer.style.animation = 'fullFadeIn 0.3s ease-in-out forwards';
+
+}, 300);
+
+}
+
+function showFirstPageVerticalMobileControls(){
+    let descriptionContainer = document.getElementById('descriptionContainer');
+
+    descriptionContainer.style.animation = 'fullFadeOut 0.3s ease-in-out forwards';
+    setTimeout(()=>{
+        descriptionContainer.innerHTML = renderFirstPageVerticalMobileControls();
         descriptionContainer.style.animation = 'fullFadeIn 0.3s ease-in-out forwards';
 
     }, 300);
