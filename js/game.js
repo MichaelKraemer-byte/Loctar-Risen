@@ -448,9 +448,26 @@ function slideInSuccessParchment() {
 
 
 function resetGame() {
-    hideLandingScreen();
-    init();
+    // Speichere den aktuellen Zustand im localStorage oder sessionStorage, wenn nötig
+    window.localStorage.setItem('reload', 'true');
+    window.location.reload(); // Seite neu laden
 }
+
+
+function backToMenu(){
+    window.location.reload(); // Seite neu laden
+}
+
+
+function startResettedGame() {
+    if (window.localStorage.getItem('reload') === 'true') {
+        window.localStorage.removeItem('reload'); // Zustand löschen, damit es beim nächsten Mal nicht automatisch passiert
+        startGame();
+    } else {
+        let landingScreen = document.getElementById('landingScreen');
+        landingScreen.innerHTML = renderLandingScreen();
+    }
+};
 
 
 function slideInFailureParchment(){

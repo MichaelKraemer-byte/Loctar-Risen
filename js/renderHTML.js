@@ -270,10 +270,31 @@ function renderFailureParchment() {
         <div class="finisherParchmentContainer">
             <h1 class="finisherTitle lostColor">You have lost!</h1>
             <div class="finishButtonsContainer">
-                <button onclick="closePopUp(); showLandingScreen();" class="okayButton">Menu</button>
+                <button onclick="closePopUp(); backToMenu();" class="okayButton">Menu</button>
                 <button onclick="closePopUp(); resetGame();" class="okayButton">Play again</button>
             </div>
         </div>
     </div>
+    `;
+}
+
+
+function renderLandingScreen(){
+    return /*html*/`
+      <div class="landingHeroContent">
+        <h1 class="landingTitle">Loctar Risen</h1>
+        <div class="landingButtonsContainer">
+          <div class="landingPlayButtonContainer" onclick="startGame()">
+            <a href="#" class="btn-flip landingPlayButton" data-back="Let's go" data-front="Start Game"></a>
+          </div>
+
+          <div onclick="slideInControls()">
+            <a href="#" class="btn-flip landingSubButtons" data-back="Gameplay" data-front="Controls"></a>
+          </div>
+          <div onclick="slideInStory()">
+            <a href="#" class="btn-flip landingSubButtons" data-back="About" data-front="Story"></a>
+          </div>    
+        </div>
+      </div>
     `;
 }

@@ -7,24 +7,9 @@
     <link rel="icon" type="image/x-icon" href="assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle/0_Orc_Idle_000.png">
     <title>Loctar Risen</title>
 </head>
-<body>
+<body onload="startResettedGame()">
     
     <div id="landingScreen" class="landingScreen">
-      <div class="landingHeroContent">
-        <h1 class="landingTitle">Loctar Risen</h1>
-        <div class="landingButtonsContainer">
-          <div class="landingPlayButtonContainer" onclick="startGame()">
-            <a href="#" class="btn-flip landingPlayButton" data-back="Let's go" data-front="Start Game"></a>
-          </div>
-
-          <div onclick="slideInControls()">
-            <a href="#" class="btn-flip landingSubButtons" data-back="Gameplay" data-front="Controls"></a>
-          </div>
-          <div onclick="slideInStory()">
-            <a href="#" class="btn-flip landingSubButtons" data-back="About" data-front="Story"></a>
-          </div>    
-        </div>
-      </div>
     </div>
 
     <div id="greyBackground" onclick="closePopUp()"></div>
