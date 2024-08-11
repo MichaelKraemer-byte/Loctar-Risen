@@ -52,7 +52,7 @@ function renderRotateDeviceNotice(){
         <img class="horizontalParchment" src="./assets/WebImages/controllparchment-horizontal.png">
         <div class="adviceSentence">
             <h1 class="parchmentTitle">Please rotate<br>your device</h1>
-            <button id="OkayButton" disabled onclick="closePopUp(); hideLandingScreen();">OK</button>            
+            <button id="OkayButton" disabled onclick="closePopUp(); hideLandingScreen();" class="okayButton">Okay</button>
         </div>
     </div>
     `
@@ -141,7 +141,7 @@ function renderHorizontalMobileControls(){
         <svg class="crossSVG" onclick="closePopUp()" xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M957.3376 883.0976 586.24 512l371.0976-371.0976c20.1728-20.1728 20.48-53.76 0-74.24-20.6848-20.6848-53.76-20.48-74.24 0L512 437.76 140.9024 66.6624c-20.1728-20.1728-53.76-20.48-74.24 0-20.5824 20.6848-20.48 53.76 0 74.24L437.76 512 66.6624 883.0976c-20.1728 20.1728-20.48 53.76 0 74.24 20.6848 20.6848 53.76 20.48 74.24 0L512 586.24l371.0976 371.0976c20.1728 20.1728 53.76 20.48 74.24 0C978.0224 936.7552 977.8176 903.68 957.3376 883.0976z"/></svg>
         <div class="mobileControlDescriptionContainer">
             <div class="descriptionAndButtonContainer">
-                <div id="descriptionContainer" class="align-center-column">
+                <div id="descriptionContainer" class="centerDescriptionContainer">
                     <h1 class="parchmentTitle">Walking:</h1>
                     <div class="descriptionAndImageContainer">
                         <div class="descriptionContainer">

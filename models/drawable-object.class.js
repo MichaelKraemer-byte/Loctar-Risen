@@ -83,6 +83,18 @@ class DrawableObject {
         }
     }
 
+    playSingleAnimationAndStopAtLatestImage(images) {
+        if (this.currentImage < images.length) {
+            let path = images[this.currentImage];
+            this.img = this.imageCache[path];
+            this.currentImage++;
+        } else {
+            // Behalte das letzte Bild bei, wenn das Ende der Animation erreicht ist
+            let path = images[images.length - 1];
+            this.img = this.imageCache[path];
+        }
+    }
+
 
 
     playSound(audio, volume, audioSpeed){

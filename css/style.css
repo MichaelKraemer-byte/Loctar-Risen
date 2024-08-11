@@ -274,6 +274,11 @@ canvas {
 
 .adviceSentence{
     position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
 }
 
 #greyBackground{
@@ -459,6 +464,28 @@ canvas {
     justify-content: center;
 }
 
+.mobileSecondDescriptionRow{
+    display: flex;
+}
+
+.descriptionContainerSecondPage{
+    gap: 16px;
+    display: flex;
+    flex-direction: column;
+    width: 30vw;
+}
+    
+.okayButton{
+    background: #625c3d61;
+    border: 0.8px solid rgba(37, 37, 36, 0.815);
+    border-radius: 4px;
+    color: rgb(0, 0, 0);
+    font-size: 17px;
+    opacity: 0.88;
+    padding: 8px 16px 8px 16px;
+    font-family: 'morpheus', Arial, Helvetica, sans-serif;
+  }
+
 @media screen and (max-width: 1024px) {
     body {
         justify-content: unset;
@@ -606,12 +633,15 @@ canvas {
     }
 
     .mobileSecondDescriptionRow{
-        display: flex;
         width: 50%;
     }
 }
 
 @media screen and (orientation: portrait)  {
+    .adviceSentence{
+    gap: 0px;
+    }
+
     .landingButtonsContainer{
         gap: 32px;
     }
@@ -726,7 +756,6 @@ canvas {
     }
 
     .mobileSecondDescriptionRow{
-        display: flex;
         width: 100%;
         justify-content: space-between;
     }
@@ -737,7 +766,7 @@ canvas {
         height: 40px;
     }
 
-    .align-center-column {
+    .centerDescriptionContainer {
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -831,6 +860,7 @@ canvas {
         display: flex;
         gap: 24px;
         padding-top: 16px;
+        flex-direction: row;
     }
 
     .descriptionAndButtonContainer{
@@ -933,10 +963,13 @@ canvas {
         height: 40px;
     }
 
-    .align-center-column {
+    .centerDescriptionContainer {
         display: flex;
         flex-direction: column;
         align-items: center;
+        justify-content: center;
+        height: 60vh;
+        gap: 16px;
     }
 
     .explainImgContainer {
@@ -964,7 +997,7 @@ canvas {
     }
 
     .crossSVG{
-        top: 80px;
+        top: 24px;
         right: 24px;
         padding: 16px;
     }

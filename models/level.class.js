@@ -11,10 +11,11 @@ class Level {
     grounds;
     platforms;
     obstacles;
+    treasures;
     xStop = 4800;
 
 
-    constructor(enemies, endboss, axe, throwableObjects, coin, skies, backDecors, middleDecors, foregrounds, grounds, platforms, obstacles) {
+    constructor(enemies, endboss, axe, throwableObjects, coin, skies, backDecors, middleDecors, foregrounds, grounds, platforms, obstacles, treasures) {
         this.enemies = enemies;
         this.endboss = endboss;
         this.axe = axe;
@@ -27,6 +28,7 @@ class Level {
         this.grounds = grounds;
         this.platforms = platforms;
         this.obstacles = obstacles;
+        this.treasures = treasures;
     }
 
 }

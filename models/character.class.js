@@ -103,6 +103,21 @@ class Character extends MovableObject{
         'assets/crafties/orcs/Orc/PNG/PNG Sequences/Walking/0_Orc_Walking_023.png'
     ];
 
+    jumpAndFallImages = [
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Jump Start/0_Orc_Jump Start_000.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Jump Start/0_Orc_Jump Start_001.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Jump Start/0_Orc_Jump Start_002.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Jump Start/0_Orc_Jump Start_003.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Jump Start/0_Orc_Jump Start_004.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Jump Start/0_Orc_Jump Start_005.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Falling Down/0_Orc_Falling Down_000.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Falling Down/0_Orc_Falling Down_001.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Falling Down/0_Orc_Falling Down_002.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Falling Down/0_Orc_Falling Down_003.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Falling Down/0_Orc_Falling Down_004.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Falling Down/0_Orc_Falling Down_005.png'
+    ]
+
     jumpImages = [
         'assets/crafties/orcs/Orc/PNG/PNG Sequences/Jump Start/0_Orc_Jump Start_000.png',
         'assets/crafties/orcs/Orc/PNG/PNG Sequences/Jump Start/0_Orc_Jump Start_001.png',
@@ -223,6 +238,7 @@ class Character extends MovableObject{
         this.loadImages(this.dyingImages);
         this.loadImages(this.throwImages);
         this.loadImages(this.meleeAttackImages);
+        this.loadImages(this.jumpAndFallImages);
         this.applyGravity();
         this.animate();
     };
@@ -265,13 +281,21 @@ class Character extends MovableObject{
             };
             // jump
             if (this.world.keyboard.SPACE && this.HP > 0) {
-                if (this.isStandingOnObstacle || !this.isAboveGround()) {
+                if (!this.isJumping() && !this.isFalling()) {
+                    if (this.isStandingOnObstacle || !this.isAboveGround()) {
+                    this.jump();                        
                     this.isStandingOnObstacle = false;
-                    this.jump();
+                    }
                 }
             };
             this.world.camera_x = -this.x + 20;
         }, 1000 / 60);
+
+        setInterval(()=>{
+            if (this.world.keyboard.SPACE){
+                this.isStandingOnObstacle = false;
+            }
+        }, 12);
 
 
         // Images
@@ -305,27 +329,45 @@ class Character extends MovableObject{
                     // if (!this.isAboveGround() || this.isOnObstacle()){
                     // // if (!this.isAboveGround()){
                     //     if (!this.damageProcess && this.HP > 0) {
-            if (this.world.keyboard.NONE && !this.world.keyboard.RIGHT && !this.world.keyboard.LEFT) {
-                this.playAnimation(this.idleImages);
+            if (this.world.keyboard.NONE && !this.isDead() && !this.world.keyboard.RIGHT && !this.world.keyboard.LEFT && !this.damageProcess) {
+                if (this.speedY == 0) {
+                    this.playAnimation(this.idleImages);
+                    // console.log('idle active');                    
+                }
+
             }
                     // }
                 // }                
             // }
         }, 80);
 
+
         // JUMP Images
         setInterval(() => {
-            if (this.isJumping() && this.world.keyboard.SPACE) {
+            if (this.isJumping()) {
                 if (!this.damageProcess && this.HP > 0 && !this.isStandingOnObstacle) {
-                    this.playAnimation(this.jumpImages);                    
-                }
-            }
-            if (this.isFalling() && this.world.keyboard.SPACE) {
-                if (!this.damageProcess && this.HP > 0 && !this.isStandingOnObstacle) {
-                    this.playAnimation(this.fallImages);                    
+                    this.playSingleAnimationAndStopAtLatestImage(this.jumpImages);
                 }
             }
         }, 70);
+
+        // FALL Images
+        setInterval(()=>{
+            if (this.speedY != 0 && this.isFalling() && this.isAboveGround() && !this.isJumping()) {
+                if (!this.damageProcess && this.HP > 0 && !this.isStandingOnObstacle) {
+                    this.playSingleAnimationAndStopAtLatestImage(this.fallImages);                    
+                }
+            } else if (this.y == 280 || this.isStandingOnObstacle) {
+                if (!this.world.keyboard.SPACE) {
+                    this.speedY = 0;
+                }
+            }             
+        }, 70)
+
+
+        // setInterval = (()=> {
+        //     if
+        // }, 100)
 
         // HURT Images
         setInterval(() => {

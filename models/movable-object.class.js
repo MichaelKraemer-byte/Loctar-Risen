@@ -3,7 +3,7 @@ class MovableObject extends DrawableObject {
     speed = 0.15;
     otherDirection = false;
     speedY = 0;
-    acceleration = 5;
+    acceleration = 3.5;
     HP = 100;
     damageProcess = false;
     damageProcessTime = 300;
@@ -123,10 +123,25 @@ class MovableObject extends DrawableObject {
                this.y + this.height - this.offset.bottom <= obj.y + obj.offset.top + obj.height * 0.1; // T zu B, kleines Delta
     }
 
+    isHorizontalInRange(obj){
+        // Angriffsradius auf der X-Achse und Y-Achse
+        const attackRangeX = 30; 
+        
+        // Berechne die horizontalen Grenzen des Angriffsradius des Minotaur
+        const minotaurLeft = obj.x + obj.offset.left - attackRangeX;
+        const minotaurRight = obj.x + obj.width - obj.offset.right + attackRangeX;
+
+        // Überprüfe, ob der Charakter innerhalb der horizontalen Reichweite ist
+        const isHorizontalInRange = this.x + this.width - this.offset.right > minotaurLeft &&
+                                    this.x + this.offset.left < minotaurRight;
+    
+        return isHorizontalInRange;
+    }
+
     isInMeleeRangeForMinotaur(obj) {
         // Angriffsradius auf der X-Achse und Y-Achse
         const attackRangeX = 30; 
-        const attackRangeY = 10; 
+        const attackRangeY = 5; 
         
         // Berechne die horizontalen Grenzen des Angriffsradius des Minotaur
         const minotaurLeft = obj.x + obj.offset.left - attackRangeX;
@@ -311,8 +326,9 @@ class MovableObject extends DrawableObject {
                     this.y = 280;
                 }   
             }
-        }, 1000 / 22);
+        }, 28); 
     }
+
 
     resetSpeedY(){
         this.speedY = 0;
@@ -335,7 +351,7 @@ class MovableObject extends DrawableObject {
 
 
     isFalling(){
-        return this.speedY <= 0;
+        return this.speedY <= -1;
     }
 
 
@@ -352,7 +368,7 @@ class MovableObject extends DrawableObject {
 
 
     jump(){
-        this.speedY = 38;
+        this.speedY = 35;
     };
 
     // // Bessere Formel zur Kollisionsberechnung (Genauer)

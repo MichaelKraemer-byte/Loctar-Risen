@@ -22,9 +22,12 @@ class World {
 
 
     run(){
+
         setInterval(()=> {
-            this.checkPlatformCollisions();
-        }, 1000 / 200);
+            if (!this.isStandingOnObstacle) {
+                this.checkPlatformCollisions();
+            }
+        }, 10);
         setInterval(()=> {
             this.checkMelee();
         }, 1000 / 32);
@@ -35,13 +38,19 @@ class World {
             this.removeThrowableObjects();
         }, 1000 / 32);
         setInterval(()=> {
-            this.checkFallingFromPlatform();
-        }, 1000 / 100);
+            if (!this.isStandingOnObstacle) {
+                this.checkFallingFromPlatform();
+            }
+        }, 50);     
         setInterval(()=> {
+            if (!this.isStandingOnObstacle) {
             this.checkObstacleCollisions();
-        }, 1000 / 24);
+            }
+        }, 13);
+        let checkTreasureCollision = setInterval(()=> {
+            this.checkTreasureCollision(checkTreasureCollision);
+        }, 1000 / 100);
     };
-
 
     setWorld(){
         this.character.world = this;
@@ -75,9 +84,11 @@ class World {
 
         this.addObjectsToMap(this.level.obstacles);
         this.addObjectsToMap(this.level.platforms);
+        this.addObjectsToMap(this.level.treasures);
 
-        this.addToMap(this.character);
+
         this.addObjectsToMap(this.level.endboss);
+        this.addToMap(this.character);
         this.addObjectsToMap(this.level.enemies);
 
         this.drawObjectInParallaxEffect(this.level.axe);
@@ -95,7 +106,16 @@ class World {
     }
 
 
-    
+    checkTreasureCollision(treasureCollisionInterval){
+        this.level.treasures.forEach((treasure)=>{
+            if (this.character.isColliding(treasure) && this.keyboard.Q) {
+                treasure.img.src = treasure.unlockedImage;
+                clearInterval(treasureCollisionInterval);
+            }
+        })
+    }
+
+
     checkObstacleCollisions() {
         this.level.obstacles.forEach((obstacle) => {
             if (this.character.isColliding(obstacle)) {
@@ -200,6 +220,7 @@ class World {
             }});    
     };
 
+
     checkThrowableObjectCollision(){
         if (this.level.throwableObjects[0] || this.keyboard.E) {
             // throwable object collision
@@ -228,6 +249,7 @@ class World {
             }
     }
 
+
     checkMelee(){
         this.characterMelee();
         this.enemyAndBossMelee();
@@ -235,11 +257,12 @@ class World {
 
     enemyAndBossMelee(){
         this.level.enemies.forEach((enemy) => {
-            if ( !enemy.meleeAttackProcess && this.character.isInMeleeRangeForMinotaur(enemy) && !enemy.isDead() && !enemy.damageProcess) {
+            if (this.character.isHorizontalInRange(enemy)) {
                 enemy.speed = 0;
+            }
+            if ( !enemy.meleeAttackProcess && this.character.isInMeleeRangeForMinotaur(enemy) && !enemy.isDead() && !enemy.damageProcess) {
                 enemy.meleeRangeToCharacter = true;
                 if (enemy.isAttacking) {
-                    console.log('gets damage from minotaur');
                     this.character.reduceHP(5, enemy);
                     this.statusBars[0].setPercentage(this.character.HP);
                 };
@@ -251,10 +274,7 @@ class World {
             if (!endboss.meleeAttackProcess && this.character.isInMeleeRangeForEndboss(endboss) && !endboss.isDead() && !endboss.damageProcess) {
                 endboss.speed = 0;
                 endboss.meleeRangeToCharacter = true;
-
                     if (endboss.isAttacking) {
-                        console.log('gets damage from endboss');
-
                         this.character.reduceHP(10, endboss);
                         this.statusBars[0].setPercentage(this.character.HP);
                     }
@@ -314,6 +334,7 @@ class World {
             this.addObjectsToMap(throwableObjects);
         }
     }
+
 
     drawObjectInParallaxEffect(layer) {
         layer.forEach(bg => {

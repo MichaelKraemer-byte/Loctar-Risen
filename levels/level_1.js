@@ -8,18 +8,18 @@ const level_1 = new Level (
         new Endboss()
     ],
     [
-        new Axe(400, 280),
-        new Axe(600, 280),
-        new Axe(1400, 200),
-        new Axe(1000, 200),
-        new Axe(700, 150),
-        new Axe(1200, 280)
+        new Axe(1200, 310),
+        new Axe(1600, 330),
+        new Axe(1500, 350),
+        new Axe(1300, 320),
+        new Axe(2000, 340),
+        new Axe(2000, 80)
     ],
     [
         // throwableObjects will  be pushed in here.
     ],
     [
-        new Coin(820, 150),
+        new Coin(950, 150),
         new Coin(1650, 80),
         new Coin(1730, 80),
         new Coin(1810, 80)
@@ -89,9 +89,23 @@ const level_1 = new Level (
         new OneBlockStepRock(1100, 200),
         new OneBlockStepRock(1300, 140),
         new OneBlockStepRock(1450, 160),
-        new ThreeBlockPlatform(1600, 170)
+        new ThreeBlockPlatform(1600, 170),
+
+        new OneBlockStepRock(3500, 200),
+        new OneBlockStepRock(3320, 320),
+        new OneBlockStepRock(3500, 380),
+        new OneBlockStepRock(3700, 140),
+
+        new OneBlockStepRock(4250, 160),
+        new OneBlockStepRock(4350, 250),
+        new OneBlockStepRock(4250, 340),
+        new ThreeBlockPlatform(4550, 170)
     ],
     [
-        new OneBlockRockObstacle(1000, 325)
+        new OneBlockRockObstacle(900, 275, 140, 180),
+        new OneBlockRockObstacle(3950, 160, 250, 300)
     ],
+    [
+        new Treasure(4650, 45)
+    ]
 )

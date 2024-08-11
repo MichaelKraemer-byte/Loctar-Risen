@@ -11,7 +11,7 @@ class Axe extends DrawableObject {
 
     constructor(x, y) {
         super();
-        this.loadImage('assets/crafties/orcs/throwable-objects/axe/Axe-1.png');
+        this.loadImage('./assets/crafties/orcs/throwable-objects/axe/Axe-1.png');
         this.x = x;
         this.y = y;
         this.width = 70;
