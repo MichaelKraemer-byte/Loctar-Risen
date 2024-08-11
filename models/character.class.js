@@ -380,6 +380,9 @@ class Character extends MovableObject{
         let dyingIntervall = setInterval(() => {
             if (this.isDead()) {
                 this.playSingleAnimation(this.dyingImages, dyingIntervall);
+                setTimeout(() => {
+                    slideInFailureParchment();
+                }, 1000);
             };
         }, 100);
 

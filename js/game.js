@@ -330,6 +330,14 @@ function hideLandingScreen(){
     }, 500);
 }
 
+
+function showLandingScreen(){
+    let landingScreen = document.getElementById('landingScreen');
+    landingScreen.style.display = 'Block';
+    landingScreen.style.animation = 'fullFadeIn 0.5s ease-in-out forwards';
+}
+
+
 function slideInControls(){
     let popUp = document.getElementById('popUp');
     let greyBackground = document.getElementById('greyBackground');
@@ -340,6 +348,7 @@ function slideInControls(){
     popUp.style.animation = 'slideIn 0.5s ease-in-out forwards';
 }
 
+
 function slideInStory(){
     let popUp = document.getElementById('popUp');
     let greyBackground = document.getElementById('greyBackground');
@@ -349,6 +358,7 @@ function slideInStory(){
     greyBackground.style.animation = 'fadeIn 0.5s ease-in-out forwards';
     popUp.style.animation = 'slideIn 0.5s ease-in-out forwards';
 }
+
 
 function closePopUp(){
     let greyBackground = document.getElementById('greyBackground');
@@ -407,13 +417,11 @@ function showSecondPageVerticalMobileControls(){
     let descriptionContainer = document.getElementById('descriptionContainer');
 
     descriptionContainer.style.animation = 'fullFadeOut 0.3s ease-in-out forwards';
+
     setTimeout(()=>{
-
-    descriptionContainer.innerHTML = renderSecondPageVerticalMobileControls();
-    descriptionContainer.style.animation = 'fullFadeIn 0.3s ease-in-out forwards';
-
-}, 300);
-
+        descriptionContainer.innerHTML = renderSecondPageVerticalMobileControls();
+        descriptionContainer.style.animation = 'fullFadeIn 0.3s ease-in-out forwards';
+    }, 300);
 }
 
 function showFirstPageVerticalMobileControls(){
@@ -425,4 +433,32 @@ function showFirstPageVerticalMobileControls(){
         descriptionContainer.style.animation = 'fullFadeIn 0.3s ease-in-out forwards';
 
     }, 300);
+}
+
+
+function slideInSuccessParchment() {
+    let popUp = document.getElementById('popUp');
+    let greyBackground = document.getElementById('greyBackground');
+
+    popUp.innerHTML = renderSuccessParchment();
+    greyBackground.style.display = 'block';
+    greyBackground.style.animation = 'fadeIn 0.5s ease-in-out forwards';
+    popUp.style.animation = 'slideIn 0.5s ease-in-out forwards';
+}
+
+
+function resetGame() {
+    hideLandingScreen();
+    init();
+}
+
+
+function slideInFailureParchment(){
+    let popUp = document.getElementById('popUp');
+    let greyBackground = document.getElementById('greyBackground');
+
+    popUp.innerHTML = renderFailureParchment();
+    greyBackground.style.display = 'block';
+    greyBackground.style.animation = 'fadeIn 0.5s ease-in-out forwards';
+    popUp.style.animation = 'slideIn 0.5s ease-in-out forwards';
 }

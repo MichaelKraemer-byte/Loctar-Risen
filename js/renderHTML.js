@@ -245,5 +245,35 @@ function renderStory(){
             </div>
         </div>
     </div>
-    `
+    `;
+}
+
+
+function renderSuccessParchment() {
+    return /*html*/`
+    <div class="finisherPopUpContainer">
+        <div class="finisherParchmentContainer">
+            <h1 class="finisherTitle wonTitle">Congratulations!<br>You have succeed!</h1>
+            <div class="finishButtonsContainer">
+                <button onclick="closePopUp(); showLandingScreen();" class="okayButton">Menu</button>
+                <button onclick="closePopUp(); resetGame();" class="okayButton">Play again</button>
+            </div>
+        </div>
+    </div>
+    `;
+}
+
+
+function renderFailureParchment() {
+    return /*html*/`
+    <div class="finisherPopUpContainer">
+        <div class="finisherParchmentContainer">
+            <h1 class="finisherTitle lostColor">You have lost!</h1>
+            <div class="finishButtonsContainer">
+                <button onclick="closePopUp(); showLandingScreen();" class="okayButton">Menu</button>
+                <button onclick="closePopUp(); resetGame();" class="okayButton">Play again</button>
+            </div>
+        </div>
+    </div>
+    `;
 }

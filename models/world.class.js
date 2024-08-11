@@ -110,6 +110,7 @@ class World {
         this.level.treasures.forEach((treasure)=>{
             if (this.character.isColliding(treasure) && this.keyboard.Q) {
                 treasure.img.src = treasure.unlockedImage;
+                slideInSuccessParchment();
                 clearInterval(treasureCollisionInterval);
             }
         })
