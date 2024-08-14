@@ -455,6 +455,7 @@ function resetGame() {
 
 
 function backToMenu(){
+    window.localStorage.setItem('reload', 'false');
     window.location.reload(); // Seite neu laden
 }
 

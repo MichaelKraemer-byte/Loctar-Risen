@@ -73,7 +73,7 @@ class ThrowableObject extends MovableObject {
 
 
     throw() {
-        this.applyGravity();
+        this.applyGravityForThrowableObjects();
         setInterval( () => {
             if (!this.collision) {
                 if (this.otherDirection) {

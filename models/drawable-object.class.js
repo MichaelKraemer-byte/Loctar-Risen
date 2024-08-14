@@ -12,6 +12,8 @@ class DrawableObject {
     RECHARGE_TIME = 500;
     currentImageIndex = 0;
     gameHasStarted = false;
+    world;
+    
 
 
 
@@ -123,5 +125,13 @@ class DrawableObject {
         if (!this.cooldown) {
             this.startCooldown();
         }
+    }
+
+
+    isVisible() {
+        if (this.world) {
+            return this.x + this.width > -this.world.camera_x && this.x < -this.world.camera_x + this.world.canvas.width;
+        }
+        return false;
     }
 }

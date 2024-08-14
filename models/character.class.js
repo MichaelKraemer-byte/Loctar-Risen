@@ -279,30 +279,32 @@ class Character extends MovableObject{
                 //     this.playSound(this.walkSound, 0.35, 1);
                 // }
             };
-            // jump
-            if (this.world.keyboard.SPACE && this.HP > 0) {
-                if (!this.isJumping() && !this.isFalling()) {
-                    if (this.isStandingOnObstacle || !this.isAboveGround()) {
-                    this.jump();                        
-                    this.isStandingOnObstacle = false;
-                    }
-                }
-            };
+
             this.world.camera_x = -this.x + 20;
         }, 1000 / 60);
 
-        setInterval(()=>{
-            if (this.world.keyboard.SPACE){
-                this.isStandingOnObstacle = false;
+        setInterval( () => {
+            // jump
+            if (this.world.keyboard.SPACE && this.HP > 0) {
+                if (this.isStandingOnObstacle) {
+                this.jump();                        
+                }
             }
-        }, 12);
+        }, 1000 / 60);
+
+
+
+
+        setInterval( () => {
+            this.setOnGroundLevel()
+            }, 1000 / 50);
 
 
         // Images
         setInterval(() => {
             // WALK Images
             if (!this.meleeAttackProcess) {
-                if (!this.isAboveGround() || this.isOnObstacle()){
+                if (!this.isAboveGround() || this.isStandingOnObstacle){
                     if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
                         if (!this.damageProcess && !this.world.keyboard.SHIFT && this.HP > 0) {
                             this.playAnimation(this.walkImages);
@@ -312,7 +314,7 @@ class Character extends MovableObject{
 
             // RUN Images
                 if (this.world.keyboard.SHIFT) {
-                    if (!this.isAboveGround() || this.isOnObstacle()){
+                    if (!this.isAboveGround() || this.isStandingOnObstacle){
                         if (this.HP > 0 && !this.damageProcess) {
                             this.playAnimation(this.runImages);
                         }
@@ -353,7 +355,7 @@ class Character extends MovableObject{
 
         // FALL Images
         setInterval(()=>{
-            if (this.speedY != 0 && this.isFalling() && this.isAboveGround() && !this.isJumping()) {
+            if (this.speedY != 0 && this.isFalling() && !this.isJumping()) {
                 if (!this.damageProcess && this.HP > 0 && !this.isStandingOnObstacle) {
                     this.playSingleAnimationAndStopAtLatestImage(this.fallImages);                    
                 }

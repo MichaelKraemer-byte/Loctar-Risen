@@ -3,7 +3,7 @@ class MovableObject extends DrawableObject {
     speed = 0.15;
     otherDirection = false;
     speedY = 0;
-    acceleration = 3.5;
+    acceleration = 4;
     HP = 100;
     damageProcess = false;
     damageProcessTime = 300;
@@ -22,6 +22,7 @@ class MovableObject extends DrawableObject {
     objectViewsCharacter = false;
     isWalking = false;
     isAttacking = false;
+    currentGround;
 
     bodyBottom = 280;
 
@@ -115,13 +116,6 @@ class MovableObject extends DrawableObject {
                this.x + this.offset.left < obj.x + obj.width - obj.offset.right  // L zu R
     }
 
-    isLanding(obj) {
-        // Check if the character's bottom is touching the top of the object
-        return this.x + this.width - this.offset.right > obj.x + obj.offset.left &&  // R zu L
-               this.x + this.offset.left < obj.x + obj.width - obj.offset.right &&  // L zu R
-               this.y + this.height - this.offset.bottom >= obj.y + obj.offset.top && // T zu B
-               this.y + this.height - this.offset.bottom <= obj.y + obj.offset.top + obj.height * 0.1; // T zu B, kleines Delta
-    }
 
     isHorizontalInRange(obj){
         // Angriffsradius auf der X-Achse und Y-Achse
@@ -307,7 +301,6 @@ class MovableObject extends DrawableObject {
     };
 
 
-
     setYOnFloor(obstacle) {
         this.y = obstacle.y - this.height + this.offset.bottom;
     }
@@ -315,34 +308,37 @@ class MovableObject extends DrawableObject {
 
     applyGravity() {
         setInterval(() => {
-            if (this.isStandingOnObstacle) {
-                this.resetSpeedY();
-            } else if (!this.isStandingOnObstacle) {
-                if (this.isAboveGround() || this instanceof ThrowableObject) {
-                    this.y -= this.speedY;
-                    this.speedY -= this.acceleration;
-                }
-                if (this.y > 280 && !(this instanceof ThrowableObject)) {
-                    this.y = 280;
-                }   
+            if (this.isAboveGround()  && !this.isStandingOnObstacle) {
+                this.y -= this.speedY;
+                this.speedY -= this.acceleration;
             }
         }, 28); 
     }
 
 
-    resetSpeedY(){
-        this.speedY = 0;
+    applyGravityForThrowableObjects() {
+        setInterval(() => {
+            this.y -= this.speedY;
+            this.speedY -= this.acceleration;
+        }, 28); 
     }
 
 
-
     isAboveGround(){
-        if (this.y < 280 || this.speedY > 0) {
+        if (this.speedY > 0 && !this.isStandingOnObstacle) {
             return true;
-        } else {
+        } else if (this.y < 280) {
+            return true; 
+        }
+         else {
             return false;
         }
     };    
+
+
+    resetSpeedY(){
+        this.speedY = 0;
+    }
 
     
     isJumping() {
@@ -355,20 +351,19 @@ class MovableObject extends DrawableObject {
     }
 
 
-
-
-
-    isOnObstacle(){
-        if (this.isStandingOnObstacle) {
-                return true;
-            } else {
-                return false;
-            }            
-    };
+    setOnGroundLevel(){
+        if (this.y >= 280) {
+            this.y = 280;
+            this.speedY = 0;
+            this.isStandingOnObstacle = true;
+        }   
+    }
 
 
     jump(){
-        this.speedY = 35;
+        this.speedY = 37;
+        this.isStandingOnObstacle = false;
+        this.characterNewYSetted = false;
     };
 
     // // Bessere Formel zur Kollisionsberechnung (Genauer)
@@ -380,12 +375,7 @@ class MovableObject extends DrawableObject {
     //         obj.onCollisionCourse; // Optional: hiermit könnten wir schauen, ob ein Objekt sich in die richtige Richtung bewegt. Nur dann kollidieren wir. Nützlich bei Gegenständen, auf denen man stehen kann.
     // }
 
-    isVisible() {
-        if (this.world) {
-            return this.x + this.width > -this.world.camera_x && this.x < -this.world.camera_x + this.world.canvas.width;
-        }
-        return false;
-    }
+
 
 
     run(){

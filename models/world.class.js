@@ -10,6 +10,8 @@ class World {
     ctx;
     keyboard;
     camera_x = 0;
+    currentGround;
+    characterNewYSetted = false;
 
     constructor(canvas, keyboard){
         this.ctx = canvas.getContext('2d');
@@ -23,11 +25,28 @@ class World {
 
     run(){
 
-        setInterval(()=> {
-            if (!this.isStandingOnObstacle) {
+        setInterval( () => {
+            if (this.currentGround) {
+            if (!this.isStandingOnObstacle && !this.character.speedY == 0) {
                 this.checkPlatformCollisions();
             }
-        }, 10);
+        }
+        }, 1000  / 150);
+
+        setInterval( () => {
+            if (this.currentGround) {
+            if (!this.isStandingOnObstacle && !this.character.speedY == 0) {
+                this.checkPlatformCollisions2();
+            }
+        }
+        }, 1000  / 150);
+        
+        setInterval( () => {
+            this.checkPlatformLanding();
+        }, 1000  / 150);
+
+
+
         setInterval(()=> {
             this.checkMelee();
         }, 1000 / 32);
@@ -37,11 +56,21 @@ class World {
             this.checkThrowableObjectCollision();
             this.removeThrowableObjects();
         }, 1000 / 32);
+        // setInterval(()=> {
+        //     this.checkFallingFromPlatform();
+            
+        // }, 100);     
+            setInterval(()=> {
+                if (!this.isStandingOnObstacle) {
+
+                this.defineCurrentGround();
+                }
+            }, 1000 / 100);               
+
         setInterval(()=> {
-            if (!this.isStandingOnObstacle) {
-                this.checkFallingFromPlatform();
-            }
-        }, 50);     
+            this.checkFallingFromPlatform3();
+            
+        }, 100);   
         setInterval(()=> {
             if (!this.isStandingOnObstacle) {
             this.checkObstacleCollisions();
@@ -62,6 +91,14 @@ class World {
         this.level.endboss.forEach(endboss => {
             endboss.world = this;
             endboss.gameHasStarted = true;
+        });
+        this.level.obstacles.forEach(obstaclesplatforms => {
+            obstaclesplatforms.world = this;
+            obstaclesplatforms.gameHasStarted = true;
+        });
+        this.level.platforms.forEach(platforms => {
+            platforms.world = this;
+            platforms.gameHasStarted = true;
         });
     }
 
@@ -156,35 +193,142 @@ class World {
                     // Prevent movement to the right
                     this.character.x = obstacle.x + obstacle.width - this.character.offset.left;
                 }
-            }
+            } 
         });
     }
 
+
+    // checkPlatformCollisions(){
+    //     this.level.platforms.forEach( (platform) => {
+
+    //         if (this.character.isColliding(platform) && this.character.bodyBottom <= platform.y) {
+    //             this.character.isStandingOnObstacle = true;
+    //             this.character.speedY = 0;
+    //             this.character.y = platform.y - this.character.height + this.character.offset.bottom;
+    //         } 
+    //     })
+    // }
 
     checkPlatformCollisions(){
-        this.level.platforms.forEach( (platform) => {
+        // let startTime = Date.now();
 
-            if (this.character.isColliding(platform) && this.character.bodyBottom <= platform.y) {
+
+            if (!this.character.isStandingOnObstacle &&
+                this.character.isColliding(this.currentGround) && 
+                this.character.bodyBottom <= this.currentGround.y) {
                 this.character.isStandingOnObstacle = true;
-                this.character.y = platform.y - this.character.height + this.character.offset.bottom;
-            }
-        })
+                // let currentTime = Date.now();
+                // this.character.y = this.currentGround.y - this.character.height + this.character.offset.bottom;
+                if (!this.characterNewYSetted) {
+                    console.log('characterNewYSetted');
+                    this.character.y = this.currentGround.y - this.character.height + this.character.offset.bottom; // MY FUNCTION that i want to stop and start
+                    setTimeout(()=>{
+                        this.characterNewYSetted = true;
+                    }, 500);
+                }
+
+            } 
     }
 
+    checkPlatformCollisions2(){
 
-    checkFallingFromPlatform(){
-        this.level.obstacles.forEach( (obstacle) => {
-            if (!this.character.isColliding(obstacle)) {
-                this.character.isStandingOnObstacle = false;
+        if (!this.character.isStandingOnObstacle &&
+            this.character.isColliding(this.currentGround) && 
+            this.character.bodyBottom <= this.currentGround.y + 25) {
+            this.character.isStandingOnObstacle = true;
+
+            // this.character.y = this.currentGround.y - this.character.height + this.character.offset.bottom;
+            if (!this.characterNewYSetted) {
+                console.log('characterNewYSetted');
+                this.character.y = this.currentGround.y - this.character.height + this.character.offset.bottom  - 25; // MY FUNCTION that i want to stop and start
+                setTimeout(()=>{
+                    this.characterNewYSetted = true;
+                }, 500);
             }
-        });
+        } 
+}
+
+checkPlatformLanding(){
+    // let startTime = Date.now();
+
+
+        if (this.character.isStandingOnObstacle &&
+            this.character.isColliding(this.currentGround) && 
+            this.character.bodyBottom <= this.currentGround.y) {
+
+            this.character.speedY = 0;
+            this.character.y = this.currentGround.y - this.character.height + this.character.offset.bottom; // MY FUNCTION that i want to stop and start
+            // let currentTime = Date.now();
+            // this.character.y = this.currentGround.y - this.character.height + this.character.offset.bottom;
+            // if (!this.characterNewYSetted) {
+            //     console.log('characterNewYSetted');
+            //     this.character.y = this.currentGround.y - this.character.height + this.character.offset.bottom; // MY FUNCTION that i want to stop and start
+            //     setTimeout(()=>{
+            //         this.characterNewYSetted = true;
+            //     }, 500);
+            // }
+        } 
+}
+
+//     checkPlatformCollisions2(){
+
+//         if (this.character.isLanding(this.currentGround)) {
+//             this.character.isStandingOnObstacle = true;
+//             this.character.speedY = 0;
+//             this.character.y = this.currentGround.y - this.character.height + this.character.offset.bottom;
+//         } 
+// }
+
+    // checkFallingFromPlatform(){
+
+
+    //     if (!this.character.isAboveGround() && this.character.isJumping()) {
+    //         if (!this.character.isAboveGround() && this.character.isFalling()) {
+    //             this.character.isStandingOnObstacle = false;
+    //         }
+    //     }
+    //     ///      es muss           this.character.isStandingOnObstacle = false;    auch dann sein, wenn man gerade auf eine platform war UND nicht springt oder faellt...
+    //     /// wie messen?
+    // }
+
+// setTimeout? oder langsameres Intervall!! 
+        defineCurrentGround(){
+            this.level.obstacles.forEach( (obstacle) => {
+                if (obstacle.isVisible() && this.character.isColliding(obstacle)) {
+                    this.currentGround = obstacle;
+                }
+            });
+
+            this.level.platforms.forEach( (platform) => {
+                if (platform.isVisible() && this.character.isColliding(platform)) {
+                    this.currentGround = platform;
+                }
+            });
         
-        this.level.platforms.forEach( (platform) => {
-            if (!this.character.isColliding(platform)) {
-                this.character.isStandingOnObstacle = false;
-            }
-        });
+        // this.level.platforms.forEach( (platform) => {
+        //     if (!this.character.isColliding(platform)) {
+        //         this.character.isStandingOnObstacle = false;
+        //     }
+        // });
     }
+
+    checkFallingFromPlatform3(){
+        if (this.character.isStandingOnObstacle && this.currentGround && !this.character.isColliding(this.currentGround)) {
+            if (!this.keyboard.SPACE) {
+                this.character.isStandingOnObstacle = false;
+                if (this.characterNewYSetted) {
+                    this.characterNewYSetted = false;
+                }                
+            }
+
+        }
+        // this.level.platforms.forEach( (platform) => {
+        //     if (!this.character.isColliding(platform)) {
+        //         this.character.isStandingOnObstacle = false;
+        //     }
+        // });
+    }
+
     
 
     checkBodyToBodyCollisions() {

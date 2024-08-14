@@ -168,12 +168,12 @@ class Endboss extends MovableObject {
             }
         }, 50);
 
-        // // HURT Images
-        // let hurtIntervall = setInterval(() => {
-        //     if (this.damageProcess && this.HP > 0) {
-        //         this.playSingleAnimation(this.hurtImages, hurtIntervall);
-        //     }
-        // }, 70);
+        // HURT Images
+        let hurtIntervall = setInterval(() => {
+            if (this.damageProcess && this.HP > 0) {
+                this.playSingleAnimationAndStopAtLatestImage(this.hurtImages, hurtIntervall);
+            }
+        }, 70);
 
         // Attack Images
         setInterval(() => {
@@ -184,7 +184,7 @@ class Endboss extends MovableObject {
                 setTimeout(() => {
                     this.meleeAttackProcess = false;
                     this.meleeRangeToCharacter = false;
-                }, 500); 
+                }, 500);
             }
         }, 55);
 
