@@ -222,6 +222,11 @@ class Character extends MovableObject{
         right: 90,
         left: 80
     };
+    gravityInterval = false;
+    jumpingProcess = false;
+
+    jumpingProcessInterval = false;
+
 
 
     constructor(){
@@ -239,7 +244,8 @@ class Character extends MovableObject{
         this.loadImages(this.throwImages);
         this.loadImages(this.meleeAttackImages);
         this.loadImages(this.jumpAndFallImages);
-        this.applyGravity();
+        this.monitorJumpingProcessConditions()
+        this.monitorGravityConditions();
         this.animate();
     };
 
@@ -247,6 +253,7 @@ class Character extends MovableObject{
 
 
     animate(){
+        
 
         // Moving & Sound
         setInterval(() => {
@@ -287,18 +294,51 @@ class Character extends MovableObject{
             // jump
             if (this.world.keyboard.SPACE && this.HP > 0) {
                 if (this.isStandingOnObstacle) {
-                this.jump();                        
+                this.jump();
                 }
             }
-        }, 1000 / 60);
+        }, 1000 / 200);
 
 
 
 
-        setInterval( () => {
-            this.setOnGroundLevel()
-            }, 1000 / 50);
+        // setInterval(()=> {
+        //     if (this.isJumping || this.isFalling()) {
+        //         if (!this.isStandingOnObstacle) {
+        //             this.jumpingProcess = true;
+        //         }else {
+        //             this.jumpingProcess = false;
+        //         }
+        //     } else {
+        //         this.jumpingProcess = false;
+        //     }
+        // }, 1000 / 50); 
 
+
+        // setInterval(()=> {
+        //     if (this.isStandingOnObstacle) {
+        //         this.setOnGroundLevel();
+        //     } 
+        // }, 1000 / 100); 
+
+        // setInterval(()=> {
+        //     if (this.isStandingOnObstacle) {
+        //         this.speedY = 0;
+        //     } 
+        // }, 1000 / 100); 
+
+        
+        // setInterval(()=> {
+        //     this.setOnGroundLevel();
+        // }, 100); 
+
+
+
+        // setInterval(()=> {
+        //     if (this.isFalling()) {
+        //         this.isStandingOnObstacle = false;
+        //     }
+        // }, 100); 
 
         // Images
         setInterval(() => {
@@ -367,9 +407,7 @@ class Character extends MovableObject{
         }, 70)
 
 
-        // setInterval = (()=> {
-        //     if
-        // }, 100)
+
 
         // HURT Images
         setInterval(() => {
@@ -412,4 +450,80 @@ class Character extends MovableObject{
         }, 25);
     };
 
+    monitorGravityConditions() {
+        setInterval(() => {
+            this.setOnGroundLevel();
+
+            if (this.jumpingProcess) {
+
+                this.startGravityInterval();                
+            }
+
+            if (this.isStandingOnObstacle) {
+                if (this.gravityInterval) {
+                    this.speedY = 0;
+                    clearInterval(this.gravityInterval);
+                    this.gravityInterval = false;
+                }
+            }
+        }, 1000 / 20);
+    }
+
+
+    startGravityInterval() {
+        if (!this.gravityInterval) {
+            this.gravityInterval = setInterval(() => {
+                    this.setOnGroundLevel();
+                    // console.log(this.isStandingOnObstacle);
+                    // (!this.isStandingOnObstacle && this.y < 280) 
+                if (this.jumpingProcess) {
+                    this.y -= this.speedY;
+                    this.speedY -= this.acceleration;
+                    console.log(this.speedY);
+                    console.log(this.jumpingProcess);
+                }
+                if (this.isStandingOnObstacle) {
+                    this.speedY = 0;
+                    clearInterval(this.gravityInterval);
+                    this.gravityInterval = false; // Intervall-Handle zurücksetzen
+                }
+            },  1000 / 30)
+        }
+    }
+
+
+    monitorJumpingProcessConditions(){
+        setInterval(()=> {
+            if (this.isJumping || this.isFalling()){
+                if (!this.jumpingProcess) {
+
+                this.startJumpingProcessInterval();
+                }
+            }  
+            if (this.isStandingOnObstacle) {
+                this.jumpingProcess = false;
+                clearInterval(this.jumpingProcessInterval);
+                this.jumpingProcessInterval = false; // Intervall-Handle zurücksetzen
+            }                   
+        }, 1000 / 30);
+    }
+
+    startJumpingProcessInterval(){
+        if (!this.jumpingProcessInterval) {
+
+            this.jumpingProcessInterval = setInterval(()=> {
+                if (this.isJumping || this.isFalling()){
+                    if (!this.jumpingProcess) {
+
+                    this.jumpingProcess = true;
+                    }
+                }  
+                if (this.isStandingOnObstacle) {
+                    this.jumpingProcess = false;
+                    clearInterval(this.jumpingProcessInterval);
+                    this.jumpingProcessInterval = false; // Intervall-Handle zurücksetzen
+                }  
+            }, 1000 / 140);                 
+        }
+    }
 }

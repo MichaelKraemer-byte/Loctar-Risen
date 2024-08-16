@@ -113,7 +113,8 @@ class MovableObject extends DrawableObject {
 
     isGroundedOn(obj){
         return this.x + this.width - this.offset.right > obj.x + obj.offset.left &&  // R zu L
-               this.x + this.offset.left < obj.x + obj.width - obj.offset.right  // L zu R
+               this.x + this.offset.left < obj.x + obj.width - obj.offset.right &&
+               this.bodyBottom <= obj.y  // L zu R
     }
 
 
@@ -306,14 +307,14 @@ class MovableObject extends DrawableObject {
     }
 
 
-    applyGravity() {
-        setInterval(() => {
-            if (this.isAboveGround()  && !this.isStandingOnObstacle) {
-                this.y -= this.speedY;
-                this.speedY -= this.acceleration;
-            }
-        }, 28); 
-    }
+    // applyGravity() {
+    //     setInterval(() => {
+    //         if (this.isAboveGround()  && !this.isStandingOnObstacle && !this.isStandingOnObstacle) {
+    //             this.y -= this.speedY;
+    //             this.speedY -= this.acceleration;
+    //         }
+    //     }, 28); 
+    // }
 
 
     applyGravityForThrowableObjects() {
@@ -327,13 +328,15 @@ class MovableObject extends DrawableObject {
     isAboveGround(){
         if (this.speedY > 0 && !this.isStandingOnObstacle) {
             return true;
-        } else if (this.y < 280) {
+        } else if (this.y < 280 && !this.isStandingOnObstacle) {
             return true; 
         }
          else {
             return false;
         }
     };    
+
+    
 
 
     resetSpeedY(){
@@ -347,12 +350,12 @@ class MovableObject extends DrawableObject {
 
 
     isFalling(){
-        return this.speedY <= -1;
+        return this.speedY <= -0.1;
     }
 
 
     setOnGroundLevel(){
-        if (this.y >= 280) {
+        if (this.y > 280) {
             this.y = 280;
             this.speedY = 0;
             this.isStandingOnObstacle = true;
@@ -361,9 +364,13 @@ class MovableObject extends DrawableObject {
 
 
     jump(){
-        this.speedY = 37;
         this.isStandingOnObstacle = false;
-        this.characterNewYSetted = false;
+        this.jumpingProcess = true;                        
+        this.speedY = 38;
+
+        // setTimeout(()=>{
+        //     this.jumpingProcess = false;
+        // }, 1500);
     };
 
     // // Bessere Formel zur Kollisionsberechnung (Genauer)
