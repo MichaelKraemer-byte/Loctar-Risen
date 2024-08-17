@@ -216,6 +216,19 @@ class Character extends MovableObject{
 
     world;
     walkSound = new Audio('assets/audio/walking/walking-on-tall-grass.wav');
+    jumpSound = new Audio('assets/audio/character/jump/jumpWhoosh.mp3');
+    meleeAttackSound = new Audio('assets/audio/character/meleeAttack/meleeAttackCharacter.mp3');
+    hurtSound = new Audio('assets/audio/character/pain/characterHurt.mp3');
+    throwSound = new Audio('assets/audio/character/throw/throwcut.mp3');
+    dyingSound = new Audio('assets/audio/character/dying/characterdying.mp3');
+    stampJumpSound = new Audio ('assets/audio/character/stampJump/stampJump.mp3');
+    throwingAxeHitSound = new Audio('assets/audio/character/throw/throwingAxeHitCut.mp3');
+    collectAxeSound = new Audio('assets/audio/character/collect/axeCollectCut.mp3');
+    collectCoinSound = new Audio('assets/audio/character/collect/coin.mp3');
+    gameOverSound = new Audio('assets/audio/game/gameOver/gameOver.mp3');
+    winSound = new Audio('assets/audio/game/gameOver/victoryYelling.mp3');
+    meleeHitSound = new Audio('assets/audio/character/meleeAttack/axeMeleeHit.mp3');
+
     offset = {
         top: 60,
         bottom: 40,
@@ -224,9 +237,7 @@ class Character extends MovableObject{
     };
     gravityInterval = false;
     jumpingProcess = false;
-
     jumpingProcessInterval = false;
-
 
 
     constructor(){
@@ -250,14 +261,11 @@ class Character extends MovableObject{
     };
 
 
-
-
     animate(){
         
 
         // Moving & Sound
         setInterval(() => {
-            // this.refreshOffset();
             // walk RIGHT 
             this.walkSound.pause();
             if (this.world.keyboard.RIGHT && this.x < this.world.level.xStop) {
@@ -268,9 +276,9 @@ class Character extends MovableObject{
                     // RUN
                     if (this.world.keyboard.SHIFT) {
                         this.run();}
-                    // } else {
-                    //     this.playSound(this.walkSound, 0.35, 1);
-                    // }                    
+                    else {
+                        this.playSound(this.walkSound, 0.35, 1);
+                    }                    
                 }
 
             };
@@ -282,63 +290,25 @@ class Character extends MovableObject{
                 // RUN
                 if (this.world.keyboard.SHIFT) {
                     this.run()}
-                // } else {
-                //     this.playSound(this.walkSound, 0.35, 1);
-                // }
+                else {
+                    this.playSound(this.walkSound, 0.35, 1);
+                }
             };
 
             this.world.camera_x = -this.x + 20;
         }, 1000 / 60);
+
 
         setInterval( () => {
             // jump
             if (this.world.keyboard.SPACE && this.HP > 0) {
                 if (this.isStandingOnObstacle) {
                 this.jump();
+                    this.playSound(this.jumpSound, 0.07, 1);
                 }
             }
         }, 1000 / 200);
 
-
-
-
-        // setInterval(()=> {
-        //     if (this.isJumping || this.isFalling()) {
-        //         if (!this.isStandingOnObstacle) {
-        //             this.jumpingProcess = true;
-        //         }else {
-        //             this.jumpingProcess = false;
-        //         }
-        //     } else {
-        //         this.jumpingProcess = false;
-        //     }
-        // }, 1000 / 50); 
-
-
-        // setInterval(()=> {
-        //     if (this.isStandingOnObstacle) {
-        //         this.setOnGroundLevel();
-        //     } 
-        // }, 1000 / 100); 
-
-        // setInterval(()=> {
-        //     if (this.isStandingOnObstacle) {
-        //         this.speedY = 0;
-        //     } 
-        // }, 1000 / 100); 
-
-        
-        // setInterval(()=> {
-        //     this.setOnGroundLevel();
-        // }, 100); 
-
-
-
-        // setInterval(()=> {
-        //     if (this.isFalling()) {
-        //         this.isStandingOnObstacle = false;
-        //     }
-        // }, 100); 
 
         // Images
         setInterval(() => {
@@ -351,7 +321,6 @@ class Character extends MovableObject{
                         };            
                     }
                 }
-
             // RUN Images
                 if (this.world.keyboard.SHIFT) {
                     if (!this.isAboveGround() || this.isStandingOnObstacle){
@@ -366,11 +335,6 @@ class Character extends MovableObject{
 
         // IDLE Images
         setInterval(() => {
-            // if (!this.meleeAttackProcess) {
-                // if (this.world.keyboard.NONE && !this.world.keyboard.RIGHT && !this.world.keyboard.LEFT) {
-                    // if (!this.isAboveGround() || this.isOnObstacle()){
-                    // // if (!this.isAboveGround()){
-                    //     if (!this.damageProcess && this.HP > 0) {
             if (this.world.keyboard.NONE && !this.isDead() && !this.world.keyboard.RIGHT && !this.world.keyboard.LEFT && !this.damageProcess) {
                 if (this.speedY == 0) {
                     this.playAnimation(this.idleImages);
@@ -378,9 +342,6 @@ class Character extends MovableObject{
                 }
 
             }
-                    // }
-                // }                
-            // }
         }, 80);
 
 
@@ -392,6 +353,7 @@ class Character extends MovableObject{
                 }
             }
         }, 70);
+
 
         // FALL Images
         setInterval(()=>{
@@ -407,11 +369,10 @@ class Character extends MovableObject{
         }, 70)
 
 
-
-
         // HURT Images
         setInterval(() => {
             if (this.damageProcess && this.HP > 0) {
+                this.playSound(this.hurtSound, 0.4, 1);
                 this.playAnimation(this.hurtImages);
             }
         }, 120);
@@ -419,6 +380,8 @@ class Character extends MovableObject{
         // DYING Images
         let dyingIntervall = setInterval(() => {
             if (this.isDead()) {
+                this.playSound(this.gameOverSound, 0.7, 1.5);
+                this.playSound(this.dyingSound, 0.4, 1);
                 this.playSingleAnimation(this.dyingImages, dyingIntervall);
                 setTimeout(() => {
                     slideInFailureParchment();
@@ -426,9 +389,11 @@ class Character extends MovableObject{
             };
         }, 100);
 
+
         // THROW Images
         setInterval(() => {
             if (this.axes !== 0 && !this.throwAttackProcess && this.world.keyboard.E && !this.isDead() ) {
+                this.playSound(this.throwSound, 1, 1);
                 this.playAnimation(this.throwImages);
                 this.throwAttackProcess = true;
                 setTimeout(() => {
@@ -440,6 +405,7 @@ class Character extends MovableObject{
         // MELEE ATTACK Images
         setInterval(() => {
             if (this.world.keyboard.Q && !this.isDead()) {
+                this.playSound(this.meleeAttackSound, 0.2, 1);
                 this.playAnimation(this.meleeAttackImages);
                 this.speed = 0;
                 this.meleeAttackProcess = true;
@@ -479,8 +445,8 @@ class Character extends MovableObject{
                 if (this.jumpingProcess) {
                     this.y -= this.speedY;
                     this.speedY -= this.acceleration;
-                    console.log(this.speedY);
-                    console.log(this.jumpingProcess);
+                    // console.log(this.speedY);
+                    // console.log(this.jumpingProcess);
                 }
                 if (this.isStandingOnObstacle) {
                     this.speedY = 0;

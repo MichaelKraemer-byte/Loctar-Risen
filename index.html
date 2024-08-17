@@ -9,7 +9,10 @@
 
     <title>Loctar Risen</title>
 </head>
-<body onload="startResettedGame()">
+<body onload="startResettedGame();">
+    <div onclick="soundOnOrOff()" class="landing-sound-button-container" id="landingSoundButtonContainer">
+      <img class="landing-sound-icon" id="landingSoundIMG" src="./assets/WebImages/volume.png">
+    </div>
     
     <div id="landingScreen" class="landingScreen">
     </div>
@@ -46,9 +49,12 @@
         <div class="fullscreen-button-container" id="fullscreenContainer">
           <a href="#">
             <div id="toggle_fullscreen">
-              <img class="fullscreen-icon" src="assets/touch-screen.png">
+              <img class="fullscreen-icon" src="./assets/touch-screen.png">
             </div>
           </a>
+        </div>
+        <div onclick="soundOnOrOff()" class="sound-button-container" id="soundButtonContainer">
+          <img class="sound-icon" id="soundIMG" src="./assets/WebImages/volume.png">
         </div>
     </div>
 

@@ -33,17 +33,22 @@ class World {
             this.checkObstacleCollisions()        
         }, 1000 / 150);
 
-        // setInterval(()=> {
-        //     this.checkFallingFromPlatform();
-        // }, 1000 / 50);   
-
         setInterval(()=> {
             this.checkMelee();
         }, 1000 / 32);
         setInterval(()=> {
             this.checkIfThrowingObjects();
+        }, 1000 / 32);
+        setInterval(()=> {
             this.checkBodyToBodyCollisions();
+        }, 1000 / 32);
+        setInterval(()=> {
             this.checkThrowableObjectCollision();
+        }, 1000 / 100);       
+        setInterval(()=> {
+            this.checkThrowableObjectCollision();
+        }, 1000 / 50);       
+        setInterval(()=> {
             this.removeThrowableObjects();
         }, 1000 / 32);
         let checkTreasureCollision = setInterval(()=> {
@@ -147,6 +152,7 @@ class World {
         this.level.treasures.forEach((treasure)=>{
             if (this.character.isColliding(treasure) && this.keyboard.Q) {
                 treasure.img.src = treasure.unlockedImage;
+                this.character.playSound(this.character.winSound, 1, 1);
                 slideInSuccessParchment();
                 clearInterval(treasureCollisionInterval);
             }
@@ -232,17 +238,21 @@ class World {
 
         this.level.axe.forEach( (axe) => {
             if (this.character.isColliding(axe) ) {
+                this.character.playSound(this.character.collectAxeSound, 1, 3);
                 this.character.increaseInventoryOf(axe);
                 this.statusBars[1].setPercentage(this.character.axes);
                 this.removeCollectableObject(axe); 
             }});        
 
+
         this.level.coin.forEach( (coin) => {
-            if (this.character.isColliding(coin) ) {
+            if (this.character.isColliding(coin)) {
+                this.character.playSound(this.character.collectCoinSound, 0.1, 1.3);
                 this.character.increaseInventoryOf(coin);
                 this.statusBars[2].setPercentage(this.character.coins);
                 this.removeCollectableObject(coin);
-            }});    
+            }
+        });  
     };
 
 
@@ -253,6 +263,7 @@ class World {
                 if (throwObject && !throwObject.used) {
                     this.level.enemies.forEach((enemy) => {
                         if (!enemy.isDead() && throwObject.isColliding(enemy)) {
+                            this.character.playSound(this.character.throwingAxeHitSound, 0.3, 1)
                             throwObject.collision = true;
                             enemy.reduceHP(40, throwObject.used);
                         }
@@ -265,6 +276,7 @@ class World {
                 if (throwObject && !throwObject.used) {
                     this.level.endboss.forEach((endboss) => {
                         if (!endboss.isDead() && throwObject.isColliding(endboss)) {
+                            this.character.playSound(this.character.throwingAxeHitSound, 0.3, 1)
                             throwObject.collision = true;
                             endboss.reduceHP(40, throwObject.used);
                             }
@@ -288,6 +300,11 @@ class World {
             if ( !enemy.meleeAttackProcess && this.character.isInMeleeRangeForMinotaur(enemy) && !enemy.isDead() && !enemy.damageProcess) {
                 enemy.meleeRangeToCharacter = true;
                 if (enemy.isAttacking) {
+                    if (this.character.isDead()) {
+                        enemy.hitSound.pause();
+                    } else {
+                        enemy.playSound(enemy.hitSound, 0.1, 0.9)
+                    }
                     this.character.reduceHP(5, enemy);
                     this.statusBars[0].setPercentage(this.character.HP);
                 };
@@ -299,11 +316,17 @@ class World {
             if (!endboss.meleeAttackProcess && this.character.isInMeleeRangeForEndboss(endboss) && !endboss.isDead() && !endboss.damageProcess) {
                 endboss.speed = 0;
                 endboss.meleeRangeToCharacter = true;
-                    if (endboss.isAttacking) {
-                        this.character.reduceHP(10, endboss);
-                        this.statusBars[0].setPercentage(this.character.HP);
+                if (endboss.isAttacking) {
+                    if (this.character.isDead()) {
+                        endboss.hitSound.pause();
+                    } else {
+                        endboss.playSound(endboss.hitSound, 1, 1)
                     }
-            }else {
+                    this.character.reduceHP(10, endboss);
+                    this.statusBars[0].setPercentage(this.character.HP);
+
+                } 
+            } else {
                 endboss.resetSpeed();
             }});   
     }
@@ -313,6 +336,7 @@ class World {
             if ( !this.character.meleeAttackProcess && enemy.isInMeleeRangeForCharacter(this.character) && !enemy.isDead() && !enemy.damageProcess) {
                 if (this.keyboard.Q) {
                     enemy.reduceHP(30, enemy);
+                    this.character.playSound(this.character.meleeHitSound, 1, 1);
                 }
             }else {
                 enemy.resetSpeed();
@@ -322,6 +346,7 @@ class World {
             if ( !this.character.meleeAttackProcess && endboss.isInMeleeRangeForCharacter(this.character) && !endboss.isDead() && !endboss.damageProcess) {
                 if (this.keyboard.Q) {
                     endboss.reduceHP(30, endboss);
+                    this.character.playSound(this.character.meleeHitSound, 1, 1);
                 }
             }else {
                 endboss.resetSpeed();

@@ -152,6 +152,10 @@ class Minotaur_1 extends MovableObject{
 
     world;
     walkSound = new Audio('assets/audio/walking/walking-on-crunchy-road.wav');
+    meleeAttackSound = new Audio('assets/audio/enemy/slash/knife-slash.mp3');
+    hitSound = new Audio('assets/audio/enemy/hit/enemyHitonCharacter.mp3');
+    dyingSound = new Audio('assets/audio/enemy/dying/dying.mp3');
+    hurtSound = new Audio('assets/audio/enemy/hurt/enemeHurtGrunts.mp3');
     offset = {
         top: 60,
         bottom: 40,
@@ -166,9 +170,9 @@ class Minotaur_1 extends MovableObject{
     ];
     
 
-    constructor(){
+    constructor(x){
         super(); //ruft variablen und constructor funktionen auf (MovableObject)
-        this.x = this.spawnPoint();
+        this.x = x + 700 + Math.random() * 1000;
         this.initialX = this.x;
         this.speed = 5 + Math.random() * 0.4;
         this.initialSpeed = this.speed;
@@ -182,20 +186,16 @@ class Minotaur_1 extends MovableObject{
     };
 
 
-    spawnPoint(){
-        return 700 + Math.random() * 1000;
-    }
+
 
 
     animate(){
 
-        // // Offset Refresh
-        // setInterval(() => {
-        //     this.refreshOffset();
-        // }, 1000 / 25);
+
 
         // WALK
         setInterval(() => {
+            this.walkSound.pause();
             if (this.HP > 0 && !this.damageProcess && this.gameHasStarted) {
                 const distance = Math.abs(this.x - this.world.character.x);
                 if (!this.meleeAttackProcess) {
@@ -210,8 +210,10 @@ class Minotaur_1 extends MovableObject{
                             this.isWalking = true;
                             if (this.world.character.x > this.x  && this.characterIsOnHeight()) {
                                 this.walkRight();
+                                this.playSound(this.walkSound, 0.06, 1);
                             } else {
                                 this.walkLeft();
+                                this.playSound(this.walkSound, 0.06, 1);
                             }
                         } else if (distance <= 450 && !this.characterIsOnHeight()) {
                             this.isWalking = false;
@@ -224,8 +226,10 @@ class Minotaur_1 extends MovableObject{
                             this.objectViewsCharacter = false;
                             if (this.x < this.initialX ) {
                                 this.walkRight();
+                                this.playSound(this.walkSound, 0.06, 1);
                             } else if (this.x > this.initialX) {
                                 this.walkLeft();
+                                this.playSound(this.walkSound, 0.06, 1);
                             } else {
                                 // Stop moving when at initialX
                                 this.isWalking = false;
@@ -260,6 +264,7 @@ class Minotaur_1 extends MovableObject{
         let hurtIntervall = setInterval(() => {
             if (this.damageProcess && this.HP > 0) {
                 this.playSingleAnimation(this.hurtImages, hurtIntervall);
+                this.playSound(this.hurtSound, 0.2, 1);
             }
         }, 70);
 
@@ -268,6 +273,8 @@ class Minotaur_1 extends MovableObject{
         let dyingIntervall = setInterval(() => {
             if (this.isDead()) {
                 this.playSingleAnimation(this.dyingImages, dyingIntervall);
+                this.dyingSound.pause();
+                this.playSound(this.dyingSound, 0.16, 1.2);
             };
         }, 50);
 
@@ -275,6 +282,7 @@ class Minotaur_1 extends MovableObject{
         // Attack Images
         setInterval(() => {
             if (this.meleeRangeToCharacter && !this.isDead() && !this.world.character.isDead()) {
+                this.playSound(this.meleeAttackSound, 0.2, 1);
                 this.playAnimation(this.meleeAttackImages);
                 this.speed = 0;
                 this.meleeAttackProcess = true;

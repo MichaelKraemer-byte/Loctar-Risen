@@ -4,12 +4,36 @@ let keyboard;
 keyboard = new Keyboard();
 let lastTouchLeft = 0;
 let lastTouchRight = 0;
+let menuTheme = new Audio('./assets/audio/game/backgroundmusic/mp3/Ambient 10.mp3');
+let gameTheme = new Audio('assets/audio/game/backgroundmusic/mp3/Ambient 6.mp3');
+const soundButtonContainer = document.getElementById('soundButtonContainer');
+const soundIMG = document.getElementById('soundIMG');
+const landingSoundIMG  = document.getElementById('landingSoundIMG');
 const fullscreenContainer = document.getElementById('fullscreenContainer');
 const gameCanvas = document.getElementById('canvas');
+let gameHasStarted = false;
+let globalVolume = true;
 
 function init() {
+    menuTheme.pause();
+    gameHasStarted = true;
+    playAudio(gameTheme, 0.4, 1);
     canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard);
+}
+
+
+function playAudio(audio, volume, audioSpeed){
+    if (globalVolume) {
+        audio.volume = volume;
+        audio.play();
+        audio.playbackRate = audioSpeed;
+    }
+    if (!globalVolume) {
+        audio.volume = volume;
+        audio.pause();
+        audio.playbackRate = audioSpeed;
+    }
 }
 
 
@@ -108,42 +132,40 @@ $('#toggle_fullscreen').on('click', function(){
       $('#canvas').get(0).requestFullscreen();
     }
   });
-
-
-//   const container = document.getElementById('container');
   
-//   document.getElementById('canvas').addEventListener('mouseover', function() {
-//       container.style.display = 'block';
-//   });
-  
-//   document.getElementById('canvas').addEventListener('mouseout', function() {
-//       container.style.display = 'none';
-//   });
-  
-
 
 // Funktion, um den Fullscreen-Button basierend auf der Bildschirmgröße ein- oder auszublenden
 function updateFullscreenVisibility() {
     if (window.innerWidth > 720) {
+        soundButtonContainer.style.display = 'block';
         fullscreenContainer.style.display = 'block'; // Button anzeigen, wenn Bildschirm größer als 720px
     } else {
+        soundButtonContainer.style.display = 'none';
         fullscreenContainer.style.display = 'none';  // Button ausblenden, wenn Bildschirm kleiner oder gleich 720px
     }
 }
 
+
 // Funktion, um den Container anzuzeigen
 function showFullScreenContainer() {
     if (window.innerWidth > 720) {
+        soundButtonContainer.style.display = 'block';
         fullscreenContainer.style.display = 'block';
     }
 }
+
 
 // Funktion, um den Container auszublenden
 function hideContainer() {
     // Verzögerung hinzufügen, um das Flimmern zu vermeiden
     setTimeout(() => {
-        if (!fullscreenContainer.matches(':hover') && !gameCanvas.matches(':hover')) {
+        if (!soundButtonContainer.matches(':hover') && !gameCanvas.matches(':hover') &&
+        !fullscreenContainer.matches(':hover') && !gameCanvas.matches(':hover')) {
             fullscreenContainer.style.display = 'none';
+        }
+        if (!soundButtonContainer.matches(':hover') && !gameCanvas.matches(':hover') &&
+        !fullscreenContainer.matches(':hover') && !gameCanvas.matches(':hover')) {
+            soundButtonContainer.style.display = 'none';
         }
     }, 100);
 }
@@ -155,6 +177,8 @@ gameCanvas.addEventListener('mouseout', hideContainer);
 // Event-Listener für Container
 fullscreenContainer.addEventListener('mouseover', showFullScreenContainer);
 fullscreenContainer.addEventListener('mouseout', hideContainer);
+soundButtonContainer.addEventListener('mouseover', showFullScreenContainer);
+soundButtonContainer.addEventListener('mouseout', hideContainer);
 
 // Event-Listener für Fullscreen-Toggle
 fullscreenContainer.addEventListener('click', function() {
@@ -164,6 +188,73 @@ fullscreenContainer.addEventListener('click', function() {
         gameCanvas.requestFullscreen();
     }
 });
+
+
+
+
+function soundOnOrOff() {
+
+    if (soundIMG.src.includes('volume.png') || landingSoundIMG.src.includes('volume.png') ) {
+        soundIMG.src = './assets/WebImages/mute.png';
+        landingSoundIMG.src = './assets/WebImages/mute.png';
+        globalVolume = false;
+        window.localStorage.setItem('volume', 'off');
+        menuTheme.pause();
+        gameTheme.pause();
+    } else {
+        soundIMG.src = './assets/WebImages/volume.png';
+        landingSoundIMG.src = './assets/WebImages/volume.png';
+        globalVolume = true;
+        window.localStorage.setItem('volume', 'on');
+        if (gameHasStarted) {
+            gameTheme.play();
+        } else {
+            menuTheme.play();
+        }
+    }
+}
+
+setInterval(()=> {
+
+    if (window.localStorage.getItem('volume') == 'off') {
+        soundIMG.src = './assets/WebImages/mute.png';
+        landingSoundIMG.src = './assets/WebImages/mute.png';
+        globalVolume = false;
+        window.localStorage.setItem('volume', 'off');
+        gameTheme.pause();
+        menuTheme.pause();
+    } else {
+        soundIMG.src = './assets/WebImages/volume.png';
+        landingSoundIMG.src = './assets/WebImages/volume.png';
+        globalVolume = true;
+        window.localStorage.setItem('volume', 'on');
+        if (gameHasStarted) {
+            gameTheme.play();
+        } else {
+            menuTheme.play();
+        }
+    }
+}, 100);
+
+
+// function checkSoundInLocalStorage(){
+//     const soundIMG = document.getElementById('soundIMG'); 
+
+//     if (window.localStorage.getItem('volume') == 'off') {
+//         soundIMG.src = './assets/WebImages/mute.png';
+//         globalVolume = false;
+//         window.localStorage.setItem('volume', 'off');
+//         menuTheme.pause();
+//         gameTheme.pause();
+//     } else {
+//         soundIMG.src = './assets/WebImages/volume.png';
+//         globalVolume = true;
+//         window.localStorage.setItem('volume', 'on');
+//         menuTheme.play();
+//         gameTheme.play();
+//     }
+// }
+
 
 // Initiale Überprüfung der Bildschirmgröße
 updateFullscreenVisibility();
@@ -280,10 +371,13 @@ document.querySelectorAll('.buttonWrapper').forEach(button => {
 function startGame(){
     if (window.innerWidth > 1024) {
         hideLandingScreen();
+        menuTheme.pause();
+        gameHasStarted = true;
     } 
     else if (window.innerWidth < 1024 && window.matchMedia("(orientation: landscape)").matches) {
         hideLandingScreen();
-        // gameCanvas.requestFullscreen();
+        menuTheme.pause();
+        gameHasStarted = true;
     }
     else if (/Mobi|Android/i.test(navigator.userAgent) || /iPad|Tablet/i.test(navigator.userAgent)) {
         slideInTurnDeviceNotice();
@@ -332,10 +426,18 @@ function hideLandingScreen(){
 
 
 function showLandingScreen(){
+    gameHasStarted = false;
+    gameTheme.pause();
+    if (globalVolume) {
+        menuTheme.play();
+    } else {
+        menuTheme.pause();
+    }
     let landingScreen = document.getElementById('landingScreen');
     landingScreen.style.display = 'Block';
     landingScreen.style.animation = 'fullFadeIn 0.5s ease-in-out forwards';
 }
+
 
 
 function slideInControls(){
@@ -431,7 +533,6 @@ function showFirstPageVerticalMobileControls(){
     setTimeout(()=>{
         descriptionContainer.innerHTML = renderFirstPageVerticalMobileControls();
         descriptionContainer.style.animation = 'fullFadeIn 0.3s ease-in-out forwards';
-
     }, 300);
 }
 
@@ -455,13 +556,28 @@ function resetGame() {
 
 
 function backToMenu(){
+    gameTheme.pause();
     window.localStorage.setItem('reload', 'false');
     window.location.reload(); // Seite neu laden
 }
 
 
+function playMenuTheme(){
+    playAudio(menuTheme, 0.4, 1);
+}
+
+
+document.addEventListener('click', () => {
+    if (!gameHasStarted) {
+        playMenuTheme();
+    }
+});
+
+
+
 function startResettedGame() {
     if (window.localStorage.getItem('reload') === 'true') {
+        gameHasStarted = true;
         window.localStorage.removeItem('reload'); // Zustand löschen, damit es beim nächsten Mal nicht automatisch passiert
         startGame();
     } else {

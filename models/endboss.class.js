@@ -74,10 +74,14 @@ class Endboss extends MovableObject {
 
     world;
     walkSound = new Audio('assets/audio/walking/walking-on-crunchy-road.wav');
+    hurtSound = new Audio('assets/audio/boss/hurt/trollPain.mp3');
+    hitSound = new Audio('assets/audio/boss/hit/BigHammerHitCut.mp3');
+    dyingSound = new Audio('assets/audio/boss/dying/TrollDying.mp3');
+    meleeAttackSound = new Audio('assets/audio/boss/meleeAttack/slashSound.mp3');
     width = 700;
     height = 500;
     y = 22;
-    x = 2700; 
+    HP = 500;
     offset = {
         top: 180,
         bottom: 70,
@@ -86,8 +90,10 @@ class Endboss extends MovableObject {
     }
 
 
-    constructor(){
+    constructor(x){
         super(); 
+        this.HP = this.HP;
+        this.x = x;
         this.speed = 9 + Math.random() * 0.4;
         this.initialSpeed = this.speed;
         this.initialX = this.x;
@@ -105,36 +111,42 @@ class Endboss extends MovableObject {
         // DYING Images
         let dyingInterval = setInterval(() => {
             if (this.isDead()) {
+                this.playSound(this.dyingSound, 1, 3);
                 this.playSingleAnimation(this.dyingImages, dyingInterval);
             }
         }, 100);
         
         // WALK
         setInterval(() => {
+            this.walkSound.pause();
             if (this.HP > 0 && !this.damageProcess && this.speed > 0 && this.gameHasStarted) {
-                if (this.characterIsOnHeight() || this.world.keyboard.SPACE) {
+                if (this.world.character.y >= 90 || this.world.keyboard.SPACE) {
                     if (!this.meleeAttackProcess) {
                         const distance = Math.abs(this.x - this.world.character.x);
                         if (distance <= 250) {
                             this.objectViewsCharacter = true;
                             this.isWalking = true;
                             if (this.world.character.x - this.world.character.offset.right >= this.x + this.offset.left && this.characterIsOnHeight()) {
+                                this.playSound(this.walkSound, 0.7, 1);
                                 this.walkRight();
                             } else {
+                                this.playSound(this.walkSound, 0.7, 1);
                                 this.walkLeft();
                             }
                         } else {
                             // If character is out of range, walk back to initialX
                             this.objectViewsCharacter = false;
                             if (this.x < this.initialX) {
+                                this.playSound(this.walkSound, 0.7, 1);
                                 this.walkRight();
                             } else if (this.x > this.initialX) {
+                                this.playSound(this.walkSound, 0.7, 1);
                                 this.walkLeft();
                             } else {
                                 // Stop moving when at initialX
                                 this.isWalking = false;
                                 this.speed = 0;
-                                clearInterval(startIdleAnimation);
+                                // clearInterval(startIdleAnimation);
                                 this.playAnimation(this.idleImages);
                             }
                         }
@@ -149,12 +161,16 @@ class Endboss extends MovableObject {
         // WALK Images
         setInterval(() => {
             if (this.isWalking && this.HP > 0 && !this.damageProcess && !this.meleeAttackProcess & !this.world.character.isDead()) {
-                this.playAnimation(this.walkImages);
+                if (this.world.character.y >= 90) {
+                    this.playAnimation(this.walkImages);
+                } else {
+                    this.playAnimation(this.walkImages);
+                }
             }
         }, 70);
 
         // IDLE Images
-        let startIdleAnimation = setInterval(() => {
+        setInterval(() => {
             if (!this.isWalking && this.HP > 0 && !this.damageProcess && !this.meleeAttackProcess) {
                 this.playAnimation(this.idleImages);
             }
@@ -171,6 +187,7 @@ class Endboss extends MovableObject {
         // HURT Images
         let hurtIntervall = setInterval(() => {
             if (this.damageProcess && this.HP > 0) {
+                this.playSound(this.hurtSound, 1, 1);
                 this.playSingleAnimationAndStopAtLatestImage(this.hurtImages, hurtIntervall);
             }
         }, 70);
@@ -178,6 +195,7 @@ class Endboss extends MovableObject {
         // Attack Images
         setInterval(() => {
             if (this.meleeRangeToCharacter && !this.isDead() && !this.world.character.isDead()) {
+                this.playSound(this.meleeAttackSound, 1, 1)
                 this.playAnimation(this.meleeAttackImages);
                 this.speed = 0;
                 this.meleeAttackProcess = true;

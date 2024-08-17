@@ -79,12 +79,36 @@ canvas {
     height: 32px;
 }
 
+.sound-icon{
+    margin-top: 4px;
+    width: 32px;
+    height: 32px;
+}
+
 .fullscreen-button-container{
     height: 40px;
     width: 40px;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.sound-button-container{
+    height: 40px;
+    width: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: absolute;
+    z-index: 1;
+    bottom: 10px;
+    right: 80px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    padding: 10px;
+    cursor: pointer;
+    display: none;
 }
 
 .rightTouchButtons {
@@ -474,6 +498,30 @@ canvas {
     flex-direction: column;
     width: 30vw;
 }
+
+.landing-sound-icon{
+    filter: sepia(700%) saturate(1300%) hue-rotate(10deg) brightness(100%);
+    box-shadow: rgb(222, 255, 121) 0px 0px 15px;
+    padding: 16px;
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.365);
+    opacity: 1;
+    width: 40px;
+    height: 40px;
+}
+
+.landing-sound-button-container{
+    position: absolute;
+    width: fit-content;
+    height: fit-content;
+    top: 64px;
+    right: 48px;
+    z-index: 3;
+}
+
+.landing-sound-button-container:hover{
+    cursor: pointer;
+}
     
 .okayButton{
     background: #a38f7195;
@@ -555,6 +603,10 @@ canvas {
     }
 
     .fullscreen-button-container{
+        display: none !important;
+    }
+
+    .sound-button-container{
         display: none !important;
     }
 
@@ -698,6 +750,17 @@ canvas {
 }
 
 @media screen and (orientation: portrait)  {
+    .landing-sound-icon{
+        width: 24px;
+        height: 24px;
+        padding: 16px;
+    }
+
+    .landing-sound-button-container{
+        top: 24px;
+        right: 16px;
+    }
+
     .adviceSentence{
     gap: 0px;
     }
@@ -856,6 +919,17 @@ canvas {
 
 /* Querformat Mobile */
 @media screen and (orientation: landscape)  {
+
+    .landing-sound-icon{
+        width: 24px;
+        height: 24px;
+        padding: 12px;
+    }
+
+    .landing-sound-button-container{
+        top: 16px;
+        right: 16px;
+    }
 
     .landingPlayButtonContainer {
         margin-bottom: 16px;
@@ -1077,6 +1151,30 @@ canvas {
 
     .storyParagraph{
         font-size: 20px;
+    }
+
+    .landing-sound-icon{
+        filter: sepia(700%) saturate(1300%) hue-rotate(10deg) brightness(100%);
+        box-shadow: rgb(222, 255, 121) 0px 0px 15px;
+        padding: 16px;
+        border-radius: 4px;
+        background: rgba(0, 0, 0, 0.365);
+        opacity: 1;
+        width: 40px;
+        height: 40px;
+    }
+    
+    .landing-sound-button-container{
+        position: absolute;
+        width: fit-content;
+        height: fit-content;
+        top: 64px;
+        right: 48px;
+        z-index: 3;
+    }
+    
+    .landing-sound-button-container:hover{
+        cursor: pointer;
     }
 }
 

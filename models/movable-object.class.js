@@ -269,6 +269,7 @@ class MovableObject extends DrawableObject {
 
     stampJump(){
         this.speedY = 30;
+        this.playSound(this.stampJumpSound, 0.07, 1);
     }
 
 

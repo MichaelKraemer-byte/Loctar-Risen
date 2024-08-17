@@ -1,11 +1,19 @@
 const level_1 = new Level (
     [
-        new Minotaur_1(),
-        new Minotaur_1(),
-        new Minotaur_1()
+        new Minotaur_1(0),
+        new Minotaur_1(100),
+        new Minotaur_1(200),
+        new Minotaur_1(2300),
+        new Minotaur_1(2000),
+        new Minotaur_1(3600),
+        new Minotaur_1(3700),
+        new Minotaur_1(3800),
+        new Minotaur_1(3900),
+        new Minotaur_1(4000),
     ],
     [
-        new Endboss()
+        new Endboss(2700),
+        new Endboss(4650),
     ],
     [
         new Axe(1200, 310),

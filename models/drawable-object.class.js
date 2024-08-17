@@ -99,13 +99,18 @@ class DrawableObject {
 
 
 
+/* The `playSound` method in the `DrawableObject` class is responsible for playing an audio file with
+the specified volume and speed. Here's a breakdown of what it does: */
     playSound(audio, volume, audioSpeed){
-        audio.volume = volume;
-        audio.play();
-        if (this.world.keyboard.SHIFT) {
+        if (globalVolume) {
+            audio.volume = volume;
             audio.playbackRate = audioSpeed;
-        } else {
-            audio.playbackRate = 1;
+            audio.play();
+        }
+        if (!globalVolume) {
+            audio.volume = volume;
+            audio.playbackRate = audioSpeed;
+            audio.pause();
         }
     };
 
