@@ -1,24 +1,49 @@
+/**
+ * Represents a health status bar for an end boss.
+ * 
+ * This class manages the display of the health status bar for an end boss and updates it based on the current health percentage.
+ * It extends the `DrawableObject` class and uses a series of images to represent different health levels.
+ * 
+ * @class
+ * 
+ * @extends DrawableObject
+ */
 class EndbossStatusBarOfHP extends DrawableObject {
 
-    // Status-Bars
+    /**
+     * An array of images representing different health levels for the status bar.
+     * 
+     * @type {string[]}
+     */
     HPImages = [
         'assets/el_pollo_locco/7_statusbars/inverted-health-statusbars/orange/0.png',
         'assets/el_pollo_locco/7_statusbars/inverted-health-statusbars/orange/20.png',
         'assets/el_pollo_locco/7_statusbars/inverted-health-statusbars/orange/40.png',
         'assets/el_pollo_locco/7_statusbars/inverted-health-statusbars/orange/60.png',
         'assets/el_pollo_locco/7_statusbars/inverted-health-statusbars/orange/80.png',
-        'assets/el_pollo_locco/7_statusbars/inverted-health-statusbars/orange/100.png',
+        'assets/el_pollo_locco/7_statusbars/inverted-health-statusbars/orange/100.png'
     ];
 
+    /**
+     * The current percentage of the health status bar.
+     * It ranges from 0 to 100 and determines which image is displayed.
+     * 
+     * @type {number}
+     */
     percentage = 100;
-    
+
+    /**
+     * Creates an instance of `EndbossStatusBarOfHP` and initializes its properties.
+     * 
+     * This method loads the necessary images for the health status bar and sets the initial position and size.
+     */
     constructor() {
-        super();
+        super(); // Call the parent class constructor
         this.loadImages(this.HPImages);
         this.x = 500;
-        this.y = 40;
+        this.y = 80;
         this.height = 50;
-    };
+    }
 
 
 /**

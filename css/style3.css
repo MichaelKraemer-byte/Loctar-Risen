@@ -19,7 +19,7 @@
     }
 
     .landingHeroContent{
-        gap: 40px;
+        gap: 24px;
     }
 
     .mobileControlDescriptionContainer{
@@ -401,6 +401,8 @@
     .storyParagraph{
         font-size: 20px;
     }
+
+    .landing-sound-button
 
     .landing-sound-icon{
         filter: sepia(700%) saturate(1300%) hue-rotate(10deg) brightness(100%);

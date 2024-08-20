@@ -1,5 +1,16 @@
+/**
+ * Represents a status bar for the axe in the game, showing its durability.
+ * @class
+ * 
+ * @extends DrawableObject
+ */
 class AxeStatusBar extends DrawableObject {
 
+    /**
+     * The image paths for different axe durability levels.
+     * 
+     * @type {string[]}
+     */
     axeStatusImages = [
         'assets/crafties/orcs/statusBar/100.png',
         'assets/crafties/orcs/statusBar/80.png',
@@ -9,16 +20,24 @@ class AxeStatusBar extends DrawableObject {
         'assets/crafties/orcs/statusBar/0.png'
     ];
 
+    /**
+     * The current percentage of the axe's durability.
+     * 
+     * @type {number}
+     */
     percentage = 0;
 
-
+    /**
+     * Creates a new `AxeStatusBar` instance and initializes its position and images.
+     */
     constructor() {
-        super();
+        super(); // Call the parent class constructor
         this.loadImages(this.axeStatusImages);
         this.x = 20;
         this.y = 60;
         this.height = 50;
-    };
+    }
+
 
 
 /**

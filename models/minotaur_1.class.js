@@ -1,5 +1,19 @@
-class Minotaur_1 extends MovableObject{
+/**
+ * Represents a Minotaur enemy in the game with various animations and sounds.
+ * 
+ * This class handles the Minotaur's idle, walking, hurt, dying, and melee attack animations.
+ * It also manages sound effects for different actions such as walking, attacking, and getting hurt.
+ * The Minotaur's position, speed, and interaction with the game world are controlled by this class.
+ * @class
+ * @extends MovableObject
+ */
+class Minotaur_1 extends MovableObject {
 
+    /**
+     * Array of image paths for the Minotaur's idle animation.
+     * 
+     * @type {string[]}
+     */
     idleImages = [
         'assets/crafties/minotaur/Minotaur_1/PNG/PNGSequences/Idle/0_Minotaur_Idle_001.png',
         'assets/crafties/minotaur/Minotaur_1/PNG/PNGSequences/Idle/0_Minotaur_Idle_002.png',
@@ -54,6 +68,12 @@ class Minotaur_1 extends MovableObject{
         'assets/crafties/minotaur/Minotaur_1/PNG/PNGSequences/Idle Blinking/0_Minotaur_Idle Blinking_017.png'
     ];
 
+
+    /**
+     * Array of image paths for the Minotaur's walking animation.
+     * 
+     * @type {string[]}
+     */
     walkImages = [
         'assets/crafties/minotaur/Minotaur_1/PNG/PNGSequences/Walking/0_Minotaur_Walking_000.png',
         'assets/crafties/minotaur/Minotaur_1/PNG/PNGSequences/Walking/0_Minotaur_Walking_001.png',
@@ -81,6 +101,12 @@ class Minotaur_1 extends MovableObject{
         'assets/crafties/minotaur/Minotaur_1/PNG/PNGSequences/Walking/0_Minotaur_Walking_023.png'
     ];
 
+
+    /**
+     * Array of image paths for the Minotaur's hurt animation.
+     * 
+     * @type {string[]}
+     */
     hurtImages = [
         'assets/crafties/minotaur/Minotaur_1/PNG/PNGSequences/Hurt/0_Minotaur_Hurt_000.png',
         'assets/crafties/minotaur/Minotaur_1/PNG/PNGSequences/Hurt/0_Minotaur_Hurt_001.png',
@@ -96,6 +122,12 @@ class Minotaur_1 extends MovableObject{
         'assets/crafties/minotaur/Minotaur_1/PNG/PNGSequences/Hurt/0_Minotaur_Hurt_011.png'
     ];
 
+
+    /**
+     * Array of image paths for the Minotaur's dying animation.
+     * 
+     * @type {string[]}
+     */
     dyingImages = [
         'assets/crafties/minotaur/Minotaur_1/PNG/PNGSequences/Dying/0_Minotaur_Dying_000.png',
         'assets/crafties/minotaur/Minotaur_1/PNG/PNGSequences/Dying/0_Minotaur_Dying_001.png',
@@ -114,27 +146,12 @@ class Minotaur_1 extends MovableObject{
         'assets/crafties/minotaur/Minotaur_1/PNG/PNGSequences/Dying/0_Minotaur_Dying_014.png'
     ];
 
-    idleImages = [
-        'assets/crafties/minotaur/Minotaur_1/PNG/PNGSequences/Idle/0_Minotaur_Idle_000.png',
-        'assets/crafties/minotaur/Minotaur_1/PNG/PNGSequences/Idle/0_Minotaur_Idle_001.png',
-        'assets/crafties/minotaur/Minotaur_1/PNG/PNGSequences/Idle/0_Minotaur_Idle_002.png',
-        'assets/crafties/minotaur/Minotaur_1/PNG/PNGSequences/Idle/0_Minotaur_Idle_003.png',
-        'assets/crafties/minotaur/Minotaur_1/PNG/PNGSequences/Idle/0_Minotaur_Idle_004.png',
-        'assets/crafties/minotaur/Minotaur_1/PNG/PNGSequences/Idle/0_Minotaur_Idle_005.png',
-        'assets/crafties/minotaur/Minotaur_1/PNG/PNGSequences/Idle/0_Minotaur_Idle_006.png',
-        'assets/crafties/minotaur/Minotaur_1/PNG/PNGSequences/Idle/0_Minotaur_Idle_007.png',
-        'assets/crafties/minotaur/Minotaur_1/PNG/PNGSequences/Idle/0_Minotaur_Idle_008.png',
-        'assets/crafties/minotaur/Minotaur_1/PNG/PNGSequences/Idle/0_Minotaur_Idle_009.png',
-        'assets/crafties/minotaur/Minotaur_1/PNG/PNGSequences/Idle/0_Minotaur_Idle_010.png',
-        'assets/crafties/minotaur/Minotaur_1/PNG/PNGSequences/Idle/0_Minotaur_Idle_011.png',
-        'assets/crafties/minotaur/Minotaur_1/PNG/PNGSequences/Idle/0_Minotaur_Idle_012.png',
-        'assets/crafties/minotaur/Minotaur_1/PNG/PNGSequences/Idle/0_Minotaur_Idle_013.png',
-        'assets/crafties/minotaur/Minotaur_1/PNG/PNGSequences/Idle/0_Minotaur_Idle_014.png',
-        'assets/crafties/minotaur/Minotaur_1/PNG/PNGSequences/Idle/0_Minotaur_Idle_015.png',
-        'assets/crafties/minotaur/Minotaur_1/PNG/PNGSequences/Idle/0_Minotaur_Idle_016.png',
-        'assets/crafties/minotaur/Minotaur_1/PNG/PNGSequences/Idle/0_Minotaur_Idle_017.png'
-    ];
 
+    /**
+     * Array of image paths for the Minotaur's melee attack animation.
+     * 
+     * @type {string[]}
+     */
     meleeAttackImages = [
         'assets/crafties/minotaur/Minotaur_1/PNG/PNGSequences/Slashing/0_Minotaur_Slashing_000.png',
         'assets/crafties/minotaur/Minotaur_1/PNG/PNGSequences/Slashing/0_Minotaur_Slashing_001.png',
@@ -150,12 +167,58 @@ class Minotaur_1 extends MovableObject{
         'assets/crafties/minotaur/Minotaur_1/PNG/PNGSequences/Slashing/0_Minotaur_Slashing_011.png'
     ];
 
+
+    /**
+     * The world in which the Minotaur exists.
+     * 
+     * @type {World}
+     */
     world;
+
+    /**
+     * Sound effect played when the Minotaur walks.
+     * 
+     * @type {HTMLAudioElement}
+     */
     walkSound = new Audio('assets/audio/walking/walking-on-crunchy-road.wav');
+
+    /**
+     * Sound effect played when the Minotaur performs a melee attack.
+     * 
+     * @type {HTMLAudioElement}
+     */
     meleeAttackSound = new Audio('assets/audio/enemy/slash/knife-slash.mp3');
+
+    /**
+     * Sound effect played when the Minotaur is hit.
+     * 
+     * @type {HTMLAudioElement}
+     */
     hitSound = new Audio('assets/audio/enemy/hit/enemyHitonCharacter.mp3');
+
+    /**
+     * Sound effect played when the Minotaur is dying.
+     * 
+     * @type {HTMLAudioElement}
+     */
     dyingSound = new Audio('assets/audio/enemy/dying/dying.mp3');
+
+    /**
+     * Sound effect played when the Minotaur gets hurt.
+     * 
+     * @type {HTMLAudioElement}
+     */
     hurtSound = new Audio('assets/audio/enemy/hurt/enemeHurtGrunts.mp3');
+
+    /**
+     * Offset values for collision detection.
+     * 
+     * @type {Object}
+     * @property {number} top - The top offset for collision detection.
+     * @property {number} bottom - The bottom offset for collision detection.
+     * @property {number} right - The right offset for collision detection.
+     * @property {number} left - The left offset for collision detection.
+     */
     offset = {
         top: 60,
         bottom: 40,
@@ -163,15 +226,24 @@ class Minotaur_1 extends MovableObject{
         left: 60
     };
 
+    /**
+     * Array of image filenames for the Minotaur's slashing animation.
+     * 
+     * @type {string[]}
+     */
     slashingFrames = [
         '0_Minotaur_Slashing_004.png',
         '0_Minotaur_Slashing_005.png',
         '0_Minotaur_Slashing_006.png'
     ];
-    
 
+    /**
+     * Creates an instance of the `Minotaur_1` class.
+     * 
+     * @param {number} x - The initial x-coordinate of the Minotaur.
+     */
     constructor(x){
-        super(); //ruft variablen und constructor funktionen auf (MovableObject)
+        super(); 
         this.x = x + 700 + Math.random() * 1000;
         this.initialX = this.x;
         this.speed = 5 + Math.random() * 0.4;

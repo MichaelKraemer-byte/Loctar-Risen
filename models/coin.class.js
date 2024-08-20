@@ -1,6 +1,13 @@
+/**
+ * Represents a collectible coin in the game.
+ * Inherits from the `DrawableObject` class.
+ */
 class Coin extends DrawableObject {
 
-
+    /**
+     * Array of image paths for the coin's animation.
+     * @type {string[]}
+     */
     coinImages = [
         'assets/coin/PNG/Gold/Gold_1.png',
         'assets/coin/PNG/Gold/Gold_2.png',
@@ -14,6 +21,14 @@ class Coin extends DrawableObject {
         'assets/coin/PNG/Gold/Gold_10.png'
     ];
 
+    /**
+     * The offset for positioning the coin.
+     * @type {Object}
+     * @property {number} top - The top offset.
+     * @property {number} bottom - The bottom offset.
+     * @property {number} right - The right offset.
+     * @property {number} left - The left offset.
+     */
     offset = {
         top: 5,
         bottom: 5,
@@ -21,6 +36,11 @@ class Coin extends DrawableObject {
         left: 5
     };
 
+    /**
+     * Creates an instance of the `Coin` class.
+     * @param {number} x - The x-coordinate of the coin's position.
+     * @param {number} y - The y-coordinate of the coin's position.
+     */
     constructor(x, y) {
         super();
         this.loadImages(this.coinImages);

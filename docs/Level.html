@@ -1,0 +1,1464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Class: Level</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Class: Level</h1>
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2><span class="attribs"><span class="type-signature"></span></span>Level<span class="signature">(enemies, endboss, axe, throwableObjects, coin, skies, backDecors, middleDecors, foregrounds, grounds, platforms, obstacles, treasures)</span><span class="type-signature"></span></h2>
+        
+            <div class="class-description">Represents a level in the game.</div>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+    
+    <h2>Constructor</h2>
+    
+
+    
+    <h4 class="name" id="Level"><span class="type-signature"></span>new Level<span class="signature">(enemies, endboss, axe, throwableObjects, coin, skies, backDecors, middleDecors, foregrounds, grounds, platforms, obstacles, treasures)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Creates an instance of the Level class.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>enemies</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="Minotaur_1.html">Minotaur_1</a>></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">An array of enemies in the level.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>endboss</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="Endboss.html">Endboss</a>></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">An array of endbosses in the level.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>axe</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="Axe.html">Axe</a>></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">An array of axes that act as obstacles in the level.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>throwableObjects</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="ThrowableObject.html">ThrowableObject</a>></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">An array of throwable objects in the level.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>coin</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="Coin.html">Coin</a>></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">An array of collectible coins in the level.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>skies</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="Sky.html">Sky</a>></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">An array of sky layers that make up the background of the level.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>backDecors</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="BackDecor.html">BackDecor</a>></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">An array of background decorations for visual depth.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>middleDecors</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="MiddleDecor.html">MiddleDecor</a>></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">An array of middle decorations for additional background detail.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>foregrounds</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="Foreground.html">Foreground</a>></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">An array of foreground layers that appear in front of the background.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>grounds</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="Ground.html">Ground</a>></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">An array of ground layers that the player interacts with.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>platforms</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;(<a href="OneBlockStepRock.html">OneBlockStepRock</a>|<a href="ThreeBlockPlatform.html">ThreeBlockPlatform</a>)></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">An array of platforms for jumping or climbing.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>obstacles</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="OneBlockRockObstacle.html">OneBlockRockObstacle</a>></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">An array of obstacles that hinder player progress.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>treasures</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="Treasure.html">Treasure</a>></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">An array of treasure items that can be collected by the player.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_level.class.js.html">models/level.class.js</a>, <a href="models_level.class.js.html#line6">line 6</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id="axe"><span class="type-signature"></span>axe<span class="type-signature"> :Array.&lt;<a href="Axe.html">Axe</a>></span></h4>
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Array.&lt;<a href="Axe.html">Axe</a>></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_level.class.js.html">models/level.class.js</a>, <a href="models_level.class.js.html#line38">line 38</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="backDecors"><span class="type-signature"></span>backDecors<span class="type-signature"> :Array.&lt;<a href="BackDecor.html">BackDecor</a>></span></h4>
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Array.&lt;<a href="BackDecor.html">BackDecor</a>></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_level.class.js.html">models/level.class.js</a>, <a href="models_level.class.js.html#line58">line 58</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="coin"><span class="type-signature"></span>coin<span class="type-signature"> :Array.&lt;<a href="Coin.html">Coin</a>></span></h4>
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Array.&lt;<a href="Coin.html">Coin</a>></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_level.class.js.html">models/level.class.js</a>, <a href="models_level.class.js.html#line48">line 48</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="endboss"><span class="type-signature"></span>endboss<span class="type-signature"> :Array.&lt;<a href="Endboss.html">Endboss</a>></span></h4>
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Array.&lt;<a href="Endboss.html">Endboss</a>></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_level.class.js.html">models/level.class.js</a>, <a href="models_level.class.js.html#line33">line 33</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="enemies"><span class="type-signature"></span>enemies<span class="type-signature"> :Array.&lt;<a href="Minotaur_1.html">Minotaur_1</a>></span></h4>
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Array.&lt;<a href="Minotaur_1.html">Minotaur_1</a>></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_level.class.js.html">models/level.class.js</a>, <a href="models_level.class.js.html#line28">line 28</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="foregrounds"><span class="type-signature"></span>foregrounds<span class="type-signature"> :Array.&lt;<a href="Foreground.html">Foreground</a>></span></h4>
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Array.&lt;<a href="Foreground.html">Foreground</a>></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_level.class.js.html">models/level.class.js</a>, <a href="models_level.class.js.html#line68">line 68</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="grounds"><span class="type-signature"></span>grounds<span class="type-signature"> :Array.&lt;<a href="Ground.html">Ground</a>></span></h4>
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Array.&lt;<a href="Ground.html">Ground</a>></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_level.class.js.html">models/level.class.js</a>, <a href="models_level.class.js.html#line73">line 73</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="middleDecors"><span class="type-signature"></span>middleDecors<span class="type-signature"> :Array.&lt;<a href="MiddleDecor.html">MiddleDecor</a>></span></h4>
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Array.&lt;<a href="MiddleDecor.html">MiddleDecor</a>></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_level.class.js.html">models/level.class.js</a>, <a href="models_level.class.js.html#line63">line 63</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="obstacles"><span class="type-signature"></span>obstacles<span class="type-signature"> :Array.&lt;<a href="OneBlockRockObstacle.html">OneBlockRockObstacle</a>></span></h4>
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Array.&lt;<a href="OneBlockRockObstacle.html">OneBlockRockObstacle</a>></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_level.class.js.html">models/level.class.js</a>, <a href="models_level.class.js.html#line83">line 83</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="platforms"><span class="type-signature"></span>platforms<span class="type-signature"> :Array.&lt;(<a href="OneBlockStepRock.html">OneBlockStepRock</a>|<a href="ThreeBlockPlatform.html">ThreeBlockPlatform</a>)></span></h4>
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Array.&lt;(<a href="OneBlockStepRock.html">OneBlockStepRock</a>|<a href="ThreeBlockPlatform.html">ThreeBlockPlatform</a>)></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_level.class.js.html">models/level.class.js</a>, <a href="models_level.class.js.html#line78">line 78</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="skies"><span class="type-signature"></span>skies<span class="type-signature"> :Array.&lt;<a href="Sky.html">Sky</a>></span></h4>
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Array.&lt;<a href="Sky.html">Sky</a>></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_level.class.js.html">models/level.class.js</a>, <a href="models_level.class.js.html#line53">line 53</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="throwableObjects"><span class="type-signature"></span>throwableObjects<span class="type-signature"> :Array.&lt;<a href="ThrowableObject.html">ThrowableObject</a>></span></h4>
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Array.&lt;<a href="ThrowableObject.html">ThrowableObject</a>></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_level.class.js.html">models/level.class.js</a>, <a href="models_level.class.js.html#line43">line 43</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="treasures"><span class="type-signature"></span>treasures<span class="type-signature"> :Array.&lt;<a href="Treasure.html">Treasure</a>></span></h4>
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Array.&lt;<a href="Treasure.html">Treasure</a>></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_level.class.js.html">models/level.class.js</a>, <a href="models_level.class.js.html#line88">line 88</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="xStop"><span class="type-signature"></span>xStop<span class="type-signature"> :number</span></h4>
+
+
+
+
+<div class="description">
+    The horizontal position where the level stops or wraps around.
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">number</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-default">Default Value:</dt>
+    <dd class="tag-default"><ul class="dummy">
+            <li>4800</li>
+        </ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_level.class.js.html">models/level.class.js</a>, <a href="models_level.class.js.html#line96">line 96</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Axe.html">Axe</a></li><li><a href="AxeStatusBar.html">AxeStatusBar</a></li><li><a href="BackDecor.html">BackDecor</a></li><li><a href="Character.html">Character</a></li><li><a href="Coin.html">Coin</a></li><li><a href="CoinStatusBar.html">CoinStatusBar</a></li><li><a href="CoinStatusBar_coinStatusImages.html">coinStatusImages</a></li><li><a href="DrawableObject.html">DrawableObject</a></li><li><a href="Endboss.html">Endboss</a></li><li><a href="EndbossStatusBarOfHP.html">EndbossStatusBarOfHP</a></li><li><a href="Foreground.html">Foreground</a></li><li><a href="Ground.html">Ground</a></li><li><a href="HPstatusBar.html">HPstatusBar</a></li><li><a href="HPstatusBar_HPImages.html">HPImages</a></li><li><a href="Keyboard.html">Keyboard</a></li><li><a href="Level.html">Level</a></li><li><a href="MiddleDecor.html">MiddleDecor</a></li><li><a href="Minotaur_1.html">Minotaur_1</a></li><li><a href="MovableObject.html">MovableObject</a></li><li><a href="OneBlockRockObstacle.html">OneBlockRockObstacle</a></li><li><a href="OneBlockStepRock.html">OneBlockStepRock</a></li><li><a href="RuinDecor.html">RuinDecor</a></li><li><a href="Sky.html">Sky</a></li><li><a href="ThreeBlockPlatform.html">ThreeBlockPlatform</a></li><li><a href="ThrowableObject.html">ThrowableObject</a></li><li><a href="Treasure.html">Treasure</a></li><li><a href="World.html">World</a></li></ul><h3>Global</h3><ul><li><a href="global.html#backToMenu">backToMenu</a></li><li><a href="global.html#canvas">canvas</a></li><li><a href="global.html#checkAndStartBackgroundMusic">checkAndStartBackgroundMusic</a></li><li><a href="global.html#closePopUp">closePopUp</a></li><li><a href="global.html#disOrEnableOkButton">disOrEnableOkButton</a></li><li><a href="global.html#fullscreenContainer">fullscreenContainer</a></li><li><a href="global.html#gameCanvas">gameCanvas</a></li><li><a href="global.html#gameHasStarted">gameHasStarted</a></li><li><a href="global.html#gameTheme">gameTheme</a></li><li><a href="global.html#globalVolume">globalVolume</a></li><li><a href="global.html#handleTouchEnd">handleTouchEnd</a></li><li><a href="global.html#handleTouchStart">handleTouchStart</a></li><li><a href="global.html#handleUserInteraction">handleUserInteraction</a></li><li><a href="global.html#hideContainer">hideContainer</a></li><li><a href="global.html#hideLandingScreen">hideLandingScreen</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#keyboard">keyboard</a></li><li><a href="global.html#landingSoundIMG">landingSoundIMG</a></li><li><a href="global.html#lastTouchLeft">lastTouchLeft</a></li><li><a href="global.html#lastTouchRight">lastTouchRight</a></li><li><a href="global.html#level_1">level_1</a></li><li><a href="global.html#menuTheme">menuTheme</a></li><li><a href="global.html#playAudio">playAudio</a></li><li><a href="global.html#playMenuTheme">playMenuTheme</a></li><li><a href="global.html#renderControls">renderControls</a></li><li><a href="global.html#renderFailureParchment">renderFailureParchment</a></li><li><a href="global.html#renderFirstPageHorizontalMobileControls">renderFirstPageHorizontalMobileControls</a></li><li><a href="global.html#renderFirstPageVerticalMobileControls">renderFirstPageVerticalMobileControls</a></li><li><a href="global.html#renderHorizontalMobileControls">renderHorizontalMobileControls</a></li><li><a href="global.html#renderKeyboardControls">renderKeyboardControls</a></li><li><a href="global.html#renderLandingScreen">renderLandingScreen</a></li><li><a href="global.html#renderRotateDeviceNotice">renderRotateDeviceNotice</a></li><li><a href="global.html#renderSecondPageHorizontalMobileControls">renderSecondPageHorizontalMobileControls</a></li><li><a href="global.html#renderSecondPageVerticalMobileControls">renderSecondPageVerticalMobileControls</a></li><li><a href="global.html#renderStory">renderStory</a></li><li><a href="global.html#renderSuccessParchment">renderSuccessParchment</a></li><li><a href="global.html#renderVerticalMobileControls">renderVerticalMobileControls</a></li><li><a href="global.html#resetGame">resetGame</a></li><li><a href="global.html#setupUserInteractionListener">setupUserInteractionListener</a></li><li><a href="global.html#showFirstPageHorizontalMobileControls">showFirstPageHorizontalMobileControls</a></li><li><a href="global.html#showFirstPageVerticalMobileControls">showFirstPageVerticalMobileControls</a></li><li><a href="global.html#showFullScreenContainer">showFullScreenContainer</a></li><li><a href="global.html#showLandingScreen">showLandingScreen</a></li><li><a href="global.html#showSecondPageHorizontalMobileControls">showSecondPageHorizontalMobileControls</a></li><li><a href="global.html#showSecondPageVerticalMobileControls">showSecondPageVerticalMobileControls</a></li><li><a href="global.html#slideInControls">slideInControls</a></li><li><a href="global.html#slideInFailureParchment">slideInFailureParchment</a></li><li><a href="global.html#slideInStory">slideInStory</a></li><li><a href="global.html#slideInSuccessParchment">slideInSuccessParchment</a></li><li><a href="global.html#slideInTurnDeviceNotice">slideInTurnDeviceNotice</a></li><li><a href="global.html#soundButtonContainer">soundButtonContainer</a></li><li><a href="global.html#soundIMG">soundIMG</a></li><li><a href="global.html#soundOnOrOff">soundOnOrOff</a></li><li><a href="global.html#startGame">startGame</a></li><li><a href="global.html#startResettedGame">startResettedGame</a></li><li><a href="global.html#updateFullscreenVisibility">updateFullscreenVisibility</a></li><li><a href="global.html#userInteracted">userInteracted</a></li><li><a href="global.html#world">world</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Tue Aug 20 2024 13:51:23 GMT+0200 (Central European Summer Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

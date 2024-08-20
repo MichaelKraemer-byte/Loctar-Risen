@@ -1,18 +1,91 @@
+/**
+ * The canvas element where the game is rendered.
+ * @type {HTMLCanvasElement}
+ */
 let canvas;
+
+/**
+ * The main game world or scene, used for rendering and game logic.
+ * @type {World}
+ */
 let world;
-let keyboard;
-keyboard = new Keyboard();
+
+/**
+ * The Keyboard object for handling keyboard input.
+ * @type {Keyboard}
+ */
+let keyboard = new Keyboard();
+
+/**
+ * Timestamp of the last touch event on the left side of the screen.
+ * @type {number}
+ */
 let lastTouchLeft = 0;
+
+/**
+ * Timestamp of the last touch event on the right side of the screen.
+ * @type {number}
+ */
 let lastTouchRight = 0;
+
+/**
+ * The audio object for the menu theme music.
+ * @type {HTMLAudioElement}
+ */
 let menuTheme = new Audio('./assets/audio/game/backgroundmusic/mp3/Ambient 10.mp3');
+
+/**
+ * The audio object for the game theme music.
+ * @type {HTMLAudioElement}
+ */
 let gameTheme = new Audio('assets/audio/game/backgroundmusic/mp3/Ambient 6.mp3');
+
+/**
+ * The container element for the sound button controls.
+ * @type {HTMLElement}
+ */
 const soundButtonContainer = document.getElementById('soundButtonContainer');
+
+/**
+ * The image element for the sound button icon.
+ * @type {HTMLImageElement}
+ */
 const soundIMG = document.getElementById('soundIMG');
-const landingSoundIMG  = document.getElementById('landingSoundIMG');
+
+/**
+ * The image element for the sound button icon on the landing page.
+ * @type {HTMLImageElement}
+ */
+const landingSoundIMG = document.getElementById('landingSoundIMG');
+
+/**
+ * The container element for fullscreen controls.
+ * @type {HTMLElement}
+ */
 const fullscreenContainer = document.getElementById('fullscreenContainer');
+
+/**
+ * The canvas element used for rendering the game.
+ * @type {HTMLCanvasElement}
+ */
 const gameCanvas = document.getElementById('canvas');
+
+/**
+ * Flag indicating whether the game has started.
+ * @type {boolean}
+ */
 let gameHasStarted = false;
+
+/**
+ * Flag indicating whether global volume is enabled or not.
+ * @type {boolean}
+ */
 let globalVolume = true;
+
+/**
+ * Flag indicating whether the user has interacted with the page (e.g., clicked, touched).
+ * @type {boolean}
+ */
 let userInteracted = false;
 
 
@@ -26,6 +99,7 @@ function init() {
     playAudio(gameTheme, 0.4, 1);
     canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard);
+    document.getElementById('homeButton').style.display = 'block';
 }
 
 
@@ -152,14 +226,12 @@ updateFullscreenVisibility();
 
 /**
  * Adds event listener for window resize to update fullscreen visibility.
- * @event window#resize
  */
 window.addEventListener('resize', updateFullscreenVisibility);
 
 
 /**
  * Toggles fullscreen mode when the fullscreen button is clicked.
- * @event jQuery#click
  */
 $('#toggle_fullscreen').on('click', function(){
     // if already full screen; exit
@@ -219,8 +291,6 @@ function hideContainer() {
 
 /**
  * Adds event listeners to show and hide containers when the mouse enters and leaves the canvas area.
- * @event gameCanvas#mouseover - Shows the fullscreen and sound button containers.
- * @event gameCanvas#mouseout - Hides the fullscreen and sound button containers.
  */
 gameCanvas.addEventListener('mouseover', showFullScreenContainer);
 gameCanvas.addEventListener('mouseout', hideContainer);
@@ -229,10 +299,6 @@ gameCanvas.addEventListener('mouseout', hideContainer);
 /**
  * Adds event listeners to the fullscreen and sound button containers to show and hide them
  * when the mouse enters and leaves these areas.
- * @event fullscreenContainer#mouseover - Shows the fullscreen and sound button containers.
- * @event fullscreenContainer#mouseout - Hides the fullscreen and sound button containers.
- * @event soundButtonContainer#mouseover - Shows the fullscreen and sound button containers.
- * @event soundButtonContainer#mouseout - Hides the fullscreen and sound button containers.
  */
 fullscreenContainer.addEventListener('mouseover', showFullScreenContainer);
 fullscreenContainer.addEventListener('mouseout', hideContainer);
@@ -242,7 +308,6 @@ soundButtonContainer.addEventListener('mouseout', hideContainer);
 
 /**
  * Toggles fullscreen mode when the fullscreen container is clicked.
- * @event fullscreenContainer#click
  */
 fullscreenContainer.addEventListener('click', function() {
     if (document.fullscreenElement) {
@@ -312,7 +377,6 @@ function checkAndStartBackgroundMusic(){
 /**
  * Adds an event listener for the 'touchstart' event on the element with ID 'touchLeft'.
  * Detects double-tap gestures and modifies the keyboard object to simulate pressing the left arrow key with or without the shift key.
- * @event touchLeft#touchstart
  * @param {TouchEvent} e - The touch event object.
  */
 document.getElementById('touchLeft').addEventListener('touchstart', (e) => {
@@ -334,7 +398,6 @@ document.getElementById('touchLeft').addEventListener('touchstart', (e) => {
 /**
  * Adds an event listener for the 'touchend' event on the element with ID 'touchLeft'.
  * Resets the state of the LEFT and SHIFT keys and sets NONE to true when the touch ends.
- * @event touchLeft#touchend
  * @param {TouchEvent} e - The touch event object.
  */
 document.getElementById('touchLeft').addEventListener('touchend', (e) => {
@@ -348,7 +411,6 @@ document.getElementById('touchLeft').addEventListener('touchend', (e) => {
 /**
  * Adds an event listener for the 'touchstart' event on the element with ID 'touchRight'.
  * Detects double-tap gestures and modifies the keyboard object to simulate pressing the right arrow key with or without the shift key.
- * @event touchRight#touchstart
  * @param {TouchEvent} e - The touch event object.
  */
 document.getElementById('touchRight').addEventListener('touchstart', (e) => {
@@ -369,7 +431,6 @@ document.getElementById('touchRight').addEventListener('touchstart', (e) => {
 /**
  * Adds an event listener for the 'touchend' event on the element with ID 'touchRight'.
  * Resets the state of the RIGHT and SHIFT keys and sets NONE to true when the touch ends.
- * @event touchRight#touchend
  * @param {TouchEvent} e - The touch event object.
  */
 document.getElementById('touchRight').addEventListener('touchend', (e) => {

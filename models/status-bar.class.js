@@ -1,19 +1,63 @@
+/**
+ * Represents a status bar extending from `DrawableObject`.
+ * The status bar displays the current status using images.
+ * 
+ * @class
+ * 
+ * @extends DrawableObject
+ */
 class StatusBar extends DrawableObject {
-    
+
+    /**
+     * Array of bars for displaying the status.
+     * @type {Array}
+     */
     bars = [];
+
+    /**
+     * Array of image URLs or paths used to display the status.
+     * @type {Array<string>}
+     */
     statusImages;
+
+    /**
+     * Percentage of the specific status currently being displayed.
+     * @type {number}
+     */
     percentage = 0;
+
+    /**
+     * Vertical spacing for positioning the status bar.
+     * @type {number}
+     */
     spacing;
 
-
+    /**
+     * Creates an instance of the `StatusBar` class.
+     * 
+     * @param {number} spacing - The vertical spacing to position the status bar.
+     * @param {Array<string>} statusImages - Array of image URLs or paths for displaying the status bar.
+     */
     constructor(spacing, statusImages) {
         super();
+        
+        /**
+         * The vertical spacing to position the status bar.
+         * @type {number}
+         */
         this.spacing = spacing;
+
+        /**
+         * Array of image URLs or paths used to display the status.
+         * @type {Array<string>}
+         */
         this.statusImages = statusImages;
+
         console.log(this.statusImages);
         console.log(this.statusImages === this.HPImages);
         console.log(this.statusImages === this.axeStatusImages); 
         console.log(this.statusImages === this.coinStatusImages);
+
         this.percentage = this.givePercentageOfSpecificStatus();
         this.loadImages(this.statusImages);
         this.x = 20;
@@ -21,8 +65,8 @@ class StatusBar extends DrawableObject {
         this.height = 50;
 
         console.log('Constructor:', this.statusImages === this.HPImages, this.statusImages === this.axeStatusImages, this.statusImages === this.coinStatusImages);
-
     };
+
 
 
 /**

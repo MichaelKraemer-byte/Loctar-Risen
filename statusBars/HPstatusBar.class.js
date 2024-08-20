@@ -1,6 +1,20 @@
+/**
+ * Represents a health points (HP) status bar.
+ * 
+ * This class manages the display of the HP status bar and updates it based on the current health value.
+ * It extends the `DrawableObject` class and uses a series of images to represent different health levels.
+ * 
+ * @extends DrawableObject
+ */
 class HPstatusBar extends DrawableObject {
-
-    // Status-Bars
+    
+    /**
+     * An array of images representing different health levels for the status bar.
+     * 
+     * @class
+     * 
+     * @type {string[]}
+     */
     HPImages = [
         'assets/el_pollo_locco/7_statusbars/1_statusbar/2_statusbar_health/orange/0.png',
         'assets/el_pollo_locco/7_statusbars/1_statusbar/2_statusbar_health/orange/20.png',
@@ -10,15 +24,26 @@ class HPstatusBar extends DrawableObject {
         'assets/el_pollo_locco/7_statusbars/1_statusbar/2_statusbar_health/orange/100.png'
     ];
 
+    /**
+     * The current percentage of the HP status bar.
+     * It ranges from 0 to 100 and determines which image is displayed.
+     * 
+     * @type {number}
+     */
     percentage = 100;
-    
+
+    /**
+     * Creates an instance of `HPstatusBar` and initializes its properties.
+     * 
+     * This method loads the required images and sets the initial position and size of the status bar.
+     */
     constructor() {
-        super();
+        super(); // Call the parent class constructor
         this.loadImages(this.HPImages);
         this.x = 20;
         this.y = 20;
         this.height = 50;
-    };
+    }
 
 
 /**

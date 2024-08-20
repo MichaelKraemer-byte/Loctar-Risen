@@ -1,19 +1,81 @@
+/**
+ * Represents the game world, including the character, status bars, and the canvas for rendering.
+ * This class handles the initialization and updates for the game environment.
+ * 
+ * @class
+ */
 class World {
+    /**
+     * The character object in the world.
+     * @type {Character}
+     */
     character = new Character();
+
+    /**
+     * The current level of the game.
+     * @type {Level}
+     */
     level = level_1;
+
+    /**
+     * Array of status bar objects representing various status indicators.
+     * @type {Array<StatusBar>}
+     */
     statusBars = [
         new HPstatusBar(),
         new AxeStatusBar(),
         new CoinStatusBar(),
     ];
+
+    /**
+     * The HTML canvas element used for rendering the game.
+     * @type {HTMLCanvasElement}
+     */
     canvas;
+
+    /**
+     * The 2D rendering context of the canvas.
+     * @type {CanvasRenderingContext2D}
+     */
     ctx;
+
+    /**
+     * The keyboard object used for handling user input.
+     * @type {Keyboard}
+     */
     keyboard;
+
+    /**
+     * The x-coordinate of the camera, used for camera movement.
+     * @type {number}
+     */
     camera_x = 0;
+
+    /**
+     * The current ground or surface in the world.
+     * @type {Ground}
+     */
     currentGround;
+
+    /**
+     * Boolean indicating whether a new Y position for the character has been set.
+     * @type {boolean}
+     */
     characterNewYSetted = false;
+
+    /**
+     * Boolean indicating whether the game is over.
+     * @type {boolean}
+     */
     gameOver = false;
 
+    /**
+     * Creates an instance of the World class.
+     * Initializes the canvas context, keyboard, and sets up the world.
+     * 
+     * @param {HTMLCanvasElement} canvas - The canvas element used for rendering the game.
+     * @param {Keyboard} keyboard - The keyboard object used for handling user input.
+     */
     constructor(canvas, keyboard){
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
@@ -22,6 +84,8 @@ class World {
         this.draw();
         this.run();
     };
+
+
 
 
     /**
@@ -48,7 +112,7 @@ class World {
     startEndbossStatusBarInterval() {
         setInterval(() => {
             this.addEndbossStatusbarToMap();
-        }, 1000 / 20);
+        }, 500);
     }
 
     /**
@@ -1013,26 +1077,6 @@ executeCharacterAttack(target) {
     }
 
 
-    // addEndbossStatusbarToMap() {
-    //     const endbossStatusBar = this.statusBars.find(bar => bar instanceof EndbossStatusBarOfHP);
-
-
-
-    //     this.level.endboss.forEach((endboss) => {
-    //         if (!endbossStatusBar) {
-    //             if (!endboss.isDead() && endboss.isVisible()) {
-    //                 this.statusBars.push(new EndbossStatusBarOfHP());
-    //             }
-    //         } else {
-    //             if (endboss.isDead() || !endboss.isVisible()) {
-    //                 const index = this.statusBars.indexOf(endbossStatusBar);
-    //                 this.statusBars.splice(index, 1);
-    //             }
-    //         }            
-    //     })
-    // }
-
-
 /**
  * Adds or removes Endboss status bars to/from the statusBars array based on the visibility and health of the Endbosses.
  * 
@@ -1053,29 +1097,32 @@ executeCharacterAttack(target) {
  * - Removes the status bar for an Endboss if it is dead or not visible.
  * 
  */
-    addEndbossStatusbarToMap() {
-        // Initialisierung des y-Wertes für die neue StatusBar
-        let yOffset = 0;
-    
-        // Durchlaufe alle Endbossen
+    addEndbossStatusbarToMap() {    
+        // Durchlaufe alle Endbosse im Level
         this.level.endboss.forEach((endboss) => {
-            // Filtert alle EndbossStatusBars aus dem statusBars-Array
+            // Filtere alle EndbossStatusBars aus dem statusBars-Array
             const endbossStatusBars = this.statusBars.filter(bar => bar instanceof EndbossStatusBarOfHP);
             
-            // Überprüfen, ob es bereits eine StatusBar für den Endboss gibt
+            // Überprüfe, ob es bereits eine StatusBar für den aktuellen Endboss gibt
             const existingBar = endbossStatusBars.find(bar => bar.endboss === endboss);
-    
+
             if (!endboss.isDead() && endboss.isVisible()) {
                 if (!existingBar) {
-                    // Neue StatusBar für den Endboss hinzufügen
+                    // Erstelle eine neue StatusBar für den Endboss
                     const newBar = new EndbossStatusBarOfHP();
-                    newBar.y = 20 * endbossStatusBars.length; // y-Position basierend auf der Anzahl der vorhandenen StatusBars anpassen
-                    newBar.endboss = endboss; // Verknüpfen Sie den Endboss mit der StatusBar (falls benötigt)
+
+                    // Setze die y-Position der StatusBar basierend auf der Anzahl der vorhandenen StatusBars
+                    newBar.y = 120 * endbossStatusBars.length; 
+
+                    // Weise den aktuellen Endboss der StatusBar zu
+                    newBar.endboss = endboss;
+
+                    // Füge die neue StatusBar zum StatusBars-Array hinzu
                     this.statusBars.push(newBar);
                 }
             } else {
                 if (existingBar) {
-                    // Existierende StatusBar entfernen
+                    // Entferne die existierende StatusBar, wenn der Endboss tot oder nicht sichtbar ist
                     const barIndex = this.statusBars.indexOf(existingBar);
                     if (barIndex !== -1) {
                         this.statusBars.splice(barIndex, 1);

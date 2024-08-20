@@ -178,6 +178,8 @@
     .landingHeroContent {
         gap: 4%;
         flex-direction: row;
+        justify-content: center;
+        align-items: center;
     }
 
     .noticePopUp{
@@ -358,6 +360,16 @@
 
     .centerDescriptionContainer{
         gap: 0px;
+    }
+
+    .landingButtonsContainer{
+        gap: 16px;
+        padding-top: 96px;
+    }
+
+    .landingHeroContent{
+        justify-content: center;
+        align-items: center;
     }
 }
 

@@ -1,6 +1,14 @@
+/**
+ * Represents the end boss in the game, a powerful enemy character with various states and animations.
+ * Inherits from the `MovableObject` class.
+ * @class
+ */ 
 class Endboss extends MovableObject {
 
-
+    /**
+     * Array of image paths for the walking animation.
+     * @type {string[]}
+     */
     walkImages = [
         'assets/trolls/_PNG/2_TROLL/Troll_02_1_WALK_000.png',
         'assets/trolls/_PNG/2_TROLL/Troll_02_1_WALK_001.png',
@@ -14,6 +22,10 @@ class Endboss extends MovableObject {
         'assets/trolls/_PNG/2_TROLL/Troll_02_1_WALK_009.png'
     ];
 
+    /**
+     * Array of image paths for the hurt animation.
+     * @type {string[]}
+     */
     hurtImages = [
         'assets/trolls/_PNG/2_TROLL/Troll_02_1_HURT_000.png',
         'assets/trolls/_PNG/2_TROLL/Troll_02_1_HURT_001.png',
@@ -27,6 +39,11 @@ class Endboss extends MovableObject {
         'assets/trolls/_PNG/2_TROLL/Troll_02_1_HURT_009.png'
     ];
 
+
+    /**
+     * Array of image paths for the dying animation.
+     * @type {string[]}
+     */
     dyingImages = [
         'assets/trolls/_PNG/2_TROLL/Troll_02_1_DIE_000.png',
         'assets/trolls/_PNG/2_TROLL/Troll_02_1_DIE_001.png',
@@ -40,6 +57,11 @@ class Endboss extends MovableObject {
         'assets/trolls/_PNG/2_TROLL/Troll_02_1_DIE_009.png'
     ];
 
+
+    /**
+     * Array of image paths for the melee attack animation.
+     * @type {string[]}
+     */
     meleeAttackImages = [
         'assets/trolls/_PNG/2_TROLL/Troll_02_1_ATTACK_000.png',
         'assets/trolls/_PNG/2_TROLL/Troll_02_1_ATTACK_001.png',
@@ -53,6 +75,11 @@ class Endboss extends MovableObject {
         'assets/trolls/_PNG/2_TROLL/Troll_02_1_ATTACK_009.png'
     ];
 
+
+    /**
+     * Array of image paths for the idle animation.
+     * @type {string[]}
+     */
     idleImages = [
         'assets/trolls/_PNG/2_TROLL/Troll_02_1_IDLE_000.png',
         'assets/trolls/_PNG/2_TROLL/Troll_02_1_IDLE_001.png',
@@ -66,30 +93,96 @@ class Endboss extends MovableObject {
         'assets/trolls/_PNG/2_TROLL/Troll_02_1_IDLE_009.png'
     ];
 
+
+    /**
+     * Array of image paths for the slashing attack animation.
+     * @type {string[]}
+     */
     slashingFrames = [
         'Troll_02_1_ATTACK_006.png',
         'Troll_02_1_ATTACK_007.png'
     ]
 
 
+    /**
+     * The game world in which the end boss exists.
+     * @type {World}
+     */
     world;
+
+    /**
+     * Audio object for the walking sound effect.
+     * @type {HTMLAudioElement}
+     */
     walkSound = new Audio('assets/audio/walking/walking-on-crunchy-road.wav');
+
+    /**
+     * Audio object for the hurt sound effect.
+     * @type {HTMLAudioElement}
+     */
     hurtSound = new Audio('assets/audio/boss/hurt/trollPain.mp3');
+
+    /**
+     * Audio object for the hit sound effect.
+     * @type {HTMLAudioElement}
+     */
     hitSound = new Audio('assets/audio/boss/hit/BigHammerHitCut.mp3');
+
+    /**
+     * Audio object for the dying sound effect.
+     * @type {HTMLAudioElement}
+     */
     dyingSound = new Audio('assets/audio/boss/dying/TrollDying.mp3');
+
+    /**
+     * Audio object for the melee attack sound effect.
+     * @type {HTMLAudioElement}
+     */
     meleeAttackSound = new Audio('assets/audio/boss/meleeAttack/slashSound.mp3');
+
+    /**
+     * The width of the end boss.
+     * @type {number}
+     */
     width = 700;
+
+    /**
+     * The height of the end boss.
+     * @type {number}
+     */
     height = 500;
+
+    /**
+     * The y-coordinate of the end boss.
+     * @type {number}
+     */
     y = 22;
+
+    /**
+     * The health points of the end boss.
+     * @type {number}
+     */
     HP = 400;
+
+    /**
+     * The offset for positioning the end boss.
+     * @type {Object}
+     * @property {number} top - The top offset.
+     * @property {number} bottom - The bottom offset.
+     * @property {number} right - The right offset.
+     * @property {number} left - The left offset.
+     */
     offset = {
         top: 180,
         bottom: 70,
         right: 235,
         left: 235
-    }
+    };
 
-
+    /**
+     * Creates an instance of the `Endboss` class.
+     * @param {number} x - The x-coordinate of the end boss's position.
+     */
     constructor(x){
         super(); 
         this.HP = this.HP;

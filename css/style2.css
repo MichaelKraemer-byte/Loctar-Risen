@@ -106,12 +106,31 @@
     height: 40px;
 }
 
+.back-to-menu-button-container{
+    position: absolute;
+    width: fit-content;
+    height: fit-content;
+    top: 64px;
+    right: 120px;
+    z-index: 3;
+}
+
+.back-to-menu-button-container:hover {
+    cursor: pointer;
+}
+
+.homeButton{
+    display: none;
+}
+
 .landing-sound-button-container{
     position: absolute;
     width: fit-content;
     height: fit-content;
     top: 64px;
     right: 48px;
+    display: flex;
+    gap: 16px;
     z-index: 3;
 }
 

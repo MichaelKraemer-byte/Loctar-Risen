@@ -1,37 +1,172 @@
+/**
+ * Represents a movable object in a game, extending from `DrawableObject`.
+ * This class handles properties related to movement, collision, and other dynamic behaviors.
+ * 
+ * @class
+ * 
+ * @extends DrawableObject
+ */
 class MovableObject extends DrawableObject {
 
+    /**
+     * The speed of the object.
+     * @type {number}
+     */
     speed = 0.15;
+
+    /**
+     * Boolean indicating the direction of the object.
+     * @type {boolean}
+     */
     otherDirection = false;
+
+    /**
+     * The vertical speed of the object.
+     * @type {number}
+     */
     speedY = 0;
+
+    /**
+     * Acceleration value affecting the object's movement.
+     * @type {number}
+     */
     acceleration = 4;
+
+    /**
+     * The health points of the object.
+     * @type {number}
+     */
     HP = 100;
+
+    /**
+     * Boolean indicating whether the object is currently in a damage process.
+     * @type {boolean}
+     */
     damageProcess = false;
+
+    /**
+     * Duration of the damage process in milliseconds.
+     * @type {number}
+     */
     damageProcessTime = 300;
+
+    /**
+     * Boolean indicating whether a collision is currently detected.
+     * @type {boolean}
+     */
     collision = false;
+
+    /**
+     * Reference to the world object that the movable object interacts with.
+     * @type {World}
+     */
     world;
+
+    /**
+     * The number of axes (likely for detecting collisions or movements).
+     * @type {number}
+     */
     axes = 0;
+
+    /**
+     * The number of coins collected by the object.
+     * @type {number}
+     */
     coins = 0;
+
+    /**
+     * Boolean indicating whether the object has been used.
+     * @type {boolean}
+     */
     used = false;
+
+    /**
+     * Boolean indicating whether a melee attack is currently in process.
+     * @type {boolean}
+     */
     meleeAttackProcess = false;
+
+    /**
+     * Boolean indicating whether the melee attack range is within the character.
+     * @type {boolean}
+     */
     meleeRangeToCharacter = false;
+
+    /**
+     * Initial speed of the object.
+     * @type {number}
+     */
     initialSpeed = 0;
+
+    /**
+     * Boolean indicating whether the object is standing on an obstacle.
+     * @type {boolean}
+     */
     isStandingOnObstacle = false;
+
+    /**
+     * Boolean indicating whether the object is currently walking.
+     * @type {boolean}
+     */
     walkingAnimation = false;
+
+    /**
+     * Boolean indicating whether the object is on a platform.
+     * @type {boolean}
+     */
     isOnPlatform = false;
+
+    /**
+     * The vertical position of the current platform.
+     * @type {number}
+     */
     currentPlatformY = 0;
+
+    /**
+     * Boolean indicating whether the object is visible to the character.
+     * @type {boolean}
+     */
     objectViewsCharacter = false;
+
+    /**
+     * Boolean indicating whether the object is walking.
+     * @type {boolean}
+     */
     isWalking = false;
+
+    /**
+     * Boolean indicating whether the object is attacking.
+     * @type {boolean}
+     */
     isAttacking = false;
+
+    /**
+     * The current ground or surface the object is on.
+     * @type {Ground}
+     */
     currentGround;
 
+    /**
+     * The vertical position from the bottom of the object.
+     * @type {number}
+     */
     bodyBottom = 280;
 
+    /**
+     * Object representing the offset values from the object's edges.
+     * @type {Object}
+     * @property {number} top - Offset from the top edge.
+     * @property {number} bottom - Offset from the bottom edge.
+     * @property {number} right - Offset from the right edge.
+     * @property {number} left - Offset from the left edge.
+     */
     offset = {
         top: 0,
         bottom: 0,
         right: 0,
         left: 0,
     };
+
 
     /**
  * Determines if the player character is on the same vertical level (height) as the current object.
@@ -431,7 +566,7 @@ class MovableObject extends DrawableObject {
  */
     stampJump(){
         this.speedY = 30;
-        this.playSound(this.stampJumpSound, 0.07, 1);
+        this.playSound(this.stampJumpSound, 0.4, 1);
     }
     
 

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: js/renderHTML.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: js/renderHTML.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>
+/**
+ * Renders a notice popup asking users to rotate their device.
+ * 
+ * @returns {string} The HTML string for the rotate device notice popup.
+ */
+function renderRotateDeviceNotice(){
+    return /*html*/`
+    &lt;div class="noticePopUp">
+        &lt;img class="horizontalParchment" src="./assets/WebImages/controllparchment-horizontal.png">
+        &lt;div class="adviceSentence">
+            &lt;h1 class="parchmentTitle">Please rotate&lt;br>your device&lt;/h1>
+            &lt;button id="OkayButton" disabled onclick="closePopUp(); hideLandingScreen();" class="okayButton">Okay&lt;/button>
+        &lt;/div>
+    &lt;/div>
+    `
+}
+
+
+/**
+ * Renders the keyboard controls popup for desktop users.
+ * @returns {string} The HTML string for the desktop keyboard controls popup.
+ */
+function renderKeyboardControls(){
+    return /*html*/`
+    &lt;div id="controlsPopUp" class="desktopControlsPopUp">
+        &lt;img class="horizontalParchment" src="./assets/WebImages/controllparchment-horizontal.png">
+        &lt;div class="keyboardDescriptionContainer">
+        &lt;svg class="crossSVG" onclick="closePopUp()" xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 2em; height: 2em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1">&lt;path d="M957.3376 883.0976 586.24 512l371.0976-371.0976c20.1728-20.1728 20.48-53.76 0-74.24-20.6848-20.6848-53.76-20.48-74.24 0L512 437.76 140.9024 66.6624c-20.1728-20.1728-53.76-20.48-74.24 0-20.5824 20.6848-20.48 53.76 0 74.24L437.76 512 66.6624 883.0976c-20.1728 20.1728-20.48 53.76 0 74.24 20.6848 20.6848 53.76 20.48 74.24 0L512 586.24l371.0976 371.0976c20.1728 20.1728 53.76 20.48 74.24 0C978.0224 936.7552 977.8176 903.68 957.3376 883.0976z"/>&lt;/svg>
+            &lt;h1 class="parchmentTitle">Walking:&lt;/h1>
+                &lt;p class="parchmentText">&lt;span class="explainIntro">Walk right: &lt;/span>&lt;span class="explainAnswer">D&lt;/span>&lt;/p>
+                &lt;p class="parchmentText">&lt;span class="explainIntro">Walk left: &lt;/span>&lt;span class="explainAnswer">A&lt;/span>&lt;/p>
+                &lt;p class="parchmentText">&lt;span class="explainIntro">Run: &lt;/span>&lt;span class="explainAnswer">Hold shift&lt;/span>&lt;/p>
+            &lt;h1 class="parchmentTitle">Action:&lt;/h2>
+                &lt;p class="parchmentText">&lt;span class="explainIntro">Jump:&lt;/span>&lt;span class="explainAnswer">Space&lt;/span>&lt;/p>
+                &lt;p class="parchmentText">&lt;span class="explainIntro">Melee attack&lt;/span>&lt;span class="explainAnswer">Q&lt;/span>&lt;/p>
+                &lt;p class="parchmentText">&lt;span class="explainIntro">Throwing&lt;/span>&lt;span class="explainAnswer">E&lt;/span>&lt;/p>
+        &lt;/div>
+    &lt;/div>
+    `
+}
+
+
+/**
+ * Renders the vertical mobile controls popup.
+ * @returns {string} The HTML string for the vertical mobile controls popup.
+ */
+function renderVerticalMobileControls(){
+    return /*html*/`
+    &lt;div id="controlsPopUp" class="controlsPopUp">
+        &lt;img class="verticalParchment" src="./assets/WebImages/controllparchment-vertical.png">
+        &lt;svg class="crossSVG" onclick="closePopUp()" xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1">&lt;path d="M957.3376 883.0976 586.24 512l371.0976-371.0976c20.1728-20.1728 20.48-53.76 0-74.24-20.6848-20.6848-53.76-20.48-74.24 0L512 437.76 140.9024 66.6624c-20.1728-20.1728-53.76-20.48-74.24 0-20.5824 20.6848-20.48 53.76 0 74.24L437.76 512 66.6624 883.0976c-20.1728 20.1728-20.48 53.76 0 74.24 20.6848 20.6848 53.76 20.48 74.24 0L512 586.24l371.0976 371.0976c20.1728 20.1728 53.76 20.48 74.24 0C978.0224 936.7552 977.8176 903.68 957.3376 883.0976z"/>&lt;/svg>
+        &lt;div class="mobileControlDescriptionContainer">
+            &lt;div id="descriptionContainer" class="descriptionAndButtonContainer">
+                &lt;div class="mobileControlDescriptionContainer">
+                    &lt;h1 class="parchmentTitle">Walking:&lt;/h1>
+                    &lt;p class="parchmentText">&lt;span class="explainIntro">Walk right: &lt;/span>&lt;span class="explainAnswer">Tap bright frame&lt;/span>&lt;/p>
+                    &lt;p class="parchmentText">&lt;span class="explainIntro">Walk left: &lt;/span>&lt;span class="explainAnswer">Tap dark frame&lt;/span>&lt;/p>
+                    &lt;p class="parchmentText">&lt;span class="explainIntro">Run: &lt;/span>&lt;span class="explainAnswer">Double Tap&lt;/span>&lt;/p>
+                    &lt;img class="mobileWalkExplain-Image" src="./assets/WebImages/mobileWalkExplain.png">
+                &lt;/div>
+                &lt;div class="description-btn-flip-container" onclick="showSecondPageVerticalMobileControls()">
+                    &lt;a href="#" class="description-btn-flip" data-back="Page 2" data-front="Page 1">&lt;/a>
+                &lt;/div>
+            &lt;/div>
+        &lt;/div>
+    &lt;/div>
+    `
+}
+
+
+/**
+ * Renders the first page of vertical mobile controls.
+ * @returns {string} The HTML string for the first page of vertical mobile controls.
+ */
+function renderFirstPageVerticalMobileControls(){
+    return /*html*/`
+    &lt;div class="mobileControlDescriptionContainer">
+        &lt;h1 class="parchmentTitle">Walking:&lt;/h1>
+        &lt;p class="parchmentText">&lt;span class="explainIntro">Walk right: &lt;/span>&lt;span class="explainAnswer">Tap bright frame&lt;/span>&lt;/p>
+        &lt;p class="parchmentText">&lt;span class="explainIntro">Walk left: &lt;/span>&lt;span class="explainAnswer">Tap dark frame&lt;/span>&lt;/p>
+        &lt;p class="parchmentText">&lt;span class="explainIntro">Run: &lt;/span>&lt;span class="explainAnswer">Double Tap&lt;/span>&lt;/p>
+        &lt;img class="mobileWalkExplain-Image" src="./assets/WebImages/mobileWalkExplain.png">
+    &lt;/div>
+    &lt;div class="description-btn-flip-container" onclick="showSecondPageVerticalMobileControls()">
+        &lt;a href="#" class="description-btn-flip" data-back="Page 2" data-front="Page 1">&lt;/a>
+    &lt;/div>
+    `
+}
+
+
+/**
+ * Renders the second page of vertical mobile controls.
+ * @returns {string} The HTML string for the second page of vertical mobile controls.
+ */
+function renderSecondPageVerticalMobileControls(){
+    return /*html*/`
+        &lt;h1 class="parchmentTitle">Action:&lt;/h1>
+        &lt;div class="descriptionContainerSecondPage">
+            &lt;div class="mobileSecondDescriptionRow">&lt;span class="parchmentText">Jump: &lt;/span>&lt;div class="explainImgContainer">&lt;img class="explainImg" src="assets/buttons/controller/jump.png">&lt;/div>&lt;/div>
+            &lt;div class="mobileSecondDescriptionRow">&lt;span class="parchmentText">Melee attack: &lt;/span>&lt;div class="explainImgContainer">&lt;img class="explainImg" src="assets/buttons/controller/Q.png">&lt;/div>&lt;/div>
+            &lt;div class="mobileSecondDescriptionRow">&lt;span class="parchmentText">Throw: &lt;/span>&lt;div class="explainImgContainer">&lt;img class="explainImg" src="assets/buttons/controller/E.png">&lt;/div>&lt;/div>
+        &lt;/div>
+        &lt;div class="description-btn-flip-container" onclick="showFirstPageHorizontalMobileControls()">
+            &lt;a href="#" class="description-btn-flip" data-back="Page 1" data-front="Page 2">&lt;/a>
+        &lt;/div>
+    `
+}
+
+
+/**
+ * Renders the horizontal mobile controls popup.
+ * @returns {string} The HTML string for the horizontal mobile controls popup.
+ */
+function renderHorizontalMobileControls(){
+    return /*html*/`
+    &lt;div id="controlsPopUp" class="controlsPopUp">
+        &lt;img class="horizontalParchment" src="./assets/WebImages/controllparchment-horizontal.png">
+        &lt;svg class="crossSVG" onclick="closePopUp()" xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1">&lt;path d="M957.3376 883.0976 586.24 512l371.0976-371.0976c20.1728-20.1728 20.48-53.76 0-74.24-20.6848-20.6848-53.76-20.48-74.24 0L512 437.76 140.9024 66.6624c-20.1728-20.1728-53.76-20.48-74.24 0-20.5824 20.6848-20.48 53.76 0 74.24L437.76 512 66.6624 883.0976c-20.1728 20.1728-20.48 53.76 0 74.24 20.6848 20.6848 53.76 20.48 74.24 0L512 586.24l371.0976 371.0976c20.1728 20.1728 53.76 20.48 74.24 0C978.0224 936.7552 977.8176 903.68 957.3376 883.0976z"/>&lt;/svg>
+        &lt;div class="mobileControlDescriptionContainer">
+            &lt;div class="descriptionAndButtonContainer">
+                &lt;div id="descriptionContainer" class="centerDescriptionContainer">
+                    &lt;h1 class="parchmentTitle">Walking:&lt;/h1>
+                    &lt;div class="descriptionAndImageContainer">
+                        &lt;div class="descriptionContainer">
+                            &lt;p class="parchmentText">&lt;span class="explainIntro">Walk right: &lt;/span>&lt;span class="explainAnswer">Tap bright frame&lt;/span>&lt;/p>
+                            &lt;p class="parchmentText">&lt;span class="explainIntro">Walk left: &lt;/span>&lt;span class="explainAnswer">Tap dark frame&lt;/span>&lt;/p>
+                            &lt;p class="parchmentText">&lt;span class="explainIntro">Run: &lt;/span>&lt;span class="explainAnswer">Double Tap&lt;/span>&lt;/p>
+                        &lt;/div>
+                        &lt;img class="mobileWalkExplain-Image" src="./assets/WebImages/mobileWalkExplain.png">
+                    &lt;/div>
+                    &lt;div class="description-btn-flip-container" onclick="showSecondPageHorizontalMobileControls()">
+                        &lt;a href="#" class="description-btn-flip" data-back="Page 2" data-front="Page 1">&lt;/a>
+                    &lt;/div>
+                &lt;/div>
+            &lt;/div>
+        &lt;/div>
+    &lt;/div>
+    `
+}
+
+
+/**
+ * Renders the second page of the horizontal mobile controls popup.
+ * @returns {string} The HTML string for the second page of the horizontal mobile controls popup.
+ */
+function renderSecondPageHorizontalMobileControls() {
+    return /*html*/`
+        &lt;h1 class="parchmentTitle">Action:&lt;/h1>
+        &lt;div class="descriptionContainerSecondPage">
+            &lt;div class="mobileSecondDescriptionRow">&lt;span class="parchmentText">Jump: &lt;/span>&lt;div class="explainImgContainer">&lt;img class="explainImg" src="assets/buttons/controller/jump.png">&lt;/div>&lt;/div>
+            &lt;div class="mobileSecondDescriptionRow">&lt;span class="parchmentText">Melee attack: &lt;/span>&lt;div class="explainImgContainer">&lt;img class="explainImg" src="assets/buttons/controller/Q.png">&lt;/div>&lt;/div>
+            &lt;div class="mobileSecondDescriptionRow">&lt;span class="parchmentText">Throw: &lt;/span>&lt;div class="explainImgContainer">&lt;img class="explainImg" src="assets/buttons/controller/E.png">&lt;/div>&lt;/div>
+        &lt;/div>
+        &lt;div class="description-btn-flip-container" onclick="showFirstPageHorizontalMobileControls()">
+            &lt;a href="#" class="description-btn-flip" data-back="Page 1" data-front="Page 2">&lt;/a>
+        &lt;/div>
+    `
+}
+
+
+/**
+ * Renders the first page of the horizontal mobile controls popup.
+ * @returns {string} The HTML string for the first page of the horizontal mobile controls popup.
+ */
+function renderFirstPageHorizontalMobileControls() {
+    return /*html*/`
+        &lt;h1 class="parchmentTitle">Walking:&lt;/h1>
+        &lt;div class="descriptionAndImageContainer">
+            &lt;div class="descriptionContainer">
+                &lt;p class="parchmentText">&lt;span class="explainIntro">Walk right: &lt;/span>&lt;span class="explainAnswer">Tap bright frame&lt;/span>&lt;/p>
+                &lt;p class="parchmentText">&lt;span class="explainIntro">Walk left: &lt;/span>&lt;span class="explainAnswer">Tap dark frame&lt;/span>&lt;/p>
+                &lt;p class="parchmentText">&lt;span class="explainIntro">Run: &lt;/span>&lt;span class="explainAnswer">Double Tap&lt;/span>&lt;/p>
+            &lt;/div>
+            &lt;img class="mobileWalkExplain-Image" src="./assets/WebImages/mobileWalkExplain.png">
+        &lt;/div>
+        &lt;div class="description-btn-flip-container" onclick="showSecondPageHorizontalMobileControls()">
+            &lt;a href="#" class="description-btn-flip" data-back="Page 2" data-front="Page 1">&lt;/a>
+        &lt;/div>
+`
+}
+
+/**
+ * Renders the HTML content for the story popup, including the story parchment, close button, and story text.
+ * @returns {string} The HTML string for the story popup container.
+ */
+function renderStory(){
+    return /*html*/`
+    &lt;div class="storyPopUpContainer">
+        &lt;img class="storyParchment" src="./assets/WebImages/storyparchment-removebg-preview.png" alt="story-parchment">
+        &lt;svg class="crossSVG storyCrossSVG" onclick="closePopUp()" xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1">&lt;path d="M957.3376 883.0976 586.24 512l371.0976-371.0976c20.1728-20.1728 20.48-53.76 0-74.24-20.6848-20.6848-53.76-20.48-74.24 0L512 437.76 140.9024 66.6624c-20.1728-20.1728-53.76-20.48-74.24 0-20.5824 20.6848-20.48 53.76 0 74.24L437.76 512 66.6624 883.0976c-20.1728 20.1728-20.48 53.76 0 74.24 20.6848 20.6848 53.76 20.48 74.24 0L512 586.24l371.0976 371.0976c20.1728 20.1728 53.76 20.48 74.24 0C978.0224 936.7552 977.8176 903.68 957.3376 883.0976z"/>&lt;/svg>
+        &lt;div class="storyParchmentContainer">
+            &lt;h1 class="storyTitle">Skarr's Journey:&lt;br>Loctar Risen&lt;/h1>
+            &lt;div class="storyTextContainer">
+                &lt;p class="storyParagraph" id="story">
+                    In the shadowy valley hidden between jagged mountains, there lived a young orc named Skarr, a proud member of the Axe Clan. His people were renowned for their strength, loyalty, and relentless pursuit of Loctarâ€”honor and glory in battle. Like his ancestors before him, Skarr trained daily, driven by the dream of becoming a warrior worthy of his clanâ€™s legacy.&lt;br>&lt;br>
+
+                    One fateful morning, Skarr awoke to an unsettling silence. The village, usually alive with the sounds of the forge and laughter, was eerily quiet. As he stepped outside, he was met with a scene of devastation. His home, his villageâ€”everything lay in ruins, scorched and broken. The telltale signs of battleâ€”giant footprints and shattered weaponsâ€”pointed to their ancient enemies: the savage trolls and ruthless minotaurs. These creatures, long envious of the Axe Clanâ€™s honor and strength, had finally struck.&lt;br>&lt;br>
+
+                    Desperate, Skarr searched the wreckage for any sign of his family. Amidst the debris, he found a torn piece of his sisterâ€™s cloakâ€”proof that they had been taken. But as he continued his search, his eyes fell upon something else: an ancient chest, half-buried under the rubble. This was no ordinary chestâ€”it was a relic passed down through generations, said to contain the secrets to the clanâ€™s greatest strength.&lt;br>&lt;br>
+
+                    With trembling hands, Skarr opened the chest. Inside, he found a map and a few scattered coins, each engraved with the symbol of Loctar. As he studied the map, he realized it marked the locations of sacred treasures hidden throughout the land. These treasures were no mere goldâ€”they were powerful relics, imbued with the essence of his ancestors, and vital to unlocking the strength needed to defeat the trolls and minotaurs.&lt;br>&lt;br>
+
+                    Skarr's father had often told him stories of these relics, which were left by the clan's founders to protect the Axe Clan in times of dire need. It was said that without these treasures, no warrior, no matter how brave, could hope to defeat the ancient enemies that now held his family captive. The trolls and minotaurs had used dark magic to bind Skarrâ€™s family, and only the power of these relics could break the spell. Without them, a direct assault would be doomed to fail, and his family would remain lost forever.&lt;br>&lt;br>
+
+                    Understanding the gravity of his mission, Skarr swore an oath to complete the Trial of Loctar. He set off on his journey, driven by the need to gather the sacred treasures that would restore the Loctar of his clan and give him the power to rescue his family. Each coin he found was more than just a step closer to glory; it was a piece of the strength he needed to confront his enemies.&lt;br>&lt;br>
+
+                    Through treacherous lands filled with enemies, Skarr fought not just for survival, but to prove himself worthy of his ancestorsâ€™ legacy. The treasures he sought were scattered across dangerous terrains, guarded by fierce creatures. But with every battle fought and every coin collected, Skarr grew stronger, fueled by the memories of his family and the unyielding spirit of the Axe Clan.&lt;br>&lt;br>
+
+                    Skarr knew that the path ahead would be fraught with danger, but he was determined. Only by gathering these sacred items could he hope to rescue his family and ensure that the Axe Clan would rise again, its honor restored and its glory renewed. As Skarr embarked on this perilous quest, he knew that Loctar was not just a goalâ€”it was his destiny.
+
+                &lt;/p>
+            &lt;/div>
+        &lt;/div>
+    &lt;/div>
+    `;
+}
+
+
+/**
+ * Renders the HTML content for the success parchment popup, including the congratulations message and buttons.
+ * @returns {string} The HTML string for the success parchment popup container.
+ */
+function renderSuccessParchment() {
+    return /*html*/`
+    &lt;div class="finisherPopUpContainer">
+        &lt;div class="finisherParchmentContainer">
+            &lt;h1 class="finisherTitle wonTitle">Congratulations!&lt;br>You have succeed!&lt;/h1>
+            &lt;div class="finishButtonsContainer">
+                &lt;button onclick="closePopUp(); backToMenu();" class="okayButton">Menu&lt;/button>
+                &lt;button onclick="closePopUp(); resetGame();" class="okayButton">Play again&lt;/button>
+            &lt;/div>
+        &lt;/div>
+    &lt;/div>
+    `;
+}
+
+
+/**
+ * Renders the HTML content for the failure parchment popup, including the failure message and buttons.
+ * @returns {string} The HTML string for the failure parchment popup container.
+ */
+function renderFailureParchment() {
+    return /*html*/`
+    &lt;div class="finisherPopUpContainer">
+        &lt;div class="finisherParchmentContainer">
+            &lt;h1 class="finisherTitle lostColor">You have lost!&lt;/h1>
+            &lt;div class="finishButtonsContainer">
+                &lt;button onclick="closePopUp(); backToMenu();" class="okayButton">Menu&lt;/button>
+                &lt;button onclick="closePopUp(); resetGame();" class="okayButton">Play again&lt;/button>
+            &lt;/div>
+        &lt;/div>
+    &lt;/div>
+    `;
+}
+
+
+/**
+ * Renders the HTML content for the landing screen, including the game title and navigation buttons.
+ * @returns {string} The HTML string for the landing screen container, featuring the title and buttons for starting the game, viewing controls, story, and legal notice.
+ */
+function renderLandingScreen(){
+    return /*html*/`
+      &lt;div class="landingHeroContent">
+        &lt;h1 class="landingTitle">Loctar Risen&lt;/h1>
+        &lt;div class="landingButtonsContainer">
+          &lt;div class="landingPlayButtonContainer" onclick="startGame()">
+            &lt;a href="#" class="btn-flip landingPlayButton" data-back="Let's go" data-front="Start Game">&lt;/a>
+          &lt;/div>
+
+          &lt;div onclick="slideInControls()">
+            &lt;a href="#" class="btn-flip landingSubButtons" data-back="Gameplay" data-front="Controls">&lt;/a>
+          &lt;/div>
+          &lt;div onclick="slideInStory()">
+            &lt;a href="#" class="btn-flip landingSubButtons" data-back="About" data-front="Story">&lt;/a>
+          &lt;/div>
+          &lt;a href="impressum.html" class="btn-flip landingSubButtons impressumButton impressum-btn-flip landing-impressum-btn-flip" data-back="Inprint" data-front="Legal Notice">&lt;/a>    
+        &lt;/div>
+      &lt;/div>
+    `;
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Axe.html">Axe</a></li><li><a href="AxeStatusBar.html">AxeStatusBar</a></li><li><a href="BackDecor.html">BackDecor</a></li><li><a href="Character.html">Character</a></li><li><a href="Coin.html">Coin</a></li><li><a href="CoinStatusBar.html">CoinStatusBar</a></li><li><a href="CoinStatusBar_coinStatusImages.html">coinStatusImages</a></li><li><a href="DrawableObject.html">DrawableObject</a></li><li><a href="Endboss.html">Endboss</a></li><li><a href="EndbossStatusBarOfHP.html">EndbossStatusBarOfHP</a></li><li><a href="Foreground.html">Foreground</a></li><li><a href="Ground.html">Ground</a></li><li><a href="HPstatusBar.html">HPstatusBar</a></li><li><a href="HPstatusBar_HPImages.html">HPImages</a></li><li><a href="Keyboard.html">Keyboard</a></li><li><a href="Level.html">Level</a></li><li><a href="MiddleDecor.html">MiddleDecor</a></li><li><a href="Minotaur_1.html">Minotaur_1</a></li><li><a href="MovableObject.html">MovableObject</a></li><li><a href="OneBlockRockObstacle.html">OneBlockRockObstacle</a></li><li><a href="OneBlockStepRock.html">OneBlockStepRock</a></li><li><a href="RuinDecor.html">RuinDecor</a></li><li><a href="Sky.html">Sky</a></li><li><a href="ThreeBlockPlatform.html">ThreeBlockPlatform</a></li><li><a href="ThrowableObject.html">ThrowableObject</a></li><li><a href="Treasure.html">Treasure</a></li><li><a href="World.html">World</a></li></ul><h3>Global</h3><ul><li><a href="global.html#backToMenu">backToMenu</a></li><li><a href="global.html#canvas">canvas</a></li><li><a href="global.html#checkAndStartBackgroundMusic">checkAndStartBackgroundMusic</a></li><li><a href="global.html#closePopUp">closePopUp</a></li><li><a href="global.html#disOrEnableOkButton">disOrEnableOkButton</a></li><li><a href="global.html#fullscreenContainer">fullscreenContainer</a></li><li><a href="global.html#gameCanvas">gameCanvas</a></li><li><a href="global.html#gameHasStarted">gameHasStarted</a></li><li><a href="global.html#gameTheme">gameTheme</a></li><li><a href="global.html#globalVolume">globalVolume</a></li><li><a href="global.html#handleTouchEnd">handleTouchEnd</a></li><li><a href="global.html#handleTouchStart">handleTouchStart</a></li><li><a href="global.html#handleUserInteraction">handleUserInteraction</a></li><li><a href="global.html#hideContainer">hideContainer</a></li><li><a href="global.html#hideLandingScreen">hideLandingScreen</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#keyboard">keyboard</a></li><li><a href="global.html#landingSoundIMG">landingSoundIMG</a></li><li><a href="global.html#lastTouchLeft">lastTouchLeft</a></li><li><a href="global.html#lastTouchRight">lastTouchRight</a></li><li><a href="global.html#level_1">level_1</a></li><li><a href="global.html#menuTheme">menuTheme</a></li><li><a href="global.html#playAudio">playAudio</a></li><li><a href="global.html#playMenuTheme">playMenuTheme</a></li><li><a href="global.html#renderControls">renderControls</a></li><li><a href="global.html#renderFailureParchment">renderFailureParchment</a></li><li><a href="global.html#renderFirstPageHorizontalMobileControls">renderFirstPageHorizontalMobileControls</a></li><li><a href="global.html#renderFirstPageVerticalMobileControls">renderFirstPageVerticalMobileControls</a></li><li><a href="global.html#renderHorizontalMobileControls">renderHorizontalMobileControls</a></li><li><a href="global.html#renderKeyboardControls">renderKeyboardControls</a></li><li><a href="global.html#renderLandingScreen">renderLandingScreen</a></li><li><a href="global.html#renderRotateDeviceNotice">renderRotateDeviceNotice</a></li><li><a href="global.html#renderSecondPageHorizontalMobileControls">renderSecondPageHorizontalMobileControls</a></li><li><a href="global.html#renderSecondPageVerticalMobileControls">renderSecondPageVerticalMobileControls</a></li><li><a href="global.html#renderStory">renderStory</a></li><li><a href="global.html#renderSuccessParchment">renderSuccessParchment</a></li><li><a href="global.html#renderVerticalMobileControls">renderVerticalMobileControls</a></li><li><a href="global.html#resetGame">resetGame</a></li><li><a href="global.html#setupUserInteractionListener">setupUserInteractionListener</a></li><li><a href="global.html#showFirstPageHorizontalMobileControls">showFirstPageHorizontalMobileControls</a></li><li><a href="global.html#showFirstPageVerticalMobileControls">showFirstPageVerticalMobileControls</a></li><li><a href="global.html#showFullScreenContainer">showFullScreenContainer</a></li><li><a href="global.html#showLandingScreen">showLandingScreen</a></li><li><a href="global.html#showSecondPageHorizontalMobileControls">showSecondPageHorizontalMobileControls</a></li><li><a href="global.html#showSecondPageVerticalMobileControls">showSecondPageVerticalMobileControls</a></li><li><a href="global.html#slideInControls">slideInControls</a></li><li><a href="global.html#slideInFailureParchment">slideInFailureParchment</a></li><li><a href="global.html#slideInStory">slideInStory</a></li><li><a href="global.html#slideInSuccessParchment">slideInSuccessParchment</a></li><li><a href="global.html#slideInTurnDeviceNotice">slideInTurnDeviceNotice</a></li><li><a href="global.html#soundButtonContainer">soundButtonContainer</a></li><li><a href="global.html#soundIMG">soundIMG</a></li><li><a href="global.html#soundOnOrOff">soundOnOrOff</a></li><li><a href="global.html#startGame">startGame</a></li><li><a href="global.html#startResettedGame">startResettedGame</a></li><li><a href="global.html#updateFullscreenVisibility">updateFullscreenVisibility</a></li><li><a href="global.html#userInteracted">userInteracted</a></li><li><a href="global.html#world">world</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Tue Aug 20 2024 13:51:23 GMT+0200 (Central European Summer Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

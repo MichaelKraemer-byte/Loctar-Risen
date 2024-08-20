@@ -1,3 +1,8 @@
+/**
+ * Represents the first level of the game, containing all the necessary game objects and elements.
+ * 
+ * @type {Level}
+ */
 const level_1 = new Level (
     [
         new Minotaur_1(0),
@@ -12,7 +17,7 @@ const level_1 = new Level (
         new Minotaur_1(4000),
     ],
     [
-        new Endboss(2700),
+        new Endboss(300),
         new Endboss(4750),
     ],
     [

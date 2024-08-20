@@ -1,4 +1,9 @@
 
+/**
+ * Renders a notice popup asking users to rotate their device.
+ * 
+ * @returns {string} The HTML string for the rotate device notice popup.
+ */
 function renderRotateDeviceNotice(){
     return /*html*/`
     <div class="noticePopUp">
@@ -12,6 +17,10 @@ function renderRotateDeviceNotice(){
 }
 
 
+/**
+ * Renders the keyboard controls popup for desktop users.
+ * @returns {string} The HTML string for the desktop keyboard controls popup.
+ */
 function renderKeyboardControls(){
     return /*html*/`
     <div id="controlsPopUp" class="desktopControlsPopUp">
@@ -32,6 +41,10 @@ function renderKeyboardControls(){
 }
 
 
+/**
+ * Renders the vertical mobile controls popup.
+ * @returns {string} The HTML string for the vertical mobile controls popup.
+ */
 function renderVerticalMobileControls(){
     return /*html*/`
     <div id="controlsPopUp" class="controlsPopUp">
@@ -56,6 +69,10 @@ function renderVerticalMobileControls(){
 }
 
 
+/**
+ * Renders the first page of vertical mobile controls.
+ * @returns {string} The HTML string for the first page of vertical mobile controls.
+ */
 function renderFirstPageVerticalMobileControls(){
     return /*html*/`
     <div class="mobileControlDescriptionContainer">
@@ -72,6 +89,10 @@ function renderFirstPageVerticalMobileControls(){
 }
 
 
+/**
+ * Renders the second page of vertical mobile controls.
+ * @returns {string} The HTML string for the second page of vertical mobile controls.
+ */
 function renderSecondPageVerticalMobileControls(){
     return /*html*/`
         <h1 class="parchmentTitle">Action:</h1>
@@ -87,6 +108,10 @@ function renderSecondPageVerticalMobileControls(){
 }
 
 
+/**
+ * Renders the horizontal mobile controls popup.
+ * @returns {string} The HTML string for the horizontal mobile controls popup.
+ */
 function renderHorizontalMobileControls(){
     return /*html*/`
     <div id="controlsPopUp" class="controlsPopUp">
@@ -115,6 +140,10 @@ function renderHorizontalMobileControls(){
 }
 
 
+/**
+ * Renders the second page of the horizontal mobile controls popup.
+ * @returns {string} The HTML string for the second page of the horizontal mobile controls popup.
+ */
 function renderSecondPageHorizontalMobileControls() {
     return /*html*/`
         <h1 class="parchmentTitle">Action:</h1>
@@ -129,6 +158,11 @@ function renderSecondPageHorizontalMobileControls() {
     `
 }
 
+
+/**
+ * Renders the first page of the horizontal mobile controls popup.
+ * @returns {string} The HTML string for the first page of the horizontal mobile controls popup.
+ */
 function renderFirstPageHorizontalMobileControls() {
     return /*html*/`
         <h1 class="parchmentTitle">Walking:</h1>
@@ -146,7 +180,10 @@ function renderFirstPageHorizontalMobileControls() {
 `
 }
 
-
+/**
+ * Renders the HTML content for the story popup, including the story parchment, close button, and story text.
+ * @returns {string} The HTML string for the story popup container.
+ */
 function renderStory(){
     return /*html*/`
     <div class="storyPopUpContainer">
@@ -180,6 +217,10 @@ function renderStory(){
 }
 
 
+/**
+ * Renders the HTML content for the success parchment popup, including the congratulations message and buttons.
+ * @returns {string} The HTML string for the success parchment popup container.
+ */
 function renderSuccessParchment() {
     return /*html*/`
     <div class="finisherPopUpContainer">
@@ -195,6 +236,10 @@ function renderSuccessParchment() {
 }
 
 
+/**
+ * Renders the HTML content for the failure parchment popup, including the failure message and buttons.
+ * @returns {string} The HTML string for the failure parchment popup container.
+ */
 function renderFailureParchment() {
     return /*html*/`
     <div class="finisherPopUpContainer">
@@ -210,6 +255,10 @@ function renderFailureParchment() {
 }
 
 
+/**
+ * Renders the HTML content for the landing screen, including the game title and navigation buttons.
+ * @returns {string} The HTML string for the landing screen container, featuring the title and buttons for starting the game, viewing controls, story, and legal notice.
+ */
 function renderLandingScreen(){
     return /*html*/`
       <div class="landingHeroContent">
