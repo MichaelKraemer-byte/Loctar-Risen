@@ -13,7 +13,7 @@ const level_1 = new Level (
     ],
     [
         new Endboss(2700),
-        new Endboss(4650),
+        new Endboss(4750),
     ],
     [
         new Axe(1200, 310),

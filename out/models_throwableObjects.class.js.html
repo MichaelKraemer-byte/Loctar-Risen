@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: models/throwableObjects.class.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: models/throwableObjects.class.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>class ThrowableObject extends MovableObject {
+
+    flyingAxeImages = [
+        'assets/crafties/orcs/throwable-objects/axe/Axe-4.png',
+        'assets/crafties/orcs/throwable-objects/axe/Axe-3.png',
+        'assets/crafties/orcs/throwable-objects/axe/Axe-2.png',
+        'assets/crafties/orcs/throwable-objects/axe/Axe-1.png'
+    ];
+
+    redSplashImages = [
+        'assets/el_pollo_locco/6_salsa_bottle/bottle_rotation/bottle_splash/1_bottle_splash.png',
+        'assets/el_pollo_locco/6_salsa_bottle/bottle_rotation/bottle_splash/2_bottle_splash.png',
+        'assets/el_pollo_locco/6_salsa_bottle/bottle_rotation/bottle_splash/3_bottle_splash.png',
+        'assets/el_pollo_locco/6_salsa_bottle/bottle_rotation/bottle_splash/4_bottle_splash.png',
+        'assets/el_pollo_locco/6_salsa_bottle/bottle_rotation/bottle_splash/5_bottle_splash.png',
+        'assets/el_pollo_locco/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png',
+        ''
+    ];
+
+    redSmashImages = [
+        'assets/effects/PNG/5/1.png',
+        'assets/effects/PNG/5/2.png',
+        'assets/effects/PNG/5/3.png',
+        'assets/effects/PNG/5/4.png',
+        'assets/effects/PNG/5/5.png',
+        'assets/effects/PNG/5/6.png',
+        'assets/effects/PNG/5/7.png',
+        'assets/effects/PNG/5/8.png',
+        ''
+    ];
+
+    offset = {
+        top: 5,
+        bottom: 5,
+        right: 5,
+        left: 5
+    };
+
+
+
+    constructor(x, y, direction) {
+
+        super();
+        this.otherDirection = direction;
+        this.x = x + 100;
+        this.y = y + 80;
+        this.width = 70;
+        this.height = 70;
+        this.speedY = 20;
+        this.loadImages(this.flyingAxeImages);
+        this.loadImages(this.redSplashImages);
+        this.loadImages(this.redSmashImages);
+        this.animate();
+    };
+
+    
+/**
+ * Handles the animation of the throwable object.
+ * 
+ * This method manages the animation of the throwable object while it's flying and upon collision. If the object is
+ * not colliding with anything, it continuously plays the flying axe animation. Once a collision is detected, it
+ * stops the flying animation and plays a red smash animation. The object’s state is updated to indicate that it
+ * has been used, and its dimensions are adjusted.
+ */
+    animate() {
+
+        let throwableObjectIntervall = setInterval(() =>{
+            if (!this.collision) {
+                this.playAnimation(this.flyingAxeImages);
+            } else if (this.collision) {
+                this.used = true;
+                this.x += 0;
+                this.speedY = 0;
+                this.width = 140;
+                this.height = 140;
+                this.playSingleAnimation(this.redSmashImages, throwableObjectIntervall);
+            } 
+        }, 50);
+
+        this.throw();
+    }
+
+
+/**
+ * Initiates the throwing motion of the throwable object and applies gravity.
+ * 
+ * This method applies gravity to the throwable object and starts a throwing motion where the object moves either 
+ * to the left or right depending on its direction. The object's position is updated at a regular interval to simulate
+ * the throw.
+ */
+    throw() {
+        this.applyGravityForThrowableObjects();
+        setInterval( () => {
+            if (!this.collision) {
+                if (this.otherDirection) {
+                    this.x -= 30;
+                } else {
+                    this.x += 30;
+                }
+            }
+        }, 25);
+    }
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Events</h3><ul><li><a href="fullscreenContainer.html#event:click">click</a></li><li><a href="gameCanvas.html#event:mouseout-Hidesthefullscreenandsoundbuttoncontainers.">mouseout - Hides the fullscreen and sound button containers.</a></li><li><a href="jQuery.html#event:click">click</a></li><li><a href="soundButtonContainer.html#event:mouseout-Hidesthefullscreenandsoundbuttoncontainers.">mouseout - Hides the fullscreen and sound button containers.</a></li><li><a href="touchLeft.html#event:touchend">touchend</a></li><li><a href="touchLeft.html#event:touchstart">touchstart</a></li><li><a href="touchRight.html#event:touchend">touchend</a></li><li><a href="touchRight.html#event:touchstart">touchstart</a></li><li><a href="window.html#event:resize">resize</a></li></ul><h3>Global</h3><ul><li><a href="global.html#backToMenu">backToMenu</a></li><li><a href="global.html#checkAndStartBackgroundMusic">checkAndStartBackgroundMusic</a></li><li><a href="global.html#closePopUp">closePopUp</a></li><li><a href="global.html#disOrEnableOkButton">disOrEnableOkButton</a></li><li><a href="global.html#handleTouchEnd">handleTouchEnd</a></li><li><a href="global.html#handleTouchStart">handleTouchStart</a></li><li><a href="global.html#handleUserInteraction">handleUserInteraction</a></li><li><a href="global.html#hideContainer">hideContainer</a></li><li><a href="global.html#hideLandingScreen">hideLandingScreen</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#playAudio">playAudio</a></li><li><a href="global.html#playMenuTheme">playMenuTheme</a></li><li><a href="global.html#renderControls">renderControls</a></li><li><a href="global.html#resetGame">resetGame</a></li><li><a href="global.html#setupUserInteractionListener">setupUserInteractionListener</a></li><li><a href="global.html#showFirstPageHorizontalMobileControls">showFirstPageHorizontalMobileControls</a></li><li><a href="global.html#showFirstPageVerticalMobileControls">showFirstPageVerticalMobileControls</a></li><li><a href="global.html#showFullScreenContainer">showFullScreenContainer</a></li><li><a href="global.html#showLandingScreen">showLandingScreen</a></li><li><a href="global.html#showSecondPageHorizontalMobileControls">showSecondPageHorizontalMobileControls</a></li><li><a href="global.html#showSecondPageVerticalMobileControls">showSecondPageVerticalMobileControls</a></li><li><a href="global.html#slideInControls">slideInControls</a></li><li><a href="global.html#slideInFailureParchment">slideInFailureParchment</a></li><li><a href="global.html#slideInStory">slideInStory</a></li><li><a href="global.html#slideInSuccessParchment">slideInSuccessParchment</a></li><li><a href="global.html#slideInTurnDeviceNotice">slideInTurnDeviceNotice</a></li><li><a href="global.html#soundOnOrOff">soundOnOrOff</a></li><li><a href="global.html#startGame">startGame</a></li><li><a href="global.html#startResettedGame">startResettedGame</a></li><li><a href="global.html#updateFullscreenVisibility">updateFullscreenVisibility</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Sun Aug 18 2024 17:50:28 GMT+0200 (Central European Summer Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

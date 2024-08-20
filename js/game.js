@@ -13,7 +13,13 @@ const fullscreenContainer = document.getElementById('fullscreenContainer');
 const gameCanvas = document.getElementById('canvas');
 let gameHasStarted = false;
 let globalVolume = true;
+let userInteracted = false;
 
+
+/**
+ * Initializes the game by pausing the menu theme, setting game start state,
+ * setting up the canvas, and creating a new game world.
+ */
 function init() {
     menuTheme.pause();
     gameHasStarted = true;
@@ -23,6 +29,13 @@ function init() {
 }
 
 
+/**
+ * Plays or pauses the given audio based on the global volume setting.
+ * 
+ * @param {HTMLAudioElement} audio - The audio element to play or pause.
+ * @param {number} volume - The volume level to set for the audio (0.0 to 1.0).
+ * @param {number} audioSpeed - The speed at which the audio should play (default is 1).
+ */
 function playAudio(audio, volume, audioSpeed){
     if (globalVolume) {
         audio.volume = volume;
@@ -37,6 +50,11 @@ function playAudio(audio, volume, audioSpeed){
 }
 
 
+/**
+ * Event listener for 'keydown' events to update the keyboard object based on key presses.
+ * 
+ * @param {KeyboardEvent} KeyboardEvent - The keyboard event triggered by pressing a key.
+ */
 window.addEventListener('keydown', (KeyboardEvent) => {
     switch (KeyboardEvent.code) {
         case 'ArrowRight':
@@ -80,6 +98,11 @@ window.addEventListener('keydown', (KeyboardEvent) => {
 });
 
 
+/**
+ * Event listener for 'keyup' events to update the keyboard object when keys are released.
+ * 
+ * @param {KeyboardEvent} KeyboardEvent - The keyboard event triggered by releasing a key.
+ */
 window.addEventListener('keyup', (KeyboardEvent) => {
     switch (KeyboardEvent.code) {
         case 'ArrowRight':
@@ -123,6 +146,21 @@ window.addEventListener('keyup', (KeyboardEvent) => {
 });
 
 
+// Initial screen size check
+updateFullscreenVisibility();
+
+
+/**
+ * Adds event listener for window resize to update fullscreen visibility.
+ * @event window#resize
+ */
+window.addEventListener('resize', updateFullscreenVisibility);
+
+
+/**
+ * Toggles fullscreen mode when the fullscreen button is clicked.
+ * @event jQuery#click
+ */
 $('#toggle_fullscreen').on('click', function(){
     // if already full screen; exit
     // else go fullscreen
@@ -134,7 +172,11 @@ $('#toggle_fullscreen').on('click', function(){
   });
   
 
-// Funktion, um den Fullscreen-Button basierend auf der Bildschirmgröße ein- oder auszublenden
+/**
+ * Updates the visibility of the fullscreen button based on the screen width.
+ * If the screen width is greater than 720 pixels, the button is displayed;
+ * otherwise, it is hidden.
+ */
 function updateFullscreenVisibility() {
     if (window.innerWidth > 720) {
         soundButtonContainer.style.display = 'block';
@@ -146,7 +188,9 @@ function updateFullscreenVisibility() {
 }
 
 
-// Funktion, um den Container anzuzeigen
+/**
+ * Shows the fullscreen and sound button containers if the screen width is greater than 720 pixels.
+ */
 function showFullScreenContainer() {
     if (window.innerWidth > 720) {
         soundButtonContainer.style.display = 'block';
@@ -155,7 +199,10 @@ function showFullScreenContainer() {
 }
 
 
-// Funktion, um den Container auszublenden
+/**
+ * Hides the fullscreen and sound button containers.
+ * Adds a delay to prevent flickering when the user moves the mouse quickly.
+ */
 function hideContainer() {
     // Verzögerung hinzufügen, um das Flimmern zu vermeiden
     setTimeout(() => {
@@ -170,17 +217,33 @@ function hideContainer() {
     }, 100);
 }
 
-// Event-Listener für Canvas
+/**
+ * Adds event listeners to show and hide containers when the mouse enters and leaves the canvas area.
+ * @event gameCanvas#mouseover - Shows the fullscreen and sound button containers.
+ * @event gameCanvas#mouseout - Hides the fullscreen and sound button containers.
+ */
 gameCanvas.addEventListener('mouseover', showFullScreenContainer);
 gameCanvas.addEventListener('mouseout', hideContainer);
 
-// Event-Listener für Container
+
+/**
+ * Adds event listeners to the fullscreen and sound button containers to show and hide them
+ * when the mouse enters and leaves these areas.
+ * @event fullscreenContainer#mouseover - Shows the fullscreen and sound button containers.
+ * @event fullscreenContainer#mouseout - Hides the fullscreen and sound button containers.
+ * @event soundButtonContainer#mouseover - Shows the fullscreen and sound button containers.
+ * @event soundButtonContainer#mouseout - Hides the fullscreen and sound button containers.
+ */
 fullscreenContainer.addEventListener('mouseover', showFullScreenContainer);
 fullscreenContainer.addEventListener('mouseout', hideContainer);
 soundButtonContainer.addEventListener('mouseover', showFullScreenContainer);
 soundButtonContainer.addEventListener('mouseout', hideContainer);
 
-// Event-Listener für Fullscreen-Toggle
+
+/**
+ * Toggles fullscreen mode when the fullscreen container is clicked.
+ * @event fullscreenContainer#click
+ */
 fullscreenContainer.addEventListener('click', function() {
     if (document.fullscreenElement) {
         document.exitFullscreen();
@@ -190,10 +253,11 @@ fullscreenContainer.addEventListener('click', function() {
 });
 
 
-
-
+/**
+ * Toggles the sound on or off based on the current state.
+ * Updates the sound icon and plays or pauses the appropriate theme music.
+ */
 function soundOnOrOff() {
-
     if (soundIMG.src.includes('volume.png') || landingSoundIMG.src.includes('volume.png') ) {
         soundIMG.src = './assets/WebImages/mute.png';
         landingSoundIMG.src = './assets/WebImages/mute.png';
@@ -208,61 +272,49 @@ function soundOnOrOff() {
         window.localStorage.setItem('volume', 'on');
         if (gameHasStarted) {
             gameTheme.play();
-        } else {
+        } else if(userInteracted){
             menuTheme.play();
         }
     }
 }
 
-setInterval(()=> {
 
-    if (window.localStorage.getItem('volume') == 'off') {
-        soundIMG.src = './assets/WebImages/mute.png';
-        landingSoundIMG.src = './assets/WebImages/mute.png';
-        globalVolume = false;
-        window.localStorage.setItem('volume', 'off');
-        gameTheme.pause();
-        menuTheme.pause();
-    } else {
-        soundIMG.src = './assets/WebImages/volume.png';
-        landingSoundIMG.src = './assets/WebImages/volume.png';
-        globalVolume = true;
-        window.localStorage.setItem('volume', 'on');
-        if (gameHasStarted) {
-            gameTheme.play();
+
+/**
+ * Periodically checks the saved volume setting in localStorage and adjusts the sound settings accordingly.
+ * This ensures that the sound settings remain consistent across different sessions or tabs.
+ */
+function checkAndStartBackgroundMusic(){
+    setInterval(()=> {
+        if (window.localStorage.getItem('volume') == 'off') {
+            soundIMG.src = './assets/WebImages/mute.png';
+            landingSoundIMG.src = './assets/WebImages/mute.png';
+            globalVolume = false;
+            window.localStorage.setItem('volume', 'off');
+            gameTheme.pause();
+            menuTheme.pause();
         } else {
-            menuTheme.play();
+            soundIMG.src = './assets/WebImages/volume.png';
+            landingSoundIMG.src = './assets/WebImages/volume.png';
+            globalVolume = true;
+            window.localStorage.setItem('volume', 'on');
+            if (gameHasStarted) {
+                gameTheme.play();
+            } else if(userInteracted) {
+                menuTheme.play();
+            }
         }
-    }
-}, 100);
+    }, 100);    
+}
 
 
-// function checkSoundInLocalStorage(){
-//     const soundIMG = document.getElementById('soundIMG'); 
 
-//     if (window.localStorage.getItem('volume') == 'off') {
-//         soundIMG.src = './assets/WebImages/mute.png';
-//         globalVolume = false;
-//         window.localStorage.setItem('volume', 'off');
-//         menuTheme.pause();
-//         gameTheme.pause();
-//     } else {
-//         soundIMG.src = './assets/WebImages/volume.png';
-//         globalVolume = true;
-//         window.localStorage.setItem('volume', 'on');
-//         menuTheme.play();
-//         gameTheme.play();
-//     }
-// }
-
-
-// Initiale Überprüfung der Bildschirmgröße
-updateFullscreenVisibility();
-
-// Event-Listener für Fenstergrößenänderung
-window.addEventListener('resize', updateFullscreenVisibility);
-
-
+/**
+ * Adds an event listener for the 'touchstart' event on the element with ID 'touchLeft'.
+ * Detects double-tap gestures and modifies the keyboard object to simulate pressing the left arrow key with or without the shift key.
+ * @event touchLeft#touchstart
+ * @param {TouchEvent} e - The touch event object.
+ */
 document.getElementById('touchLeft').addEventListener('touchstart', (e) => {
     e.preventDefault();
     const currentTime = new Date().getTime();
@@ -278,6 +330,13 @@ document.getElementById('touchLeft').addEventListener('touchstart', (e) => {
     keyboard.NONE = false;
 });
 
+
+/**
+ * Adds an event listener for the 'touchend' event on the element with ID 'touchLeft'.
+ * Resets the state of the LEFT and SHIFT keys and sets NONE to true when the touch ends.
+ * @event touchLeft#touchend
+ * @param {TouchEvent} e - The touch event object.
+ */
 document.getElementById('touchLeft').addEventListener('touchend', (e) => {
     e.preventDefault();
     keyboard.LEFT = false;
@@ -285,6 +344,13 @@ document.getElementById('touchLeft').addEventListener('touchend', (e) => {
     keyboard.NONE = true;
 });
 
+
+/**
+ * Adds an event listener for the 'touchstart' event on the element with ID 'touchRight'.
+ * Detects double-tap gestures and modifies the keyboard object to simulate pressing the right arrow key with or without the shift key.
+ * @event touchRight#touchstart
+ * @param {TouchEvent} e - The touch event object.
+ */
 document.getElementById('touchRight').addEventListener('touchstart', (e) => {
     e.preventDefault();
     const currentTime = new Date().getTime();
@@ -299,6 +365,13 @@ document.getElementById('touchRight').addEventListener('touchstart', (e) => {
     keyboard.NONE = false;
 });
 
+
+/**
+ * Adds an event listener for the 'touchend' event on the element with ID 'touchRight'.
+ * Resets the state of the RIGHT and SHIFT keys and sets NONE to true when the touch ends.
+ * @event touchRight#touchend
+ * @param {TouchEvent} e - The touch event object.
+ */
 document.getElementById('touchRight').addEventListener('touchend', (e) => {
     e.preventDefault();
     keyboard.RIGHT = false;
@@ -307,7 +380,10 @@ document.getElementById('touchRight').addEventListener('touchend', (e) => {
 });
 
 
-// Handle touch start events
+/**
+ * Handles touch start events by visually simulating a button press and updating the keyboard state.
+ * @param {string} buttonId - The ID of the button element being interacted with.
+ */
 function handleTouchStart(buttonId) {
     const button = document.getElementById(buttonId);
     button.style.boxShadow = 'inset 5px 5px 15px rgba(0, 0, 0, 0.5)';
@@ -329,7 +405,11 @@ function handleTouchStart(buttonId) {
     }
 }
 
-// Handle touch end and touch cancel events
+
+/**
+ * Handles touch end and touch cancel events by visually resetting the button state and updating the keyboard state.
+ * @param {string} buttonId - The ID of the button element being interacted with.
+ */
 function handleTouchEnd(buttonId) {
     const button = document.getElementById(buttonId);
     button.style.boxShadow = ''; // Reset the box-shadow
@@ -350,7 +430,11 @@ function handleTouchEnd(buttonId) {
     keyboard.NONE = !(keyboard.LEFT || keyboard.RIGHT || keyboard.SPACE || keyboard.UP || keyboard.DOWN || keyboard.SHIFT || keyboard.E || keyboard.Q);
 }
 
-// Add event listeners to buttons
+
+/**
+ * Adds event listeners for touch events to all elements with the class 'buttonWrapper'.
+ * Handles touch start, touch end, and touch cancel events by calling the corresponding functions.
+ */
 document.querySelectorAll('.buttonWrapper').forEach(button => {
     button.addEventListener('touchstart', (e) => {
         e.preventDefault(); // Prevent default touch action
@@ -368,13 +452,19 @@ document.querySelectorAll('.buttonWrapper').forEach(button => {
     });
 })
 
+
+/**
+ * Starts the game by hiding the landing screen and setting up necessary event listeners and conditions.
+ * Determines if the game should start based on screen width and device orientation.
+ * Initializes the game and manages the appearance of the landing screen or device notice.
+ */
 function startGame(){
     if (window.innerWidth > 1024) {
         hideLandingScreen();
         menuTheme.pause();
         gameHasStarted = true;
     } 
-    else if (window.innerWidth < 1024 && window.matchMedia("(orientation: landscape)").matches) {
+    else if (window.matchMedia("(orientation: landscape)").matches) {
         hideLandingScreen();
         menuTheme.pause();
         gameHasStarted = true;
@@ -388,9 +478,51 @@ function startGame(){
         window.addEventListener('resize', disOrEnableOkButton);
         window.addEventListener('orientationchange', disOrEnableOkButton);
     }
+
+    // if (window.matchMedia("(orientation: landscape)").matches && /Mobi|Android/i.test(navigator.userAgent) || /iPad|Tablet/i.test(navigator.userAgent)) {
+
+    // }
     init();
 }
 
+
+/**
+ * Sets the `userInteracted` flag to `true` to indicate that the user has interacted with the webpage.
+ */
+function handleUserInteraction() {
+    userInteracted = true;
+}
+
+/**
+ * Sets up event listeners to detect user interactions with the webpage and tab visibility changes.
+ * - Adds `click` and `keydown` event listeners to set the `userInteracted` flag to `true`.
+ * - Adds a `visibilitychange` event listener to set the `userInteracted` flag to `true` when the tab becomes visible.
+ */
+function setupUserInteractionListener() {
+    /**
+     * Sets the `userInteracted` flag to `true` when a user interaction is detected.
+     */
+    function handleUserInteraction() {
+        userInteracted = true;
+    }
+
+    // Add event listeners for user interactions
+    document.addEventListener('click', handleUserInteraction);
+    document.addEventListener('keydown', handleUserInteraction);
+
+    // Handle tab visibility change
+    document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+            handleUserInteraction();
+        }
+    });
+}
+
+
+/**
+ * Enables or disables the 'OkayButton' based on the current device orientation.
+ * The button is enabled if the orientation is landscape; otherwise, it is disabled.
+ */
 function disOrEnableOkButton() {
     let button = document.getElementById('OkayButton');
     if (window.matchMedia("(orientation: landscape)").matches) {
@@ -400,8 +532,17 @@ function disOrEnableOkButton() {
     }
 }
 
-window.addEventListener('orientationchange', disOrEnableOkButton);
 
+// /**
+//  * Adds an event listener for orientation changes to call the `disOrEnableOkButton` function.
+//  */
+// window.addEventListener('orientationchange', disOrEnableOkButton);
+
+
+/**
+ * Displays a notice prompting the user to rotate their device, with a sliding animation.
+ * The notice and background overlay are styled and animated to appear on the screen.
+ */
 function slideInTurnDeviceNotice() {
     let popUp = document.getElementById('popUp');
     let greyBackground = document.getElementById('greyBackground');
@@ -413,8 +554,10 @@ function slideInTurnDeviceNotice() {
 }
 
 
-
-
+/**
+ * Hides the landing screen with a fade-out animation.
+ * The landing screen is hidden after the animation completes.
+ */
 function hideLandingScreen(){
     let landingScreen = document.getElementById('landingScreen');
     landingScreen.style.animation = 'fadeOut 0.5s ease-in-out forwards';
@@ -425,13 +568,18 @@ function hideLandingScreen(){
 }
 
 
+/**
+ * Shows the landing screen with a fade-in animation.
+ * Resets game state and handles the background music based on the global volume setting.
+ */
 function showLandingScreen(){
     gameHasStarted = false;
+    window.localStorage.setItem('reload', 'menu');
     gameTheme.pause();
-    if (globalVolume) {
-        menuTheme.play();
+    if (globalVolume || localStorage.getItem('volume') == 'on') {
+        checkAndStartBackgroundMusic();
     } else {
-        menuTheme.pause();
+        checkAndStartBackgroundMusic();
     }
     let landingScreen = document.getElementById('landingScreen');
     landingScreen.style.display = 'Block';
@@ -439,7 +587,10 @@ function showLandingScreen(){
 }
 
 
-
+/**
+ * Slides in a controls pop-up with an animation.
+ * The pop-up content is set to the result of `renderControls()`, and a grey background overlay is shown.
+ */
 function slideInControls(){
     let popUp = document.getElementById('popUp');
     let greyBackground = document.getElementById('greyBackground');
@@ -451,6 +602,10 @@ function slideInControls(){
 }
 
 
+/**
+ * Slides in a story pop-up with an animation.
+ * The pop-up content is set to the result of `renderStory()`, and a grey background overlay is shown.
+ */
 function slideInStory(){
     let popUp = document.getElementById('popUp');
     let greyBackground = document.getElementById('greyBackground');
@@ -462,6 +617,10 @@ function slideInStory(){
 }
 
 
+/**
+ * Closes the pop-up by fading out the grey background and sliding out the pop-up.
+ * The content of the pop-up is cleared after the animation completes.
+ */
 function closePopUp(){
     let greyBackground = document.getElementById('greyBackground');
     let popUp = document.getElementById('popUp');
@@ -477,6 +636,14 @@ function closePopUp(){
 }
 
 
+/**
+ * Renders the appropriate control layout based on the device type and screen size.
+ * - Returns horizontal mobile controls if the device is mobile or the screen width is less than 1024px and in landscape mode.
+ * - Returns vertical mobile controls if the device is mobile and in portrait mode.
+ * - Returns keyboard controls for other devices.
+ * 
+ * @returns {string} The HTML content for the controls layout.
+ */
 function renderControls() {
     if (/Mobi|Android/i.test(navigator.userAgent) || /iPad|Tablet/i.test(navigator.userAgent) || window.innerWidth < 1024) {
         if (window.matchMedia("(orientation: landscape)").matches) {
@@ -490,6 +657,10 @@ function renderControls() {
 }
 
 
+/**
+ * Displays the second page of horizontal mobile controls.
+ * Animates a fade-out effect on the current content, updates the content, and then animates a fade-in effect.
+ */
 function showSecondPageHorizontalMobileControls(){
     let descriptionContainer = document.getElementById('descriptionContainer');
 
@@ -499,11 +670,14 @@ function showSecondPageHorizontalMobileControls(){
     descriptionContainer.innerHTML = renderSecondPageHorizontalMobileControls();
     descriptionContainer.style.animation = 'fullFadeIn 0.3s ease-in-out forwards';
 
-}, 300);
-
+    }, 300);
 }
 
 
+/**
+ * Displays the first page of horizontal mobile controls.
+ * Animates a fade-out effect on the current content, updates the content, and then animates a fade-in effect.
+ */
 function showFirstPageHorizontalMobileControls(){
     let descriptionContainer = document.getElementById('descriptionContainer');
 
@@ -515,6 +689,10 @@ function showFirstPageHorizontalMobileControls(){
 }
 
 
+/**
+ * Displays the second page of vertical mobile controls.
+ * Animates a fade-out effect on the current content, updates the content, and then animates a fade-in effect.
+ */
 function showSecondPageVerticalMobileControls(){
     let descriptionContainer = document.getElementById('descriptionContainer');
 
@@ -526,6 +704,11 @@ function showSecondPageVerticalMobileControls(){
     }, 300);
 }
 
+
+/**
+ * Displays the first page of vertical mobile controls.
+ * Animates a fade-out effect on the current content, updates the content, and then animates a fade-in effect.
+ */
 function showFirstPageVerticalMobileControls(){
     let descriptionContainer = document.getElementById('descriptionContainer');
 
@@ -537,6 +720,10 @@ function showFirstPageVerticalMobileControls(){
 }
 
 
+/**
+ * Slides in a success parchment pop-up with an animation.
+ * Sets the pop-up content to the result of `renderSuccessParchment()`, and shows a grey background overlay.
+ */
 function slideInSuccessParchment() {
     let popUp = document.getElementById('popUp');
     let greyBackground = document.getElementById('greyBackground');
@@ -548,45 +735,78 @@ function slideInSuccessParchment() {
 }
 
 
+/**
+ * Resets the game by saving the current state to `localStorage` and reloading the page.
+ * - Sets an item in `localStorage` to indicate that the page should be reloaded.
+ * - Reloads the page to reset the game.
+ */
 function resetGame() {
     // Speichere den aktuellen Zustand im localStorage oder sessionStorage, wenn nötig
-    window.localStorage.setItem('reload', 'true');
+    window.localStorage.setItem('reload', 'restart');
     window.location.reload(); // Seite neu laden
 }
 
 
+/**
+ * Pauses the game theme and reloads the page to return to the menu.
+ * - Sets an item in `localStorage` to indicate that the page should not be reloaded on next start.
+ * - Reloads the page to return to the menu.
+ */
 function backToMenu(){
     gameTheme.pause();
-    window.localStorage.setItem('reload', 'false');
+    window.localStorage.setItem('reload', 'menu');
     window.location.reload(); // Seite neu laden
 }
 
 
+/**
+ * Plays the menu theme audio with specified volume and playback settings.
+ * - Calls `playAudio` with the menu theme, a volume of 0.4, and a playback rate of 1.
+ */
 function playMenuTheme(){
     playAudio(menuTheme, 0.4, 1);
 }
 
 
+/**
+ * Adds an event listener to the document to play the menu theme audio when clicked.
+ * - Plays the menu theme only if the game has not started.
+ */
 document.addEventListener('click', () => {
     if (!gameHasStarted) {
+        userInteracted = true;
         playMenuTheme();
-    }
+    } 
 });
 
 
-
+/**
+ * Starts the game if the page was reloaded.
+ * - Checks `localStorage` to see if the page should be treated as a reset.
+ * - Removes the `reload` item from `localStorage` to avoid resetting on the next start.
+ * - If the page was reloaded, starts the game.
+ * - If not, renders the landing screen.
+ * - Also initiates an interval to check if the background music is turned on or off,
+ *   and starts playing the background music if it is not already playing.
+ */
 function startResettedGame() {
-    if (window.localStorage.getItem('reload') === 'true') {
+    checkAndStartBackgroundMusic();
+
+    if (window.localStorage.getItem('reload') == 'restart') {
         gameHasStarted = true;
-        window.localStorage.removeItem('reload'); // Zustand löschen, damit es beim nächsten Mal nicht automatisch passiert
         startGame();
-    } else {
+    } else  {
         let landingScreen = document.getElementById('landingScreen');
         landingScreen.innerHTML = renderLandingScreen();
     }
 };
 
 
+/**
+ * Slides in a failure parchment pop-up with an animation.
+ * - Sets the pop-up content to the result of `renderFailureParchment()`.
+ * - Shows a grey background overlay with a fade-in effect.
+ */
 function slideInFailureParchment(){
     let popUp = document.getElementById('popUp');
     let greyBackground = document.getElementById('greyBackground');
@@ -596,3 +816,5 @@ function slideInFailureParchment(){
     greyBackground.style.animation = 'fadeIn 0.5s ease-in-out forwards';
     popUp.style.animation = 'slideIn 0.5s ease-in-out forwards';
 }
+
+

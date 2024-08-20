@@ -32,6 +32,13 @@ class Coin extends DrawableObject {
         this.animate();
     }
 
+    
+/**
+ * Handles the animation of the coin object.
+ * 
+ * This method continuously plays the coin animation at a regular interval. The animation frames for the coin are
+ * cycled through to create the effect of a spinning or rotating coin.
+ */
     animate() {
         setInterval( () => {
             this.playAnimation(this.coinImages);

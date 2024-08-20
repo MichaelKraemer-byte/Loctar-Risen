@@ -186,121 +186,259 @@ class Minotaur_1 extends MovableObject{
     };
 
 
+/**
+ * Manages the animation and behavior updates for the Minotaur enemy.
+ */
+animate() {
+    this.setupWalkingBehavior();
+    this.setupWalkingAnimation();
+    this.setupIdleAnimation();
+    this.setupHurtAnimation();
+    this.setupDyingAnimation();
+    this.setupAttackAnimation();
+    this.setupAttackCheck();
+}
 
 
-
-    animate(){
-
-
-
-        // WALK
-        setInterval(() => {
-            this.walkSound.pause();
-            if (this.HP > 0 && !this.damageProcess && this.gameHasStarted) {
-                const distance = Math.abs(this.x - this.world.character.x);
-                if (!this.meleeAttackProcess) {
-                    if (this.world.character.isDead()) {
-                        this.isWalking = false;
-                        this.speed = 0;
-                        clearInterval(startIdleAnimation);
-                        this.playAnimation(this.idleImages);
-                    } else {
-                        if (distance <= 450 && this.characterIsOnHeight()) {
-                            this.objectViewsCharacter = true;
-                            this.isWalking = true;
-                            if (this.world.character.x > this.x  && this.characterIsOnHeight()) {
-                                this.walkRight();
-                                this.playSound(this.walkSound, 0.06, 1);
-                            } else {
-                                this.walkLeft();
-                                this.playSound(this.walkSound, 0.06, 1);
-                            }
-                        } else if (distance <= 450 && !this.characterIsOnHeight()) {
-                            this.isWalking = false;
-                            this.speed = 0;
-                            clearInterval(startIdleAnimation);
-                            this.playAnimation(this.idleImages);
-                            return;
-                        } else {
-                            // If character is out of range, walk back to initialX (spawn point)
-                            this.objectViewsCharacter = false;
-                            if (this.x < this.initialX ) {
-                                this.walkRight();
-                                this.playSound(this.walkSound, 0.06, 1);
-                            } else if (this.x > this.initialX) {
-                                this.walkLeft();
-                                this.playSound(this.walkSound, 0.06, 1);
-                            } else {
-                                // Stop moving when at initialX
-                                this.isWalking = false;
-                                this.speed = 0;
-                                clearInterval(startIdleAnimation);
-                                this.playAnimation(this.idleImages);
-                            }
-                        }
-                    }
-                } else {
-                    this.isWalking = false;
-                    this.speed = 0;
-                }
-            }
-        }, 1000 / 20);
-
-        // WALK Images
-        setInterval(() => {
-            if (this.isWalking && this.HP > 0 && !this.damageProcess && !this.meleeAttackProcess && !this.world.character.isDead()) {
-                this.playAnimation(this.walkImages);
-            }
-        }, 50);
-
-        // IDLE Images
-        let startIdleAnimation = setInterval(() => {
-            if (!this.isWalking && this.HP > 0 && !this.damageProcess && !this.meleeAttackProcess) {
-                this.playAnimation(this.idleImages);
-            }
-        }, 80);
-
-        // HURT Images
-        let hurtIntervall = setInterval(() => {
-            if (this.damageProcess && this.HP > 0) {
-                this.playSingleAnimation(this.hurtImages, hurtIntervall);
-                this.playSound(this.hurtSound, 0.2, 1);
-            }
-        }, 70);
+/**
+ * Handles the walking behavior of the Minotaur.
+ */
+setupWalkingBehavior() {
+    setInterval(() => {
+        this.walkSound.pause();
+        if (this.shouldWalk()) {
+            this.determineWalkingDirection();
+        }
+    }, 1000 / 20);
+}
 
 
-        // DYING Images
-        let dyingIntervall = setInterval(() => {
-            if (this.isDead()) {
-                this.playSingleAnimation(this.dyingImages, dyingIntervall);
-                this.dyingSound.pause();
-                this.playSound(this.dyingSound, 0.16, 1.2);
-            };
-        }, 50);
+/**
+ * Determines if the Minotaur should walk.
+ * 
+ * @returns {boolean} - True if the Minotaur should walk.
+ */
+shouldWalk() {
+    return this.HP > 0 && !this.damageProcess && this.gameHasStarted;
+}
 
-        
-        // Attack Images
-        setInterval(() => {
-            if (this.meleeRangeToCharacter && !this.isDead() && !this.world.character.isDead()) {
-                this.playSound(this.meleeAttackSound, 0.2, 1);
-                this.playAnimation(this.meleeAttackImages);
-                this.speed = 0;
-                this.meleeAttackProcess = true;
-                setTimeout(() => {
-                    this.meleeAttackProcess = false;
-                    this.meleeRangeToCharacter = false;
-                }, 300); 
-            }
-        }, 50);
 
-        // Check attack Images
-        setInterval(() => {
-            const currentFrame = this.img.src.split('/').pop(); // Nur der Dateiname
-            if (this.slashingFrames.includes(currentFrame)) {
-                this.isAttacking = true;
-            } else {
-                this.isAttacking = false;
-            }
-        }, 1000 / 32);
-    };
+/**
+ * Determines the direction in which the Minotaur should walk.
+ */
+determineWalkingDirection() {
+    const distance = this.getDistanceToCharacter();
+    if (!this.meleeAttackProcess) {
+        if (this.world.character.isDead()) {
+            this.stopWalking();
+        } else if (distance <= 450) {
+            this.handleCharacterInRange(distance);
+        } else {
+            this.returnToInitialPosition();
+        }
+    } else {
+        this.stopWalking();
+    }
+}
+
+
+/**
+ * Gets the distance between the Minotaur and the player character.
+ * 
+ * @returns {number} - The distance between the Minotaur and the player character.
+ */
+getDistanceToCharacter() {
+    return Math.abs(this.x - this.world.character.x);
+}
+
+
+/**
+ * Handles the Minotaur's behavior when the player character is within range.
+ * 
+ * @param {number} distance - The distance between the Minotaur and the player character.
+ */
+handleCharacterInRange(distance) {
+    if (this.characterIsOnHeight()) {
+        this.approachCharacter();
+    } else {
+        this.stopWalking();
+    }
+}
+
+
+/**
+ * Handles the Minotaur's movement towards the player character.
+ */
+approachCharacter() {
+    this.objectViewsCharacter = true;
+    this.isWalking = true;
+    if (this.world.character.x > this.x) {
+        this.walkRight();
+        this.playSound(this.walkSound, 0.06, 1);
+    } else {
+        this.walkLeft();
+        this.playSound(this.walkSound, 0.06, 1);
+    }
+}
+
+
+/**
+ * Returns the Minotaur to its initial position if the player character is out of range.
+ */
+returnToInitialPosition() {
+    this.objectViewsCharacter = false;
+    if (this.x < this.initialX) {
+        this.walkRight();
+        this.playSound(this.walkSound, 0.06, 1);
+    } else if (this.x > this.initialX) {
+        this.walkLeft();
+        this.playSound(this.walkSound, 0.06, 1);
+    } else {
+        this.stopWalking();
+    }
+}
+
+
+/**
+ * Stops the Minotaur's movement and plays the idle animation.
+ */
+stopWalking() {
+    this.isWalking = false;
+    this.speed = 0;
+    this.playAnimation(this.idleImages);
+}
+
+
+/**
+ * Handles the walking animation frames.
+ */
+setupWalkingAnimation() {
+    setInterval(() => {
+        if (this.shouldAnimateWalk()) this.playAnimation(this.walkImages);
+    }, 50);
+}
+
+
+/**
+ * Determines if the walking animation should be played.
+ * 
+ * @returns {boolean} - True if the walking animation should be played.
+ */
+shouldAnimateWalk() {
+    return this.isWalking && this.HP > 0 && !this.damageProcess && !this.meleeAttackProcess && !this.world.character.isDead();
+}
+
+
+/**
+ * Handles the idle animation when the Minotaur is not walking.
+ */
+setupIdleAnimation() {
+    let startIdleAnimation = setInterval(() => {
+        if (this.shouldAnimateIdle()) this.playAnimation(this.idleImages);
+    }, 80);
+}
+
+
+/**
+ * Determines if the idle animation should be played.
+ * 
+ * @returns {boolean} - True if the idle animation should be played.
+ */
+shouldAnimateIdle() {
+    return !this.isWalking && this.HP > 0 && !this.damageProcess && !this.meleeAttackProcess;
+}
+
+
+/**
+ * Handles the hurt animation and sound effects when the Minotaur is damaged.
+ */
+setupHurtAnimation() {
+    let hurtInterval = setInterval(() => {
+        if (this.shouldAnimateHurt()) {
+            this.playSingleAnimation(this.hurtImages, hurtInterval);
+            this.playSound(this.hurtSound, 0.2, 1);
+        }
+    }, 70);
+}
+
+
+/**
+ * Determines if the hurt animation should be played.
+ * 
+ * @returns {boolean} - True if the hurt animation should be played.
+ */
+shouldAnimateHurt() {
+    return this.damageProcess && this.HP > 0;
+}
+
+
+/**
+ * Handles the dying animation and sound effects when the Minotaur's health points (HP) reach zero.
+ */
+setupDyingAnimation() {
+    let dyingInterval = setInterval(() => {
+        if (this.isDead()) {
+            this.playSingleAnimation(this.dyingImages, dyingInterval);
+            this.dyingSound.pause();
+            this.playSound(this.dyingSound, 0.16, 1.2);
+        }
+    }, 50);
+}
+
+
+/**
+ * Handles the attack animation and sound effects when the Minotaur is in melee range.
+ */
+setupAttackAnimation() {
+    setInterval(() => {
+        if (this.shouldAnimateAttack()) this.performAttack();
+    }, 50);
+}
+
+
+/**
+ * Determines if the attack animation should be played.
+ * 
+ * @returns {boolean} - True if the attack animation should be played.
+ */
+shouldAnimateAttack() {
+    return this.meleeRangeToCharacter && !this.isDead() && !this.world.character.isDead();
+}
+
+
+/**
+ * Performs the attack action and resets the attack state after a delay.
+ */
+performAttack() {
+    this.playSound(this.meleeAttackSound, 0.2, 1);
+    this.playAnimation(this.meleeAttackImages);
+    this.speed = 0;
+    this.meleeAttackProcess = true;
+    setTimeout(() => {
+        this.meleeAttackProcess = false;
+        this.meleeRangeToCharacter = false;
+    }, 300);
+}
+
+
+/**
+ * Checks the current animation frame to determine if the Minotaur is in an attacking state.
+ */
+setupAttackCheck() {
+    setInterval(() => {
+        const currentFrame = this.getCurrentFrame();
+        this.isAttacking = this.slashingFrames.includes(currentFrame);
+    }, 1000 / 32);
+}
+
+
+/**
+ * Retrieves the current frame of the animation.
+ * 
+ * @returns {string} - The current frame file name.
+ */
+getCurrentFrame() {
+    return this.img.src.split('/').pop(); // Only the file name
+}
+
 }

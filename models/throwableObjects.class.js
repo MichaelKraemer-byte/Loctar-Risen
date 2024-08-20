@@ -53,6 +53,15 @@ class ThrowableObject extends MovableObject {
         this.animate();
     };
 
+    
+/**
+ * Handles the animation of the throwable object.
+ * 
+ * This method manages the animation of the throwable object while it's flying and upon collision. If the object is
+ * not colliding with anything, it continuously plays the flying axe animation. Once a collision is detected, it
+ * stops the flying animation and plays a red smash animation. The objectâ€™s state is updated to indicate that it
+ * has been used, and its dimensions are adjusted.
+ */
     animate() {
 
         let throwableObjectIntervall = setInterval(() =>{
@@ -72,6 +81,13 @@ class ThrowableObject extends MovableObject {
     }
 
 
+/**
+ * Initiates the throwing motion of the throwable object and applies gravity.
+ * 
+ * This method applies gravity to the throwable object and starts a throwing motion where the object moves either 
+ * to the left or right depending on its direction. The object's position is updated at a regular interval to simulate
+ * the throw.
+ */
     throw() {
         this.applyGravityForThrowableObjects();
         setInterval( () => {

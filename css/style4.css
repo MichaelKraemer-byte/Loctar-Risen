@@ -1,0 +1,363 @@
+@media screen and (min-width: 1025px) and (max-width: 1450px) {
+    .btn-flip:before{
+        font-size: 20px;
+        padding: 16px;
+        padding-left: 36px;
+    }
+
+    .btn-flip:after{
+        font-size: 20px;
+        padding: 16px;
+        padding-left: 36px;
+    }
+
+    .landingTitle{
+        font-size: 120px;
+    }
+}
+
+
+@media screen and (max-width: 720px) {
+    .storyParchment{
+        width: 80vw;
+
+    }
+
+    .storyTextContainer{
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .storyParchment{
+        width: 90vw;
+    }
+
+    .storyTextContainer{
+        width: 100%;
+    }
+
+    .storyParagraph{
+    font-size: 16px;
+    }
+}
+
+.loader {
+    width: calc(6*30px);
+    height: 50px;
+    display: flex;
+    color: rgb(123, 224, 69);
+    filter: drop-shadow(30px 25px 0 rgb(32, 130, 34)) drop-shadow(60px 0 0 currentColor) drop-shadow(120px 0 0 rgb(32, 130, 34));
+    clip-path: inset(0 100% 0 0);
+    animation: l13 2s infinite steps(7);
+  }
+  .loader:before {
+    content: "";
+    width: 30px;
+    height: 25px;
+    background: 
+      radial-gradient(farthest-side at right,currentColor 92%,#0000) left/20px 100% no-repeat,
+      radial-gradient(farthest-side,         currentColor 92%,#0000) right/17px 9px repeat-y;
+  }
+
+  .loaderWrapper{
+    position: absolute;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  @keyframes l13 {
+    100% {clip-path: inset(0 -30px 0 0)}
+  }
+
+@keyframes slideIn {
+    from {
+        right: -100%; /* Start auÃŸerhalb des Bildschirms auf der rechten Seite */
+        transform: translateY(-50%); /* Vertikale Zentrierung */
+    }
+    to {
+        right: 50%; /* Positioniere es in der Mitte des Bildschirms */
+        transform: translateX(50%) translateY(-50%); /* Zentriere es sowohl horizontal als auch vertikal */
+    }
+}
+
+@keyframes slideOut {
+    from {
+        right: 50%; /* Start an der zentrierten Position */
+        transform: translateX(50%) translateY(-50%); /* Zentriere es */
+    }
+    to {
+        right: -100%; /* Bewege es nach auÃŸerhalb des Bildschirms */
+        transform: translateY(-50%); /* Vertikale Zentrierung */
+    }
+}
+
+@keyframes fadeOut {
+    from {
+
+        opacity: 0.3;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 0.3;
+    }
+}
+
+@keyframes fullFadeOut {
+    from {
+
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes fullFadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* scrollbar */
+.storyParchmentContainer{
+    background-color: #f3f4eb00;
+}
+
+::-webkit-scrollbar{
+    width: 8px;
+    background-color: #7c6f4373;
+    cursor: pointer;
+}
+::-webkit-scrollbar-thumb{
+    cursor: pointer;
+    background-color: #9a8952;
+    border-radius: 50px;
+    box-shadow:0px 0px 6px 2px rgba(0, 0, 0, 0.5) inset;
+}
+
+/* scrollbar */
+
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) {
+    .landing-sound-icon{
+        width: 24px;
+        height: 24px;
+        padding: 12px;
+    }
+
+    .landing-sound-button-container{
+        top: 16px;
+        right: 16px;
+    }
+
+    .landingPlayButtonContainer {
+        margin-bottom: 16px;
+        background: rgba(37, 37, 36, 0.858);
+    }
+
+    .landingButtonsContainer {
+        padding-top: 48px;
+        gap: 24px;
+    }
+
+    .landingHeroContent {
+        gap: 4%;
+        flex-direction: row;
+    }
+
+    .noticePopUp{
+        width: 60vw;
+        height: 80vh;
+    }
+
+    .horizontalParchment{
+        width: 88vw;
+        height: 88vh;
+        position: absolute;
+    }
+
+    .keyboardDescriptionContainer{
+        width: 40%;
+        gap: 6%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        z-index: 1;
+    }
+
+    .parchmentTitle{
+        font-size: clamp(32px, 4vw, 64px);
+        padding-bottom: 4px;
+    }
+    
+    .parchmentText{
+        font-size: clamp(20px, 2vw, 24px);
+    }
+    
+    .mobileControlDescriptionContainer{
+        gap: 16px;
+    }
+    
+    .mobileWalkExplain-Image{
+        width: 24vw;
+    }
+
+    .descriptionContainer{
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        opacity: 1;
+    }
+
+    .descriptionAndImageContainer{
+        display: flex;
+        gap: 24px;
+        padding-top: 16px;
+        flex-direction: row;
+    }
+
+    .descriptionAndButtonContainer{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 16px;
+        width: 100%;
+        height: 100%;
+    }
+
+    .description-btn-flip:after,
+    .description-btn-flip:before {
+        letter-spacing: 4px;
+        padding: 0px 24px 0px 30px;
+        font-size: 16px;
+        width: fit-content;
+        text-align: center;
+    }
+    
+    .description-btn-flip:after {
+        top: 0;
+        left: 0;
+        opacity: 0.88;
+        color: rgb(0, 0, 0);
+        display: block;
+        transition: 0.5s;
+        position: absolute;
+        background: #625c3d61;
+        content: attr(data-back);
+        transform: translateY(-50%) rotateX(90deg);
+        font-size: 16px;
+        box-sizing: border-box;
+        margin: 0px;
+        border-radius: 4px;
+        border: 0.8px solid rgba(37, 37, 36, 0.815);
+        box-shadow: rgba(33, 33, 33, 0.352) 0px 0px 15px;
+        font-family: 'morpheus', Arial, Helvetica, sans-serif;
+        white-space: nowrap;
+    }
+    
+    .description-btn-flip:before {
+        top: 0;
+        left: 0;
+        transform: translate(-50%, 0%);
+        opacity: 0.88;
+        color: rgb(0, 0, 0);
+        font-size: 16px;
+        box-sizing: border-box;
+        text-shadow: rgb(222, 255, 121) 0px 0px 15px;
+        margin: 0px;
+        border-radius: 4px;
+        display: block;
+        transition: 0.5s;
+        position: absolute;
+        background: #625c3d61;
+        border: 0.8px solid rgba(37, 37, 36, 0.815);
+        box-shadow: rgba(33, 33, 33, 0.352) 0px 0px 15px;
+        content: attr(data-front);
+        transform: translateY(0) rotateX(0);
+        font-family: 'morpheus', Arial, Helvetica, sans-serif;
+        white-space: nowrap;
+    }
+    
+    .mobileWalkExplain-Image {
+        padding: 0px;
+    }
+    
+    .description-btn-flip-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 40px;
+        text-align: center;
+        bottom: 0;
+        position: absolute;
+    }
+
+
+    .description-btn-flip {
+        opacity: 1;
+        outline: 0;
+        color: #fff;
+        line-height: 36px;
+        letter-spacing: 1px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        text-decoration: none;
+        text-transform: uppercase;
+        text-align: center;
+        width: 130px;
+        height: 40px;
+        position: relative;
+    }
+
+    .explainImg{
+        width: 40px;
+        height: 40px;
+    }
+
+    .centerDescriptionContainer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 60vh;
+        gap: 16px;
+    }
+
+    .explainImgContainer {
+        width: 400px;
+        display: flex;
+        justify-content: end;
+    }
+    
+    .finishButtonsContainer{
+        padding-top: 0px;
+    }  
+}
+
+@media only screen and (max-device-width: 667px) and (orientation: landscape) {
+    .descriptionAndImageContainer{
+        padding: 0px;
+    }
+
+    .centerDescriptionContainer{
+        gap: 0px;
+    }
+}
+

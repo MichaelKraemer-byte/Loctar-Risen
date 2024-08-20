@@ -4,17 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/style2.css">
+    <link rel="stylesheet" href="./css/style3.css">
+    <link rel="stylesheet" href="./css/style4.css">
     <link rel="icon" type="image/x-icon" href="assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle/0_Orc_Idle_000.png">
-    <script src="game.js" defer></script> 
+    <script src="./js/game.js" defer></script> 
 
     <title>Loctar Risen</title>
 </head>
-<body onload="startResettedGame();">
+<body onload="startResettedGame(); setupUserInteractionListener();">
     <div onclick="soundOnOrOff()" class="landing-sound-button-container" id="landingSoundButtonContainer">
       <img class="landing-sound-icon" id="landingSoundIMG" src="./assets/WebImages/volume.png">
     </div>
+
+    
     
     <div id="landingScreen" class="landingScreen">
+      <div class="loaderWrapper">      
+        <div class="loader"></div> 
+      </div>
+
     </div>
 
     <div id="greyBackground" onclick="closePopUp()"></div>
@@ -62,7 +71,9 @@
 
     </div>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <!-- jQuery for fullscreen -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <!-- Object Extender -->
     <script src="./models/drawable-object.class.js"></script>
     <script src="./models/keyboard.class.js"></script>
@@ -85,6 +96,8 @@
     <script src="./statusBars/HPstatusBar.class.js"></script>
     <script src="./statusBars/axeStatusBar.class.js"></script>
     <script src="./statusBars/coinStatusBar.class.js"></script>
+    <script src="./statusBars/endbossStatusbarOfHP.class.js"></script>
+
 
     <!-- Platforms -->
      <script src="./platforms/1-BlockRockObstacle.class.js"></script>
@@ -108,7 +121,7 @@
     <!-- Canvas / World -->
     <script src="./models/world.class.js"></script>
     
-    <script src="./js/game.js"></script>
+    <!-- Render HTML -->
     <script src="./js/renderHTML.js"></script>
 
 </body>

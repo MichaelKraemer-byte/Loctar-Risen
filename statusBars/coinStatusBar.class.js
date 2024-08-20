@@ -20,13 +20,32 @@ class CoinStatusBar extends DrawableObject {
         this.height = 50;
     };
 
+
+/**
+ * Updates the coin status bar to reflect the current percentage of coins.
+ * 
+ * This method sets the percentage of coins for the status bar and updates the image based on the percentage. The
+ * status bar image is chosen from a set of predefined images (stored in `coinStatusImages`) that represent different
+ * levels of coin collection.
+ * 
+ * @param {number} percentage - The current percentage of coin collection, ranging from 0 to 100.
+ */
     setPercentage(percentage){
         this.percentage = percentage;
         let path = this.coinStatusImages[this.getIndexByPercentageHighToLow()];
         this.img = this.imageCache[path];
     };
 
-    
+
+
+/**
+ * Gets the index for the coin status image based on the current percentage of coin collection.
+ * 
+ * This method calculates and returns the index of the coin status image to use, based on the current percentage of coin
+ * collection. The index is determined such that lower percentages correspond to higher indices in the `coinStatusImages` array.
+ * 
+ * @returns {number} The index of the image corresponding to the current coin percentage.
+ */
     getIndexByPercentageHighToLow(){
         if (this.percentage <= 0) {
             return 5

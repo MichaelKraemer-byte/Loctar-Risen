@@ -261,161 +261,372 @@ class Character extends MovableObject{
     };
 
 
-    animate(){
-        
 
-        // Moving & Sound
-        setInterval(() => {
-            // walk RIGHT 
-            this.walkSound.pause();
-            if (this.world.keyboard.RIGHT && this.x < this.world.level.xStop) {
-                if (this.HP > 0 && !this.meleeAttackProcess) {
-                    this.walkRight();
-                    this.speed = 3;
-
-                    // RUN
-                    if (this.world.keyboard.SHIFT) {
-                        this.run();}
-                    else {
-                        this.playSound(this.walkSound, 0.35, 1);
-                    }                    
-                }
-
-            };
-            // walk LEFT
-            if (this.world.keyboard.LEFT && this.x > -300 && this.HP > 0 && !this.meleeAttackProcess) {
-                this.walkLeft();
-                this.speed = 3;
-
-                // RUN
-                if (this.world.keyboard.SHIFT) {
-                    this.run()}
-                else {
-                    this.playSound(this.walkSound, 0.35, 1);
-                }
-            };
-
-            this.world.camera_x = -this.x + 20;
-        }, 1000 / 60);
+/**
+ * Handles the animation and behavior updates for the Character.
+ */
+animate() {
+    this.setupMovementAndSound();
+    this.setupJumping();
+    this.setupWalkingImages();
+    this.setupIdleImages();
+    this.setupJumpingImages();
+    this.setupFallingImages();
+    this.setupHurtImages();
+    this.setupDyingImages();
+    this.setupThrowingImages();
+    this.setupMeleeAttackImages();
+}
 
 
-        setInterval( () => {
-            // jump
-            if (this.world.keyboard.SPACE && this.HP > 0) {
-                if (this.isStandingOnObstacle) {
-                this.jump();
-                    this.playSound(this.jumpSound, 0.07, 1);
-                }
-            }
-        }, 1000 / 200);
+
+/**
+ * Handles character movement, running, and associated sound effects.
+ */
+setupMovementAndSound() {
+    setInterval(() => {
+        this.walkSound.pause();
+        if (this.shouldMoveRight()) this.moveRight();
+        if (this.shouldMoveLeft()) this.moveLeft();
+        this.updateCameraPosition();
+    }, 1000 / 60);
+}
 
 
-        // Images
-        setInterval(() => {
-            // WALK Images
-            if (!this.meleeAttackProcess) {
-                if (!this.isAboveGround() || this.isStandingOnObstacle){
-                    if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
-                        if (!this.damageProcess && !this.world.keyboard.SHIFT && this.HP > 0) {
-                            this.playAnimation(this.walkImages);
-                        };            
-                    }
-                }
-            // RUN Images
-                if (this.world.keyboard.SHIFT) {
-                    if (!this.isAboveGround() || this.isStandingOnObstacle){
-                        if (this.HP > 0 && !this.damageProcess) {
-                            this.playAnimation(this.runImages);
-                        }
-                    }
-                }
-            }
-        }, 35);
-        
 
-        // IDLE Images
-        setInterval(() => {
-            if (this.world.keyboard.NONE && !this.isDead() && !this.world.keyboard.RIGHT && !this.world.keyboard.LEFT && !this.damageProcess) {
-                if (this.speedY == 0) {
-                    this.playAnimation(this.idleImages);
-                    // console.log('idle active');                    
-                }
-
-            }
-        }, 80);
+/**
+ * Determines if the character should move to the right.
+ * 
+ * @returns {boolean} - True if the character should move right.
+ */
+shouldMoveRight() {
+    return this.world.keyboard.RIGHT && this.x < this.world.level.xStop && this.HP > 0 && !this.meleeAttackProcess;
+}
 
 
-        // JUMP Images
-        setInterval(() => {
-            if (this.isJumping()) {
-                if (!this.damageProcess && this.HP > 0 && !this.isStandingOnObstacle) {
-                    this.playSingleAnimationAndStopAtLatestImage(this.jumpImages);
-                }
-            }
-        }, 70);
+
+/**
+ * Determines if the character should move to the left.
+ * 
+ * @returns {boolean} - True if the character should move left.
+ */
+shouldMoveLeft() {
+    return this.world.keyboard.LEFT && this.x > -300 && this.HP > 0 && !this.meleeAttackProcess;
+}
 
 
-        // FALL Images
-        setInterval(()=>{
-            if (this.speedY != 0 && this.isFalling() && !this.isJumping()) {
-                if (!this.damageProcess && this.HP > 0 && !this.isStandingOnObstacle) {
-                    this.playSingleAnimationAndStopAtLatestImage(this.fallImages);                    
-                }
-            } else if (this.y == 280 || this.isStandingOnObstacle) {
-                if (!this.world.keyboard.SPACE) {
-                    this.speedY = 0;
-                }
-            }             
-        }, 70)
+
+/**
+ * Moves the character to the right and handles the running sound.
+ */
+moveRight() {
+    this.walkRight();
+    this.speed = 3;
+    if (this.world.keyboard.SHIFT) this.run();
+    else this.playSound(this.walkSound, 0.35, 1);
+}
 
 
-        // HURT Images
-        setInterval(() => {
-            if (this.damageProcess && this.HP > 0) {
-                this.playSound(this.hurtSound, 0.4, 1);
-                this.playAnimation(this.hurtImages);
-            }
-        }, 120);
 
-        // DYING Images
-        let dyingIntervall = setInterval(() => {
-            if (this.isDead()) {
-                this.playSound(this.gameOverSound, 0.7, 1.5);
-                this.playSound(this.dyingSound, 0.4, 1);
-                this.playSingleAnimation(this.dyingImages, dyingIntervall);
-                setTimeout(() => {
-                    slideInFailureParchment();
-                }, 1000);
-            };
-        }, 100);
+/**
+ * Moves the character to the left and handles the running sound.
+ */
+moveLeft() {
+    this.walkLeft();
+    this.speed = 3;
+    if (this.world.keyboard.SHIFT) this.run();
+    else this.playSound(this.walkSound, 0.35, 1);
+}
 
 
-        // THROW Images
-        setInterval(() => {
-            if (this.axes !== 0 && !this.throwAttackProcess && this.world.keyboard.E && !this.isDead() ) {
-                this.playSound(this.throwSound, 1, 1);
-                this.playAnimation(this.throwImages);
-                this.throwAttackProcess = true;
-                setTimeout(() => {
-                    this.throwAttackProcess = false;
-                }, 1000 / 30);
-            }
-        }, 15);
 
-        // MELEE ATTACK Images
-        setInterval(() => {
-            if (this.world.keyboard.Q && !this.isDead()) {
-                this.playSound(this.meleeAttackSound, 0.2, 1);
-                this.playAnimation(this.meleeAttackImages);
-                this.speed = 0;
-                this.meleeAttackProcess = true;
-                setTimeout(() => {
-                    this.meleeAttackProcess = false;
-                }, 300); 
-            }
-        }, 25);
-    };
+/**
+ * Updates the camera position to follow the character.
+ */
+updateCameraPosition() {
+    this.world.camera_x = -this.x + 20;
+}
 
+
+
+/**
+ * Handles the character's jumping actions and sound effects.
+ */
+setupJumping() {
+    setInterval(() => {
+        if (this.shouldJump()) this.performJump();
+    }, 1000 / 200);
+
+    setInterval(() => {
+        if (this.shouldJump()) this.performJump();
+    }, 1000 / 200);
+}
+
+
+
+/**
+ * Determines if the character should jump.
+ * 
+ * @returns {boolean} - True if the character should jump.
+ */
+shouldJump() {
+    return this.world.keyboard.SPACE && this.HP > 0 && this.isStandingOnObstacle;
+}
+
+
+
+/**
+ * Performs the jump action and plays the jump sound.
+ */
+performJump() {
+    this.jump();
+    this.playSound(this.jumpSound, 0.07, 1);
+}
+
+
+
+/**
+ * Handles the character's walking and running animations.
+ */
+setupWalkingImages() {
+    setInterval(() => {
+        if (this.shouldAnimateWalk()) this.animateWalk();
+        if (this.world.keyboard.SHIFT) this.animateRun();
+    }, 35);
+}
+
+
+
+/**
+ * Determines if the walking animation should be played.
+ * 
+ * @returns {boolean} - True if the walking animation should be played.
+ */
+shouldAnimateWalk() {
+    return !this.meleeAttackProcess && (!this.isAboveGround() || this.isStandingOnObstacle) && (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) && !this.damageProcess && !this.world.keyboard.SHIFT && this.HP > 0;
+}
+
+
+
+/**
+ * Plays the walking animation.
+ */
+animateWalk() {
+    this.playAnimation(this.walkImages);
+}
+
+
+
+/**
+ * Plays the running animation.
+ */
+animateRun() {
+    if (!this.isAboveGround() || this.isStandingOnObstacle) {
+        if (this.HP > 0 && !this.damageProcess) {
+            this.playAnimation(this.runImages);
+        }
+    }
+}
+
+
+
+/**
+ * Handles the character's idle animations.
+ */
+setupIdleImages() {
+    setInterval(() => {
+        if (this.shouldAnimateIdle()) this.playAnimation(this.idleImages);
+    }, 80);
+}
+
+
+
+/**
+ * Determines if the idle animation should be played.
+ * 
+ * @returns {boolean} - True if the idle animation should be played.
+ */
+shouldAnimateIdle() {
+    return this.world.keyboard.NONE && !this.isDead() && !this.world.keyboard.RIGHT && !this.world.keyboard.LEFT && !this.damageProcess && this.speedY == 0;
+}
+
+
+
+/**
+ * Handles the character's jumping animations.
+ */
+setupJumpingImages() {
+    setInterval(() => {
+        if (this.isJumping()) this.playJumpAnimation();
+    }, 70);
+}
+
+
+
+/**
+ * Plays the jumping animation.
+ */
+playJumpAnimation() {
+    if (!this.damageProcess && this.HP > 0 && !this.isStandingOnObstacle) {
+        this.playSingleAnimationAndStopAtLatestImage(this.jumpImages);
+    }
+}
+
+
+
+/**
+ * Handles the character's falling animations.
+ */
+setupFallingImages() {
+    setInterval(() => {
+        if (this.isFalling() && !this.isJumping()) this.playFallingAnimation();
+        else this.resetFallingSpeed();
+    }, 70);
+}
+
+
+
+/**
+ * Plays the falling animation.
+ */
+playFallingAnimation() {
+    if (!this.damageProcess && this.HP > 0 && !this.isStandingOnObstacle) {
+        this.playSingleAnimationAndStopAtLatestImage(this.fallImages);
+    }
+}
+
+
+
+/**
+ * Resets the falling speed if the character is on the ground or an obstacle.
+ */
+resetFallingSpeed() {
+    if (this.y == 280 || this.isStandingOnObstacle) {
+        if (!this.world.keyboard.SPACE) this.speedY = 0;
+    }
+}
+
+
+
+/**
+ * Handles the character's hurt animations and sound effects.
+ */
+setupHurtImages() {
+    setInterval(() => {
+        if (this.damageProcess && this.HP > 0) this.playHurtAnimation();
+    }, 120);
+}
+
+
+
+/**
+ * Plays the hurt animation and sound.
+ */
+playHurtAnimation() {
+    this.playSound(this.hurtSound, 0.4, 1);
+    this.playAnimation(this.hurtImages);
+}
+
+
+
+/**
+ * Handles the character's dying animations and sound effects.
+ */
+setupDyingImages() {
+    let dyingInterval = setInterval(() => {
+        if (this.isDead()) this.playDyingAnimation(dyingInterval);
+    }, 100);
+}
+
+
+
+/**
+ * Plays the dying animation and sound, and triggers game over actions.
+ * 
+ * @param {Object} interval - The interval to clear when dying.
+ */
+playDyingAnimation(interval) {
+    this.playSound(this.gameOverSound, 0.7, 1.5);
+    this.playSound(this.dyingSound, 0.4, 1);
+    this.playSingleAnimation(this.dyingImages, interval);
+    if (!this.world.gameOver) {
+        setTimeout(() => {
+            slideInFailureParchment();
+        }, 1000);        
+    }
+
+}
+
+
+
+/**
+ * Handles the character's throwing animations and sound effects.
+ */
+setupThrowingImages() {
+    setInterval(() => {
+        if (this.shouldThrow()) this.performThrow();
+    }, 15);
+}
+
+
+
+/**
+ * Determines if the character should throw an object.
+ * 
+ * @returns {boolean} - True if the character should throw.
+ */
+shouldThrow() {
+    return this.axes !== 0 && !this.throwAttackProcess && this.world.keyboard.E && !this.isDead();
+}
+
+
+
+/**
+ * Performs the throw action and plays the throw animation and sound.
+ */
+performThrow() {
+    this.playSound(this.throwSound, 1, 1);
+    this.playAnimation(this.throwImages);
+    this.throwAttackProcess = true;
+    setTimeout(() => {
+        this.throwAttackProcess = false;
+    }, 1000 / 30);
+}
+
+
+
+/**
+ * Handles the character's melee attack animations and sound effects.
+ */
+setupMeleeAttackImages() {
+    setInterval(() => {
+        if (this.world.keyboard.Q && !this.isDead()) this.performMeleeAttack();
+    }, 25);
+}
+
+
+
+/**
+ * Performs the melee attack action and plays the melee attack animation and sound.
+ */
+performMeleeAttack() {
+    this.playSound(this.meleeAttackSound, 0.2, 1);
+    this.playAnimation(this.meleeAttackImages);
+    this.speed = 0;
+    this.meleeAttackProcess = true;
+    setTimeout(() => {
+        this.meleeAttackProcess = false;
+    }, 300);
+}
+
+
+
+    /**
+     * Monitors and updates the character's gravity conditions.
+     * - Sets the character's ground level.
+     * - Starts the gravity interval if the character is jumping.
+     * - Stops the gravity interval if the character is standing on an obstacle.
+     */
     monitorGravityConditions() {
         setInterval(() => {
             this.setOnGroundLevel();
@@ -436,6 +647,11 @@ class Character extends MovableObject{
     }
 
 
+    /**
+     * Starts the gravity interval if it is not already running.
+     * - Updates the character's vertical position based on gravity and jumping state.
+     * - Stops the interval if the character is standing on an obstacle.
+     */
     startGravityInterval() {
         if (!this.gravityInterval) {
             this.gravityInterval = setInterval(() => {
@@ -458,6 +674,11 @@ class Character extends MovableObject{
     }
 
 
+    /**
+     * Monitors and updates the character's jumping process conditions.
+     * - Starts the jumping process interval if the character is jumping or falling.
+     * - Stops the jumping process interval if the character is standing on an obstacle.
+     */
     monitorJumpingProcessConditions(){
         setInterval(()=> {
             if (this.isJumping || this.isFalling()){
@@ -474,6 +695,12 @@ class Character extends MovableObject{
         }, 1000 / 30);
     }
 
+
+    /**
+     * Starts the jumping process interval if it is not already running.
+     * - Updates the character's jumping process state based on jumping or falling.
+     * - Stops the interval if the character is standing on an obstacle.
+     */
     startJumpingProcessInterval(){
         if (!this.jumpingProcessInterval) {
 
@@ -492,4 +719,7 @@ class Character extends MovableObject{
             }, 1000 / 140);                 
         }
     }
+
+
+
 }

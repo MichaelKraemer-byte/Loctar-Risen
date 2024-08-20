@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: models/character.class.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: models/character.class.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>class Character extends MovableObject{
+
+    idleImages = [
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle/0_Orc_Idle_000.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle/0_Orc_Idle_001.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle/0_Orc_Idle_002.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle/0_Orc_Idle_003.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle/0_Orc_Idle_004.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle/0_Orc_Idle_005.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle/0_Orc_Idle_006.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle/0_Orc_Idle_007.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle/0_Orc_Idle_008.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle/0_Orc_Idle_009.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle/0_Orc_Idle_010.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle/0_Orc_Idle_011.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle/0_Orc_Idle_012.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle/0_Orc_Idle_013.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle/0_Orc_Idle_014.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle/0_Orc_Idle_015.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle/0_Orc_Idle_016.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle/0_Orc_Idle_017.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle/0_Orc_Idle_000.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle/0_Orc_Idle_001.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle/0_Orc_Idle_002.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle/0_Orc_Idle_003.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle/0_Orc_Idle_004.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle/0_Orc_Idle_005.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle/0_Orc_Idle_006.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle/0_Orc_Idle_007.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle/0_Orc_Idle_008.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle/0_Orc_Idle_009.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle/0_Orc_Idle_010.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle/0_Orc_Idle_011.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle/0_Orc_Idle_012.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle/0_Orc_Idle_013.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle/0_Orc_Idle_014.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle/0_Orc_Idle_015.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle/0_Orc_Idle_016.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle/0_Orc_Idle_017.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle/0_Orc_Idle_000.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle/0_Orc_Idle_001.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle/0_Orc_Idle_002.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle/0_Orc_Idle_003.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle/0_Orc_Idle_004.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle/0_Orc_Idle_005.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle/0_Orc_Idle_006.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle/0_Orc_Idle_007.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle/0_Orc_Idle_008.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle/0_Orc_Idle_009.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle/0_Orc_Idle_010.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle/0_Orc_Idle_011.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle/0_Orc_Idle_012.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle/0_Orc_Idle_013.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle/0_Orc_Idle_014.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle/0_Orc_Idle_015.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle/0_Orc_Idle_016.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle/0_Orc_Idle_017.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle Blinking/0_Orc_Idle Blinking_000.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle Blinking/0_Orc_Idle Blinking_001.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle Blinking/0_Orc_Idle Blinking_002.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle Blinking/0_Orc_Idle Blinking_003.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle Blinking/0_Orc_Idle Blinking_004.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle Blinking/0_Orc_Idle Blinking_005.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle Blinking/0_Orc_Idle Blinking_006.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle Blinking/0_Orc_Idle Blinking_007.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle Blinking/0_Orc_Idle Blinking_008.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle Blinking/0_Orc_Idle Blinking_009.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle Blinking/0_Orc_Idle Blinking_010.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle Blinking/0_Orc_Idle Blinking_011.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle Blinking/0_Orc_Idle Blinking_012.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle Blinking/0_Orc_Idle Blinking_013.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle Blinking/0_Orc_Idle Blinking_014.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle Blinking/0_Orc_Idle Blinking_015.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle Blinking/0_Orc_Idle Blinking_016.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Idle Blinking/0_Orc_Idle Blinking_017.png'
+    ];
+
+    walkImages = [
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Walking/0_Orc_Walking_000.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Walking/0_Orc_Walking_001.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Walking/0_Orc_Walking_002.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Walking/0_Orc_Walking_003.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Walking/0_Orc_Walking_004.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Walking/0_Orc_Walking_005.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Walking/0_Orc_Walking_006.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Walking/0_Orc_Walking_007.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Walking/0_Orc_Walking_008.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Walking/0_Orc_Walking_009.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Walking/0_Orc_Walking_010.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Walking/0_Orc_Walking_011.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Walking/0_Orc_Walking_011.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Walking/0_Orc_Walking_012.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Walking/0_Orc_Walking_013.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Walking/0_Orc_Walking_014.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Walking/0_Orc_Walking_015.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Walking/0_Orc_Walking_016.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Walking/0_Orc_Walking_017.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Walking/0_Orc_Walking_018.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Walking/0_Orc_Walking_019.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Walking/0_Orc_Walking_020.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Walking/0_Orc_Walking_021.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Walking/0_Orc_Walking_022.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Walking/0_Orc_Walking_023.png'
+    ];
+
+    jumpAndFallImages = [
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Jump Start/0_Orc_Jump Start_000.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Jump Start/0_Orc_Jump Start_001.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Jump Start/0_Orc_Jump Start_002.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Jump Start/0_Orc_Jump Start_003.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Jump Start/0_Orc_Jump Start_004.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Jump Start/0_Orc_Jump Start_005.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Falling Down/0_Orc_Falling Down_000.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Falling Down/0_Orc_Falling Down_001.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Falling Down/0_Orc_Falling Down_002.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Falling Down/0_Orc_Falling Down_003.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Falling Down/0_Orc_Falling Down_004.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Falling Down/0_Orc_Falling Down_005.png'
+    ]
+
+    jumpImages = [
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Jump Start/0_Orc_Jump Start_000.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Jump Start/0_Orc_Jump Start_001.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Jump Start/0_Orc_Jump Start_002.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Jump Start/0_Orc_Jump Start_003.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Jump Start/0_Orc_Jump Start_004.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Jump Start/0_Orc_Jump Start_005.png'
+    ];
+
+    fallImages = [
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Falling Down/0_Orc_Falling Down_000.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Falling Down/0_Orc_Falling Down_001.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Falling Down/0_Orc_Falling Down_002.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Falling Down/0_Orc_Falling Down_003.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Falling Down/0_Orc_Falling Down_004.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Falling Down/0_Orc_Falling Down_005.png'
+    ];
+
+    hurtImages = [
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Hurt/0_Orc_Hurt_000.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Hurt/0_Orc_Hurt_001.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Hurt/0_Orc_Hurt_002.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Hurt/0_Orc_Hurt_003.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Hurt/0_Orc_Hurt_004.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Hurt/0_Orc_Hurt_005.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Hurt/0_Orc_Hurt_006.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Hurt/0_Orc_Hurt_007.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Hurt/0_Orc_Hurt_008.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Hurt/0_Orc_Hurt_009.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Hurt/0_Orc_Hurt_010.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Hurt/0_Orc_Hurt_011.png',
+    ];
+
+    runImages = [
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Running/0_Orc_Running_000.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Running/0_Orc_Running_001.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Running/0_Orc_Running_002.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Running/0_Orc_Running_003.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Running/0_Orc_Running_004.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Running/0_Orc_Running_005.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Running/0_Orc_Running_006.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Running/0_Orc_Running_007.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Running/0_Orc_Running_008.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Running/0_Orc_Running_009.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Running/0_Orc_Running_010.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Running/0_Orc_Running_011.png'
+    ];
+
+    dyingImages = [
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Dying/0_Orc_Dying_000.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Dying/0_Orc_Dying_001.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Dying/0_Orc_Dying_002.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Dying/0_Orc_Dying_003.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Dying/0_Orc_Dying_004.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Dying/0_Orc_Dying_005.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Dying/0_Orc_Dying_006.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Dying/0_Orc_Dying_007.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Dying/0_Orc_Dying_008.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Dying/0_Orc_Dying_009.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Dying/0_Orc_Dying_010.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Dying/0_Orc_Dying_011.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Dying/0_Orc_Dying_012.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Dying/0_Orc_Dying_013.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Dying/0_Orc_Dying_014.png'
+    ];
+
+    throwImages = [
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Throwing in The Air/0_Orc_Throwing in The Air_000.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Throwing in The Air/0_Orc_Throwing in The Air_001.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Throwing in The Air/0_Orc_Throwing in The Air_002.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Throwing in The Air/0_Orc_Throwing in The Air_003.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Throwing in The Air/0_Orc_Throwing in The Air_004.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Throwing in The Air/0_Orc_Throwing in The Air_005.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Throwing in The Air/0_Orc_Throwing in The Air_006.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Throwing in The Air/0_Orc_Throwing in The Air_007.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Throwing in The Air/0_Orc_Throwing in The Air_008.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Throwing in The Air/0_Orc_Throwing in The Air_009.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Throwing in The Air/0_Orc_Throwing in The Air_010.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Throwing in The Air/0_Orc_Throwing in The Air_011.png'
+    ];
+
+    meleeAttackImages = [
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Slashing/0_Orc_Slashing_000.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Slashing/0_Orc_Slashing_001.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Slashing/0_Orc_Slashing_002.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Slashing/0_Orc_Slashing_003.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Slashing/0_Orc_Slashing_004.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Slashing/0_Orc_Slashing_005.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Slashing/0_Orc_Slashing_006.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Slashing/0_Orc_Slashing_007.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Slashing/0_Orc_Slashing_008.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Slashing/0_Orc_Slashing_009.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Slashing/0_Orc_Slashing_010.png',
+        'assets/crafties/orcs/Orc/PNG/PNG Sequences/Slashing/0_Orc_Slashing_011.png'
+    ];
+
+    world;
+    walkSound = new Audio('assets/audio/walking/walking-on-tall-grass.wav');
+    jumpSound = new Audio('assets/audio/character/jump/jumpWhoosh.mp3');
+    meleeAttackSound = new Audio('assets/audio/character/meleeAttack/meleeAttackCharacter.mp3');
+    hurtSound = new Audio('assets/audio/character/pain/characterHurt.mp3');
+    throwSound = new Audio('assets/audio/character/throw/throwcut.mp3');
+    dyingSound = new Audio('assets/audio/character/dying/characterdying.mp3');
+    stampJumpSound = new Audio ('assets/audio/character/stampJump/stampJump.mp3');
+    throwingAxeHitSound = new Audio('assets/audio/character/throw/throwingAxeHitCut.mp3');
+    collectAxeSound = new Audio('assets/audio/character/collect/axeCollectCut.mp3');
+    collectCoinSound = new Audio('assets/audio/character/collect/coin.mp3');
+    gameOverSound = new Audio('assets/audio/game/gameOver/gameOver.mp3');
+    winSound = new Audio('assets/audio/game/gameOver/victoryYelling.mp3');
+    meleeHitSound = new Audio('assets/audio/character/meleeAttack/axeMeleeHit.mp3');
+
+    offset = {
+        top: 60,
+        bottom: 40,
+        right: 90,
+        left: 80
+    };
+    gravityInterval = false;
+    jumpingProcess = false;
+    jumpingProcessInterval = false;
+
+
+    constructor(){
+        super();
+        this.speed = 3;
+        this.y = 280;
+        this.setBodyVariables();
+        this.loadImages(this.idleImages);
+        this.loadImages(this.walkImages);
+        this.loadImages(this.runImages);
+        this.loadImages(this.jumpImages);
+        this.loadImages(this.fallImages);
+        this.loadImages(this.hurtImages);
+        this.loadImages(this.dyingImages);
+        this.loadImages(this.throwImages);
+        this.loadImages(this.meleeAttackImages);
+        this.loadImages(this.jumpAndFallImages);
+        this.monitorJumpingProcessConditions()
+        this.monitorGravityConditions();
+        this.animate();
+    };
+
+
+
+/**
+ * Handles the animation and behavior updates for the Character.
+ * 
+ * This method is responsible for managing the Character's animations and behaviors based on its various states such as walking, running, idling, jumping, falling, being hurt, and dying. 
+ * It uses intervals to periodically update animations, sound effects, and other behavior-related tasks.
+ * 
+ * **Movement &amp; Sound**:
+ * - Updates the Character's movement and associated sound effects based on keyboard inputs (RIGHT, LEFT, SHIFT).
+ * - Controls walking and running behavior, adjusting speed and playing the appropriate sound.
+ * - Updates the camera position to follow the Character.
+ * 
+ * **Jumping**:
+ * - Initiates a jump when the SPACE key is pressed and the Character is standing on an obstacle.
+ * - Plays the jump sound effect and handles multiple jump intervals for smoother action.
+ * 
+ * **Walking Images**:
+ * - Manages walking animation frames when the Character is moving left or right and is on the ground or standing on an obstacle.
+ * - Differentiates between normal walking and running based on the SHIFT key.
+ * 
+ * **Idle Images**:
+ * - Plays the idle animation frames when the Character is stationary and not performing any actions.
+ * 
+ * **Jumping Images**:
+ * - Handles the animation frames for jumping when the Character is in the air and not on an obstacle.
+ * 
+ * **Falling Images**:
+ * - Manages the animation frames for falling when the Character is descending and not jumping.
+ * - Stops the falling speed when the Character is on the ground or an obstacle.
+ * 
+ * **Hurt Images**:
+ * - Plays the hurt animation frames and sound effect when the Character is damaged.
+ * 
+ * **Dying Images**:
+ * - Handles the dying animation and sound effects when the Character's health points (HP) reach zero.
+ * - Plays the game over sound effect and initiates a game over screen after a short delay.
+ * 
+ * **Throwing Images**:
+ * - Manages the animation frames for throwing an object when the E key is pressed and the Character has throwable objects.
+ * - Handles the throwing sound effect and resets the throwing process after a short delay.
+ * 
+ * **Melee Attack Images**:
+ * - Controls the melee attack animation frames and sound effect when the Q key is pressed.
+ * - Pauses the Character's movement during the attack and resets the melee attack process after a short delay.
+ * 
+ */
+    animate(){
+        
+
+        // Moving &amp; Sound
+        setInterval(() => {
+            // walk RIGHT 
+            this.walkSound.pause();
+            if (this.world.keyboard.RIGHT &amp;&amp; this.x &lt; this.world.level.xStop) {
+                if (this.HP > 0 &amp;&amp; !this.meleeAttackProcess) {
+                    this.walkRight();
+                    this.speed = 3;
+
+                    // RUN
+                    if (this.world.keyboard.SHIFT) {
+                        this.run();}
+                    else {
+                        this.playSound(this.walkSound, 0.35, 1);
+                    }                    
+                }
+
+            };
+            // walk LEFT
+            if (this.world.keyboard.LEFT &amp;&amp; this.x > -300 &amp;&amp; this.HP > 0 &amp;&amp; !this.meleeAttackProcess) {
+                this.walkLeft();
+                this.speed = 3;
+
+                // RUN
+                if (this.world.keyboard.SHIFT) {
+                    this.run()}
+                else {
+                    this.playSound(this.walkSound, 0.35, 1);
+                }
+            };
+
+            this.world.camera_x = -this.x + 20;
+        }, 1000 / 60);
+
+
+        setInterval( () => {
+            // jump
+            if (this.world.keyboard.SPACE &amp;&amp; this.HP > 0) {
+                if (this.isStandingOnObstacle) {
+                this.jump();
+                    this.playSound(this.jumpSound, 0.07, 1);
+                }
+            }
+        }, 1000 / 200);
+
+        //second jump interval for a better listening and action (because of multiple conditions of platform interaction);
+        setInterval( () => {
+            // jump
+            if (this.world.keyboard.SPACE &amp;&amp; this.HP > 0) {
+                if (this.isStandingOnObstacle) {
+                this.jump();
+                    this.playSound(this.jumpSound, 0.07, 1);
+                }
+            }
+        }, 1000 / 200);
+
+
+        // Images
+        setInterval(() => {
+            // WALK Images
+            if (!this.meleeAttackProcess) {
+                if (!this.isAboveGround() || this.isStandingOnObstacle){
+                    if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
+                        if (!this.damageProcess &amp;&amp; !this.world.keyboard.SHIFT &amp;&amp; this.HP > 0) {
+                            this.playAnimation(this.walkImages);
+                        };            
+                    }
+                }
+            // RUN Images
+                if (this.world.keyboard.SHIFT) {
+                    if (!this.isAboveGround() || this.isStandingOnObstacle){
+                        if (this.HP > 0 &amp;&amp; !this.damageProcess) {
+                            this.playAnimation(this.runImages);
+                        }
+                    }
+                }
+            }
+        }, 35);
+        
+
+        // IDLE Images
+        setInterval(() => {
+            if (this.world.keyboard.NONE &amp;&amp; !this.isDead() &amp;&amp; !this.world.keyboard.RIGHT &amp;&amp; !this.world.keyboard.LEFT &amp;&amp; !this.damageProcess) {
+                if (this.speedY == 0) {
+                    this.playAnimation(this.idleImages);
+                    // console.log('idle active');                    
+                }
+
+            }
+        }, 80);
+
+
+        // JUMP Images
+        setInterval(() => {
+            if (this.isJumping()) {
+                if (!this.damageProcess &amp;&amp; this.HP > 0 &amp;&amp; !this.isStandingOnObstacle) {
+                    this.playSingleAnimationAndStopAtLatestImage(this.jumpImages);
+                }
+            }
+        }, 70);
+
+
+        // FALL Images
+        setInterval(()=>{
+            if (this.speedY != 0 &amp;&amp; this.isFalling() &amp;&amp; !this.isJumping()) {
+                if (!this.damageProcess &amp;&amp; this.HP > 0 &amp;&amp; !this.isStandingOnObstacle) {
+                    this.playSingleAnimationAndStopAtLatestImage(this.fallImages);                    
+                }
+            } else if (this.y == 280 || this.isStandingOnObstacle) {
+                if (!this.world.keyboard.SPACE) {
+                    this.speedY = 0;
+                }
+            }             
+        }, 70)
+
+
+        // HURT Images
+        setInterval(() => {
+            if (this.damageProcess &amp;&amp; this.HP > 0) {
+                this.playSound(this.hurtSound, 0.4, 1);
+                this.playAnimation(this.hurtImages);
+            }
+        }, 120);
+
+        // DYING Images
+        let dyingIntervall = setInterval(() => {
+            if (this.isDead()) {
+                this.playSound(this.gameOverSound, 0.7, 1.5);
+                this.playSound(this.dyingSound, 0.4, 1);
+                this.playSingleAnimation(this.dyingImages, dyingIntervall);
+                setTimeout(() => {
+                    slideInFailureParchment();
+                }, 1000);
+            };
+        }, 100);
+
+
+        // THROW Images
+        setInterval(() => {
+            if (this.axes !== 0 &amp;&amp; !this.throwAttackProcess &amp;&amp; this.world.keyboard.E &amp;&amp; !this.isDead() ) {
+                this.playSound(this.throwSound, 1, 1);
+                this.playAnimation(this.throwImages);
+                this.throwAttackProcess = true;
+                setTimeout(() => {
+                    this.throwAttackProcess = false;
+                }, 1000 / 30);
+            }
+        }, 15);
+
+        // MELEE ATTACK Images
+        setInterval(() => {
+            if (this.world.keyboard.Q &amp;&amp; !this.isDead()) {
+                this.playSound(this.meleeAttackSound, 0.2, 1);
+                this.playAnimation(this.meleeAttackImages);
+                this.speed = 0;
+                this.meleeAttackProcess = true;
+                setTimeout(() => {
+                    this.meleeAttackProcess = false;
+                }, 300); 
+            }
+        }, 25);
+    };
+
+
+    /**
+     * Monitors and updates the character's gravity conditions.
+     * - Sets the character's ground level.
+     * - Starts the gravity interval if the character is jumping.
+     * - Stops the gravity interval if the character is standing on an obstacle.
+     */
+    monitorGravityConditions() {
+        setInterval(() => {
+            this.setOnGroundLevel();
+
+            if (this.jumpingProcess) {
+
+                this.startGravityInterval();                
+            }
+
+            if (this.isStandingOnObstacle) {
+                if (this.gravityInterval) {
+                    this.speedY = 0;
+                    clearInterval(this.gravityInterval);
+                    this.gravityInterval = false;
+                }
+            }
+        }, 1000 / 20);
+    }
+
+
+    /**
+     * Starts the gravity interval if it is not already running.
+     * - Updates the character's vertical position based on gravity and jumping state.
+     * - Stops the interval if the character is standing on an obstacle.
+     */
+    startGravityInterval() {
+        if (!this.gravityInterval) {
+            this.gravityInterval = setInterval(() => {
+                    this.setOnGroundLevel();
+                    // console.log(this.isStandingOnObstacle);
+                    // (!this.isStandingOnObstacle &amp;&amp; this.y &lt; 280) 
+                if (this.jumpingProcess) {
+                    this.y -= this.speedY;
+                    this.speedY -= this.acceleration;
+                    // console.log(this.speedY);
+                    // console.log(this.jumpingProcess);
+                }
+                if (this.isStandingOnObstacle) {
+                    this.speedY = 0;
+                    clearInterval(this.gravityInterval);
+                    this.gravityInterval = false; // Intervall-Handle zurücksetzen
+                }
+            },  1000 / 30)
+        }
+    }
+
+
+    /**
+     * Monitors and updates the character's jumping process conditions.
+     * - Starts the jumping process interval if the character is jumping or falling.
+     * - Stops the jumping process interval if the character is standing on an obstacle.
+     */
+    monitorJumpingProcessConditions(){
+        setInterval(()=> {
+            if (this.isJumping || this.isFalling()){
+                if (!this.jumpingProcess) {
+
+                this.startJumpingProcessInterval();
+                }
+            }  
+            if (this.isStandingOnObstacle) {
+                this.jumpingProcess = false;
+                clearInterval(this.jumpingProcessInterval);
+                this.jumpingProcessInterval = false; // Intervall-Handle zurücksetzen
+            }                   
+        }, 1000 / 30);
+    }
+
+
+    /**
+     * Starts the jumping process interval if it is not already running.
+     * - Updates the character's jumping process state based on jumping or falling.
+     * - Stops the interval if the character is standing on an obstacle.
+     */
+    startJumpingProcessInterval(){
+        if (!this.jumpingProcessInterval) {
+
+            this.jumpingProcessInterval = setInterval(()=> {
+                if (this.isJumping || this.isFalling()){
+                    if (!this.jumpingProcess) {
+
+                    this.jumpingProcess = true;
+                    }
+                }  
+                if (this.isStandingOnObstacle) {
+                    this.jumpingProcess = false;
+                    clearInterval(this.jumpingProcessInterval);
+                    this.jumpingProcessInterval = false; // Intervall-Handle zurücksetzen
+                }  
+            }, 1000 / 140);                 
+        }
+    }
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Events</h3><ul><li><a href="fullscreenContainer.html#event:click">click</a></li><li><a href="gameCanvas.html#event:mouseout-Hidesthefullscreenandsoundbuttoncontainers.">mouseout - Hides the fullscreen and sound button containers.</a></li><li><a href="jQuery.html#event:click">click</a></li><li><a href="soundButtonContainer.html#event:mouseout-Hidesthefullscreenandsoundbuttoncontainers.">mouseout - Hides the fullscreen and sound button containers.</a></li><li><a href="touchLeft.html#event:touchend">touchend</a></li><li><a href="touchLeft.html#event:touchstart">touchstart</a></li><li><a href="touchRight.html#event:touchend">touchend</a></li><li><a href="touchRight.html#event:touchstart">touchstart</a></li><li><a href="window.html#event:resize">resize</a></li></ul><h3>Global</h3><ul><li><a href="global.html#backToMenu">backToMenu</a></li><li><a href="global.html#checkAndStartBackgroundMusic">checkAndStartBackgroundMusic</a></li><li><a href="global.html#closePopUp">closePopUp</a></li><li><a href="global.html#disOrEnableOkButton">disOrEnableOkButton</a></li><li><a href="global.html#handleTouchEnd">handleTouchEnd</a></li><li><a href="global.html#handleTouchStart">handleTouchStart</a></li><li><a href="global.html#handleUserInteraction">handleUserInteraction</a></li><li><a href="global.html#hideContainer">hideContainer</a></li><li><a href="global.html#hideLandingScreen">hideLandingScreen</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#playAudio">playAudio</a></li><li><a href="global.html#playMenuTheme">playMenuTheme</a></li><li><a href="global.html#renderControls">renderControls</a></li><li><a href="global.html#resetGame">resetGame</a></li><li><a href="global.html#setupUserInteractionListener">setupUserInteractionListener</a></li><li><a href="global.html#showFirstPageHorizontalMobileControls">showFirstPageHorizontalMobileControls</a></li><li><a href="global.html#showFirstPageVerticalMobileControls">showFirstPageVerticalMobileControls</a></li><li><a href="global.html#showFullScreenContainer">showFullScreenContainer</a></li><li><a href="global.html#showLandingScreen">showLandingScreen</a></li><li><a href="global.html#showSecondPageHorizontalMobileControls">showSecondPageHorizontalMobileControls</a></li><li><a href="global.html#showSecondPageVerticalMobileControls">showSecondPageVerticalMobileControls</a></li><li><a href="global.html#slideInControls">slideInControls</a></li><li><a href="global.html#slideInFailureParchment">slideInFailureParchment</a></li><li><a href="global.html#slideInStory">slideInStory</a></li><li><a href="global.html#slideInSuccessParchment">slideInSuccessParchment</a></li><li><a href="global.html#slideInTurnDeviceNotice">slideInTurnDeviceNotice</a></li><li><a href="global.html#soundOnOrOff">soundOnOrOff</a></li><li><a href="global.html#startGame">startGame</a></li><li><a href="global.html#startResettedGame">startResettedGame</a></li><li><a href="global.html#updateFullscreenVisibility">updateFullscreenVisibility</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Sun Aug 18 2024 17:50:28 GMT+0200 (Central European Summer Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

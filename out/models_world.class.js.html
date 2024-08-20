@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: models/world.class.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: models/world.class.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>class World {
+    character = new Character();
+    level = level_1;
+    statusBars = [
+        new HPstatusBar(),
+        new AxeStatusBar(),
+        new CoinStatusBar()
+    ];
+    canvas;
+    ctx;
+    keyboard;
+    camera_x = 0;
+    currentGround;
+    characterNewYSetted = false;
+
+    constructor(canvas, keyboard){
+        this.ctx = canvas.getContext('2d');
+        this.canvas = canvas;
+        this.keyboard = keyboard;
+        this.setWorld();
+        this.draw();
+        this.run();
+    };
+
+
+
+    /**
+     * Starts multiple intervals to regularly check various game elements and conditions.
+     * - The method sets up intervals for checking platform landings, obstacle collisions, melee interactions,
+     *   throwing objects, body-to-body collisions, and throwable object collisions.
+     * - Also includes interval checks for removing throwable objects and treasure collisions.
+     */
+    run(){
+
+        setInterval(()=> {
+            this.checkPlatformLanding();
+        }, 1000 / 150);
+
+        setInterval(()=> {
+            this.checkObstacleCollisions()        
+        }, 1000 / 150);
+
+        setInterval(()=> {
+            this.checkMelee();
+        }, 1000 / 32);
+        setInterval(()=> {
+            this.checkIfThrowingObjects();
+        }, 1000 / 32);
+        setInterval(()=> {
+            this.checkBodyToBodyCollisions();
+        }, 1000 / 32);
+        setInterval(()=> {
+            this.checkThrowableObjectCollision();
+        }, 1000 / 100);       
+        setInterval(()=> {
+            this.checkThrowableObjectCollision();
+        }, 1000 / 50);       
+        setInterval(()=> {
+            this.removeThrowableObjects();
+        }, 1000 / 32);
+        let checkTreasureCollision = setInterval(()=> {
+            this.checkTreasureCollision(checkTreasureCollision);
+        }, 1000 / 100);
+    };
+
+    /**
+     * Sets the world context for all level objects, including the character, enemies, endboss, obstacles, and platforms.
+     */
+    setWorld() {
+        // Set the world context for the character
+        this.character.world = this;
+    
+        // Set the world context for enemies
+        this.level.enemies.forEach(enemy => {
+            enemy.world = this;
+            enemy.gameHasStarted = true;
+        });
+    
+        // Set the world context for endbosses
+        this.level.endboss.forEach(endboss => {
+            endboss.world = this;
+            endboss.gameHasStarted = true;
+        });
+    
+        // Set the world context for obstacles/platforms
+        this.level.obstacles.forEach(obstacle => {
+            obstacle.world = this;
+            obstacle.gameHasStarted = true;
+        });
+    
+        // Set the world context for platforms
+        this.level.platforms.forEach(platform => {
+            platform.world = this;
+            platform.gameHasStarted = true;
+        });
+    }
+
+
+    /**
+     * Checks if the character is landing on a platform and updates its state accordingly.
+     */
+    checkPlatformLanding() {
+        this.level.platforms.forEach(platform => {
+            if (
+                this.character.isColliding(platform) &amp;&amp;
+                this.character.bodyBottom &lt;= platform.y + 25
+            ) {
+                // Character is standing on a platform
+                this.character.isStandingOnObstacle = true;
+                this.character.speedY = 0;
+                this.character.jumpingProcess = false;
+                this.character.y = platform.y - this.character.height + this.character.offset.bottom;
+            } else {
+                // Character is not standing on a platform, check for falling
+                setTimeout(() => {
+                    this.checkFallingFromPlatform();
+                }, 100);
+            }
+        });
+    }
+
+    /**
+     * Checks if the character has fallen from a platform and updates its state accordingly.
+     */
+    checkFallingFromPlatform() {
+        if (this.character.y &lt; 280 &amp;&amp; !this.keyboard.SPACE) {
+            // Character has fallen from the platform
+            this.character.isStandingOnObstacle = false;
+        }
+    }
+
+    /**
+     * Draws the game elements on the canvas, including objects with parallax effects and status bars.
+     */
+    draw() {
+        // Clear the canvas
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+        // Save the current canvas state
+        this.ctx.save();
+
+        // Apply camera translation
+        this.ctx.translate(this.camera_x, 0);
+
+        // Draw level objects with parallax effects
+        this.drawObjectInParallaxEffect(this.level.skies);
+        this.drawObjectInParallaxEffect(this.level.backDecors);
+        this.drawObjectInParallaxEffect(this.level.middleDecors);
+        this.drawObjectInParallaxEffect(this.level.foregrounds);
+
+        // Draw status bars
+        this.addMultipleFixedObjectsToMap(this.statusBars);
+
+        // Draw level objects
+        this.addObjectsToMap(this.level.obstacles);
+        this.addObjectsToMap(this.level.platforms);
+        this.addObjectsToMap(this.level.treasures);
+        this.addObjectsToMap(this.level.endboss);
+        this.addToMap(this.character);
+        this.addObjectsToMap(this.level.enemies);
+
+        // Draw throwable objects
+        this.addThrowableObjectsToMap(this.level.throwableObjects);
+
+        // Draw other level elements with parallax effects
+        this.drawObjectInParallaxEffect(this.level.axe);
+        this.drawObjectInParallaxEffect(this.level.coin);
+        this.drawObjectInParallaxEffect(this.level.grounds);
+
+        // Restore the canvas state
+        this.ctx.restore();
+
+        // Request the next frame for continuous drawing
+        requestAnimationFrame(() => {
+            this.draw();
+        });
+    }
+        
+
+
+    /**
+     * Checks for collisions between the character and treasures.
+     * @param {number} treasureCollisionInterval - Interval ID for treasure collision checking.
+     */
+    checkTreasureCollision(treasureCollisionInterval) {
+        this.level.treasures.forEach(treasure => {
+            if (this.character.isColliding(treasure) &amp;&amp; this.keyboard.Q) {
+                treasure.img.src = treasure.unlockedImage; // Change treasure image when collected
+                this.character.playSound(this.character.winSound, 1, 1); // Play sound effect
+                slideInSuccessParchment(); // Display success message
+                clearInterval(treasureCollisionInterval); // Stop checking for treasure collisions
+            }
+        });
+    }
+
+/**
+ * Checks for collisions between the character and obstacles in the level.
+ * 
+ * This function iterates through all obstacles in the level and checks if the character is colliding with any of them.
+ * It calculates the bounds of both the character and the obstacle to determine the type and direction of the collision.
+ * Based on the collision direction, it adjusts the character's position and state:
+ * - **Top Collision**: Character is standing on the obstacle, `speedY` is set to `0`, and character's `y` position is adjusted.
+ * - **Bottom Collision**: Character is on the bottom of the obstacle, `jumpingProcess` is set to `false`, `speedY` is set to `0`, and character's `y` position is adjusted.
+ * - **Left Collision**: Character is colliding with the obstacle from the left side, `x` position is adjusted.
+ * - **Right Collision**: Character is colliding with the obstacle from the right side, `x` position is adjusted.
+ * If no collision is detected, it initiates a check to determine if the character is falling from a platform.
+ * 
+ * @function
+ * @name checkObstacleCollisions
+ * @memberof GameClass
+ * 
+ * @param {Object} this - The context in which the function is executed, typically an instance of the game class containing properties such as:
+ * @param {Object[]} this.level.obstacles - An array of obstacle objects in the level.
+ * @param {Character} this.character - The character object involved in the collision detection.
+ * 
+ * @returns {void}
+ */
+    checkObstacleCollisions() {
+        this.level.obstacles.forEach(obstacle => {
+            if (this.character.isColliding(obstacle)) {
+                // Calculate character and obstacle bounds
+                const charBounds = {
+                    top: this.character.y + this.character.offset.top,
+                    bottom: this.character.y + this.character.height - this.character.offset.bottom,
+                    left: this.character.x + this.character.offset.left,
+                    right: this.character.x + this.character.width - this.character.offset.right
+                };
+                
+                const obsBounds = {
+                    top: obstacle.y + obstacle.offset.top,
+                    bottom: obstacle.y + obstacle.height - obstacle.offset.bottom,
+                    left: obstacle.x + obstacle.offset.left,
+                    right: obstacle.x + obstacle.width - obstacle.offset.right
+                };
+        
+                // Calculate overlaps on each side
+                const overlapTop = charBounds.bottom - obsBounds.top;
+                const overlapBottom = obsBounds.bottom - charBounds.top;
+                const overlapLeft = charBounds.right - obsBounds.left;
+                const overlapRight = obsBounds.right - charBounds.left;
+        
+                // Determine the minimum overlap to find the collision side
+                const minOverlap = Math.min(overlapTop, overlapBottom, overlapLeft, overlapRight);
+        
+                if (minOverlap === overlapTop &amp;&amp; overlapTop > 0) {
+                    // Handle collision from the top
+                    this.character.isStandingOnObstacle = true;
+                    this.character.speedY = 0;
+                    this.character.y = obstacle.y - this.character.height + this.character.offset.bottom + 10;
+                } else if (minOverlap === overlapBottom &amp;&amp; overlapBottom > 0) {
+                    // Handle collision from the bottom
+                    this.character.isStandingOnObstacle = true;
+                    this.character.jumpingProcess = false;
+                    this.character.speedY = 0;
+                    this.character.y = obstacle.y + obstacle.height - this.character.offset.bottom;
+                } else if (minOverlap === overlapLeft &amp;&amp; overlapLeft > 0) {
+                    // Handle collision from the left
+                    this.character.x = obstacle.x - this.character.width + this.character.offset.right;
+                } else if (minOverlap === overlapRight &amp;&amp; overlapRight > 0) {
+                    // Handle collision from the right
+                    this.character.x = obstacle.x + obstacle.width - this.character.offset.left;
+                }
+            } else {
+                setTimeout(() => {
+                    this.checkFallingFromPlatform();
+                }, 100);
+            }
+        });
+    }
+
+
+/**
+ * Checks for collisions between the character and various objects in the game.
+ * 
+ * - **Enemies** (`Array&lt;Enemy>`):
+ *   - Checks if the `character` (`Character` object) collides with any `enemies` (`Array&lt;Enemy>`) that are not dead.
+ *   - If the `character` is standing on an `enemy` and is falling, the `enemy` dies, and the `character` performs a stamp jump.
+ *   - If the `character` collides with an `enemy` from other directions (not jumping), it reduces the `character`'s health by `1`.
+ *   - Updates the `character`'s health bar (`StatusBar` object).
+ * 
+ * - **Endbosses** (`Array&lt;Endboss>`):
+ *   - Checks if the `character` collides with any `endbosses` (`Array&lt;Endboss>`) that are not dead.
+ *   - If a collision occurs, it reduces the `character`'s health by `2`.
+ *   - Updates the `character`'s health bar (`StatusBar` object).
+ * 
+ * - **Axes** (`Array&lt;Axe>`):
+ *   - Checks if the `character` collides with any `axes` (`Array&lt;Axe>`).
+ *   - If a collision occurs, plays a sound effect (`Audio` object), increases the `character`'s axe inventory (`number`), updates the axe count in the status bar (`StatusBar` object), and removes the collected axe from the level (`Array&lt;Axe>`).
+ * 
+ * - **Coins** (`Array&lt;Coin>`):
+ *   - Checks if the `character` collides with any `coins` (`Array&lt;Coin>`).
+ *   - If a collision occurs, plays a sound effect (`Audio` object), increases the `character`'s coin inventory (`number`), updates the coin count in the status bar (`StatusBar` object), and removes the collected coin from the level (`Array&lt;Coin>`).
+ * 
+ * @param {Object} this - The context in which the function is executed, typically an instance of the game class containing properties such as `level`, `character`, and `statusBars`.
+ */
+    checkBodyToBodyCollisions() {
+        // Check collisions with enemies
+        this.level.enemies.forEach(enemy => {
+            if (!enemy.isDead() &amp;&amp; this.character.isColliding(enemy)) {
+                if (this.character.isStandingOn(enemy) &amp;&amp; this.character.isFalling()) {
+                    // Character is jumping on enemy
+                    this.character.stampJump();
+                    enemy.dies(); // Enemy dies
+                } else if (this.character.y > 260) {
+                    // Character is colliding with enemy from other directions
+                    this.character.reduceHP(1, enemy);
+                    this.statusBars[0].setPercentage(this.character.HP); // Update health bar
+                }
+            }
+        });
+
+        // Check collisions with endbosses
+        this.level.endboss.forEach(endboss => {
+            if (!endboss.isDead() &amp;&amp; this.character.isColliding(endboss)) {
+                this.character.reduceHP(2, endboss);
+                this.statusBars[0].setPercentage(this.character.HP); // Update health bar
+            }
+        });
+
+        // Check collisions with axes
+        this.level.axe.forEach(axe => {
+            if (this.character.isColliding(axe)) {
+                this.character.playSound(this.character.collectAxeSound, 1, 3);
+                this.character.increaseInventoryOf(axe);
+                this.statusBars[1].setPercentage(this.character.axes); // Update axe count
+                this.removeCollectableObject(axe); // Remove collected axe
+            }
+        });
+
+        // Check collisions with coins
+        this.level.coin.forEach(coin => {
+            if (this.character.isColliding(coin)) {
+                this.character.playSound(this.character.collectCoinSound, 0.1, 1.3);
+                this.character.increaseInventoryOf(coin);
+                this.statusBars[2].setPercentage(this.character.coins); // Update coin count
+                this.removeCollectableObject(coin); // Remove collected coin
+            }
+        });
+    }
+
+
+/**
+ * Checks for collisions between throwable objects and enemies or the endboss.
+ * - Iterates through all throwable objects in the level.
+ * - If a throwable object is detected and has not been used, it checks for collisions with enemies.
+ * - If a collision is detected between a throwable object and an enemy, the following actions are performed:
+ *   - Plays a sound effect indicating a hit.
+ *   - Sets the throwable object's collision status to `true`.
+ *   - Reduces the enemy's health points by 40.
+ * - Similarly, checks for collisions with the endboss:
+ *   - Plays a sound effect indicating a hit.
+ *   - Sets the throwable object's collision status to `true`.
+ *   - Reduces the endboss's health points by 40.
+ * 
+ * Note: This function is called when there are throwable objects in the level or when the user presses the 'E' key.
+ */
+    checkThrowableObjectCollision(){
+        if (this.level.throwableObjects[0] || this.keyboard.E) {
+            // throwable object collision
+            this.level.throwableObjects.forEach((throwObject) => {
+                if (throwObject &amp;&amp; !throwObject.used) {
+                    this.level.enemies.forEach((enemy) => {
+                        if (!enemy.isDead() &amp;&amp; throwObject.isColliding(enemy)) {
+                            this.character.playSound(this.character.throwingAxeHitSound, 0.3, 1)
+                            throwObject.collision = true;
+                            enemy.reduceHP(40, throwObject.used);
+                        }
+                    });
+                }
+            });
+
+            // throwable object collision
+            this.level.throwableObjects.forEach((throwObject) => {
+                if (throwObject &amp;&amp; !throwObject.used) {
+                    this.level.endboss.forEach((endboss) => {
+                        if (!endboss.isDead() &amp;&amp; throwObject.isColliding(endboss)) {
+                            this.character.playSound(this.character.throwingAxeHitSound, 0.3, 1)
+                            throwObject.collision = true;
+                            endboss.reduceHP(40, throwObject.used);
+                            }
+                        });
+                    }
+                });                
+            }
+    }
+
+
+    /**
+ * Checks and handles melee attacks for the character and enemies/bosses.
+ * 
+ * This function orchestrates the melee attack logic for both the character and enemies/bosses.
+ * It first performs melee attacks by the character (`characterMelee`) and then checks for melee attacks
+ * on the character from enemies and bosses (`enemyAndBossMelee`).
+ * 
+ */
+    checkMelee(){
+        this.characterMelee();
+        this.enemyAndBossMelee();
+    }
+
+
+/**
+ * Checks and handles melee attacks from enemies and bosses on the character.
+ * 
+ * This function iterates through all enemies and bosses in the level to check if they are within melee range
+ * of the character. If they are attacking and not dead or damaged, the function applies damage to the character
+ * and plays an appropriate sound effect. It also manages the enemies' and bosses' speeds and attack states.
+ * 
+ */
+    enemyAndBossMelee(){
+        this.level.enemies.forEach((enemy) => {
+            if (this.character.isHorizontalInRange(enemy)) {
+                enemy.speed = 0;
+            }
+            if ( !enemy.meleeAttackProcess &amp;&amp; this.character.isInMeleeRangeForMinotaur(enemy) &amp;&amp; !enemy.isDead() &amp;&amp; !enemy.damageProcess) {
+                enemy.meleeRangeToCharacter = true;
+                if (enemy.isAttacking) {
+                    if (this.character.isDead()) {
+                        enemy.hitSound.pause();
+                    } else {
+                        enemy.playSound(enemy.hitSound, 0.1, 0.9)
+                    }
+                    this.character.reduceHP(5, enemy);
+                    this.statusBars[0].setPercentage(this.character.HP);
+                };
+            }else {
+                enemy.resetSpeed();
+            }});   
+
+        this.level.endboss.forEach( (endboss) => {
+            if (!endboss.meleeAttackProcess &amp;&amp; this.character.isInMeleeRangeForEndboss(endboss) &amp;&amp; !endboss.isDead() &amp;&amp; !endboss.damageProcess) {
+                endboss.speed = 0;
+                endboss.meleeRangeToCharacter = true;
+                if (endboss.isAttacking) {
+                    if (this.character.isDead()) {
+                        endboss.hitSound.pause();
+                    } else {
+                        endboss.playSound(endboss.hitSound, 1, 1)
+                    }
+                    this.character.reduceHP(10, endboss);
+                    this.statusBars[0].setPercentage(this.character.HP);
+
+                } 
+            } else {
+                endboss.resetSpeed();
+            }});   
+    }
+
+
+/**
+ * Checks and handles melee attacks by the character on enemies and bosses.
+ * 
+ * This function iterates through all enemies and bosses to check if they are within melee range of the character.
+ * If the character is attacking (triggered by pressing a specific key) and the enemy or boss is not dead or damaged,
+ * the function applies damage to the enemy or boss and plays the character's melee attack sound effect.
+ * 
+ */
+    characterMelee(){
+        this.level.enemies.forEach((enemy) => {
+            if ( !this.character.meleeAttackProcess &amp;&amp; enemy.isInMeleeRangeForCharacter(this.character) &amp;&amp; !enemy.isDead() &amp;&amp; !enemy.damageProcess) {
+                if (this.keyboard.Q) {
+                    enemy.reduceHP(30, enemy);
+                    this.character.playSound(this.character.meleeHitSound, 1, 1);
+                }
+            }else {
+                enemy.resetSpeed();
+            }}); 
+
+        this.level.endboss.forEach((endboss) => {
+            if ( !this.character.meleeAttackProcess &amp;&amp; endboss.isInMeleeRangeForCharacter(this.character) &amp;&amp; !endboss.isDead() &amp;&amp; !endboss.damageProcess) {
+                if (this.keyboard.Q) {
+                    endboss.reduceHP(30, endboss);
+                    this.character.playSound(this.character.meleeHitSound, 1, 1);
+                }
+            }else {
+                endboss.resetSpeed();
+            }}); 
+    }
+
+
+
+/**
+ * Checks if the character is throwing an object and processes the throwing action.
+ * 
+ * This function checks if the `E` key is pressed, the character is not dead, has throwable objects in inventory,
+ * and is not on cooldown. If all conditions are met, it creates a new throwable object, adds it to the level's
+ * throwable objects array, updates the character's inventory of throwable objects, and starts a cooldown period.
+ * 
+ */
+    checkIfThrowingObjects(){
+        if (this.keyboard.E &amp;&amp; !this.character.isDead() &amp;&amp; this.character.axes !== 0 &amp;&amp; !this.character.cooldown) {
+            let axe = new ThrowableObject(this.character.x, this.character.y, this.character.otherDirection);
+            this.level.throwableObjects.push(axe);
+            this.character.axes -= 20;
+            this.statusBars[1].setPercentage(this.character.axes);
+            this.character.checkAndStartCooldown();
+        };
+    }
+
+
+/**
+ * Removes throwable objects from the level if they are no longer visible or have been used.
+ * 
+ * This function iterates through all throwable objects in the level and removes them from the array if:
+ * 1. They are not visible, or
+ * 2. They have been used.
+ * The function also ensures that the character is not on cooldown while performing these operations.
+ * 
+ */
+    removeThrowableObjects(){
+        this.level.throwableObjects.forEach((throwObject) => {
+            if(!this.character.cooldown){
+                if (!throwObject.isVisible() || throwObject.used) {
+                    const index = this.level.throwableObjects.indexOf(throwObject);
+                    if (index > -1) {
+                        this.level.throwableObjects.splice(index, 1);
+                    }
+                }
+            }
+        });
+    }
+
+
+/**
+ * Adds throwable objects to the map if they are present.
+ * 
+ * This function takes an array of throwable objects and adds them to the map if the array is not empty.
+ * It utilizes the `addObjectsToMap` method to handle the actual addition to the map.
+ * 
+ * @param {ThrowableObject[]} throwableObjects - An array of `ThrowableObject` instances to be added to the map.
+ * 
+ */
+    addThrowableObjectsToMap(throwableObjects){
+        if (throwableObjects[0]) {
+            this.addObjectsToMap(throwableObjects);
+        }
+    }
+
+
+/**
+ * Draws objects with a parallax effect based on their speed.
+ * 
+ * This function iterates through a list of background layers and applies a parallax effect by translating
+ * the background based on its speed and the current camera position. The background objects are drawn with
+ * the adjusted position.
+ * 
+ * @param {Array&lt;Object>} layer - An array of background objects to be drawn with the parallax effect. Each object should have a `speed` property and a `draw` method.
+ * 
+ */
+    drawObjectInParallaxEffect(layer) {
+        layer.forEach(bg => {
+            let adjustedX = bg.speed * this.camera_x; // Anpassen der Geschwindigkeit für Parallaxen-Effekt
+            this.ctx.save(); // Speichert den Zustand vor der Verschiebung
+            this.ctx.translate(adjustedX, 0); // Hintergrund basierend auf Geschwindigkeit verschieben
+            this.addToMap(bg);
+            this.ctx.restore(); // Stellt den Zustand nach der Verschiebung wieder her
+        });
+    }
+
+
+/**
+ * Adds multiple objects to the map.
+ * 
+ * This function iterates through an array of objects and adds each one to the map using the `addToMap` method.
+ * 
+ * @param {Array&lt;Object>} objects - An array of objects to be added to the map. Each object should have a `draw` method.
+ * 
+ */
+    addObjectsToMap(objects){
+        objects.forEach( o => {
+            this.addToMap(o)
+        });
+    }
+
+
+/**
+ * Adds a movable object to the map.
+ * 
+ * This function draws a movable object on the map. If the object requires flipping (indicated by `otherDirection`), it will be flipped before drawing.
+ * 
+ * @param {Object} movableObject - The movable object to be added to the map. It should have `draw` and `flipImage` methods, and possibly an `otherDirection` property.
+ * 
+ */
+    addToMap(movableObject){
+        if (movableObject.otherDirection) {
+            this.flipImage(movableObject);
+        };
+
+        movableObject.draw(this.ctx);
+        // movableObject.drawFrame(this.ctx);
+
+        if (movableObject.otherDirection) {
+            this.flipImageBack(movableObject);
+        }
+    }
+
+
+/**
+ * Adds a fixed object to the map.
+ * 
+ * This function draws a fixed object on the map while adjusting for the current camera position. The camera is translated to ensure the object is drawn correctly relative to the camera's position.
+ * 
+ * @param {Object} object - The fixed object to be added to the map. It should have a `draw` method.
+ * 
+ */
+    addFixedObjectToMap(object){
+        this.ctx.translate(-this.camera_x, 0);
+        object.draw(this.ctx);
+        this.ctx.translate(this.camera_x, 0);
+    }
+
+
+/**
+ * Adds multiple fixed objects to the map.
+ * 
+ * This function iterates through an array of fixed objects and adds each one to the map using the `addFixedObjectToMap` method.
+ * 
+ * @param {Array&lt;Object>} objects - An array of fixed objects to be added to the map. Each object should have a `draw` method.
+ * 
+ */
+    addMultipleFixedObjectsToMap(objects){
+        objects.forEach( obj => {
+            this.addFixedObjectToMap(obj)
+        });
+    }
+
+
+/**
+ * Flips a movable object horizontally for drawing.
+ * 
+ * This function flips the image of a movable object horizontally by translating and scaling the canvas context. 
+ * The object's `x` position is also adjusted to account for the flip.
+ * 
+ * @param {Object} movableObject - The movable object to be flipped. It should have a `width` and `x` property.
+ * 
+ * @returns {void}
+ */
+    flipImage(movableObject){
+        this.ctx.save();
+        this.ctx.translate(movableObject.width, 0);
+        this.ctx.scale(-1, 1);
+        movableObject.x = movableObject.x * -1;
+    }
+
+
+/**
+ * Reverts the horizontal flip applied to a movable object.
+ * 
+ * This function restores the canvas context to its previous state and adjusts the `x` position of the movable object back to its original value.
+ * 
+ * @param {Object} movableObject - The movable object whose flip state needs to be reverted. It should have an `x` property.
+ * 
+ */
+    flipImageBack(movableObject){
+        movableObject.x = movableObject.x * -1;
+        this.ctx.restore();
+    }
+
+
+/**
+ * Removes a collectable object from the level.
+ * 
+ * This function removes a collectable object (either an `Axe` or a `Coin`) from the respective array in the level. 
+ * If the object is an `Axe`, it is removed from the `level.axe` array. If it is a `Coin`, it is removed from the `level.coin` array.
+ * 
+ * @param {Object} objectToRemove - The collectable object to be removed. This object must be an instance of either `Axe` or `Coin`.
+ * 
+ */
+    removeCollectableObject(objectToRemove) {
+        if (objectToRemove instanceof Axe) {
+            let index = this.level.axe.indexOf(objectToRemove);
+            if (index !== -1) {
+                this.level.axe.splice(index, 1);
+            }
+        } else if (objectToRemove instanceof Coin) {
+            let index = this.level.coin.indexOf(objectToRemove);
+            if (index !== -1) {
+                this.level.coin.splice(index, 1);
+            }
+        }
+    }
+}
+
+
+
+
+        // setInterval(()=> {
+        //     this.checkFallingFromPlatform();
+            
+        // }, 100);     
+            // setInterval(()=> {
+            //     // if (!this.isStandingOnObstacle) {
+
+            //     this.defineCurrentGround();
+            //     // }
+            // }, 1000 / 150);    
+
+
+
+
+
+        // setInterval( () => {
+        //     if (this.currentGround instanceof OneBlockStepRock || 
+        //         this.currentGround instanceof OneBlockRockObstacle || 
+        //             this.currentGround instanceof ThreeBlockPlatform) {
+        //         if (!this.isStandingOnObstacle &amp;&amp; !this.character.speedY == 0) {
+        //             this.checkPlatformCollisions();
+        //         }
+        //     else{
+        //         return
+        //     }
+        // }
+        // }, 1000  / 150);
+
+        // setInterval( () => {
+        //     if (this.currentGround instanceof OneBlockStepRock || 
+        //         this.currentGround instanceof OneBlockRockObstacle || 
+        //             this.currentGround instanceof ThreeBlockPlatform) {
+        //         if (!this.isStandingOnObstacle &amp;&amp; !this.character.speedY == 0) {
+        //             this.checkPlatformCollisions2();
+        //         }
+        //     else{
+        //         return
+        //     }
+        // }
+        // }, 1000  / 150);
+
+
+
+
+
+    // defineCurrentGround(){
+    //         this.level.obstacles.forEach( (obstacle) => {
+    //             if (obstacle.isVisible() &amp;&amp; this.character.isColliding(obstacle)) {
+    //                 this.currentGround = obstacle;
+    //             }
+    //         });
+
+    //         this.level.platforms.forEach( (platform) => {
+    //             if (platform.isVisible() &amp;&amp; this.character.isColliding(platform)) {
+    //                 this.currentGround = platform;
+    //             }
+    //         });
+    // }
+
+
+
+    // checkFallingFromPlatform3(){
+    //     if (!this.keyboard.SPACE &amp;&amp; !this.character.isColliding(this.currentGround)) {
+    //         if (this.character.isStandingOnObstacle &amp;&amp; this.character.isAboveGround()) {
+    //             if (!this.character.characterNewYSetted) {
+    //                 console.log('checkFallingFromPlatform3 active'); // warum active wenn auf boden?
+    //                 this.character.isStandingOnObstacle = false;                    
+    //             }
+
+    //             if (this.characterNewYSetted) {
+    //                 this.characterNewYSetted = false;
+    //             }                
+    //         } 
+    //     }
+    // }
+
+
+
+// checkPlatformCollisions(){
+    //     this.level.platforms.forEach( (platform) => {
+
+    //         if (this.character.isColliding(platform) &amp;&amp; this.character.bodyBottom &lt;= platform.y) {
+    //             this.character.isStandingOnObstacle = true;
+    //             this.character.speedY = 0;
+    //             this.character.y = platform.y - this.character.height + this.character.offset.bottom;
+    //         } 
+    //     })
+    // }
+
+//     checkPlatformCollisions(){
+//         // let startTime = Date.now();
+
+
+//             if (!this.character.isStandingOnObstacle &amp;&amp;
+//                 this.character.isColliding(this.currentGround) &amp;&amp; 
+//                 this.character.bodyBottom &lt;= this.currentGround.y) {
+//                 this.character.isStandingOnObstacle = true;
+
+//                 if (!this.characterNewYSetted) {
+//                     this.character.y = this.currentGround.y - this.character.height + this.character.offset.bottom;
+//                     this.characterNewYSetted = true;
+//                 }
+
+//             } 
+//     }
+
+
+
+//     checkPlatformCollisions2(){
+
+//         if (!this.character.isStandingOnObstacle &amp;&amp;
+//             this.character.isColliding(this.currentGround) &amp;&amp; 
+//             this.character.bodyBottom &lt;= this.currentGround.y + 25) {
+//             this.character.isStandingOnObstacle = true;
+
+//             if (!this.characterNewYSetted) {
+//                 this.character.y = this.currentGround.y - this.character.height + this.character.offset.bottom;
+//                 this.characterNewYSetted = true;
+//             }
+//         } 
+// }</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Events</h3><ul><li><a href="fullscreenContainer.html#event:click">click</a></li><li><a href="gameCanvas.html#event:mouseout-Hidesthefullscreenandsoundbuttoncontainers.">mouseout - Hides the fullscreen and sound button containers.</a></li><li><a href="jQuery.html#event:click">click</a></li><li><a href="soundButtonContainer.html#event:mouseout-Hidesthefullscreenandsoundbuttoncontainers.">mouseout - Hides the fullscreen and sound button containers.</a></li><li><a href="touchLeft.html#event:touchend">touchend</a></li><li><a href="touchLeft.html#event:touchstart">touchstart</a></li><li><a href="touchRight.html#event:touchend">touchend</a></li><li><a href="touchRight.html#event:touchstart">touchstart</a></li><li><a href="window.html#event:resize">resize</a></li></ul><h3>Global</h3><ul><li><a href="global.html#backToMenu">backToMenu</a></li><li><a href="global.html#checkAndStartBackgroundMusic">checkAndStartBackgroundMusic</a></li><li><a href="global.html#closePopUp">closePopUp</a></li><li><a href="global.html#disOrEnableOkButton">disOrEnableOkButton</a></li><li><a href="global.html#handleTouchEnd">handleTouchEnd</a></li><li><a href="global.html#handleTouchStart">handleTouchStart</a></li><li><a href="global.html#handleUserInteraction">handleUserInteraction</a></li><li><a href="global.html#hideContainer">hideContainer</a></li><li><a href="global.html#hideLandingScreen">hideLandingScreen</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#playAudio">playAudio</a></li><li><a href="global.html#playMenuTheme">playMenuTheme</a></li><li><a href="global.html#renderControls">renderControls</a></li><li><a href="global.html#resetGame">resetGame</a></li><li><a href="global.html#setupUserInteractionListener">setupUserInteractionListener</a></li><li><a href="global.html#showFirstPageHorizontalMobileControls">showFirstPageHorizontalMobileControls</a></li><li><a href="global.html#showFirstPageVerticalMobileControls">showFirstPageVerticalMobileControls</a></li><li><a href="global.html#showFullScreenContainer">showFullScreenContainer</a></li><li><a href="global.html#showLandingScreen">showLandingScreen</a></li><li><a href="global.html#showSecondPageHorizontalMobileControls">showSecondPageHorizontalMobileControls</a></li><li><a href="global.html#showSecondPageVerticalMobileControls">showSecondPageVerticalMobileControls</a></li><li><a href="global.html#slideInControls">slideInControls</a></li><li><a href="global.html#slideInFailureParchment">slideInFailureParchment</a></li><li><a href="global.html#slideInStory">slideInStory</a></li><li><a href="global.html#slideInSuccessParchment">slideInSuccessParchment</a></li><li><a href="global.html#slideInTurnDeviceNotice">slideInTurnDeviceNotice</a></li><li><a href="global.html#soundOnOrOff">soundOnOrOff</a></li><li><a href="global.html#startGame">startGame</a></li><li><a href="global.html#startResettedGame">startResettedGame</a></li><li><a href="global.html#updateFullscreenVisibility">updateFullscreenVisibility</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Sun Aug 18 2024 17:50:28 GMT+0200 (Central European Summer Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
