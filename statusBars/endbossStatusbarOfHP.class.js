@@ -41,7 +41,7 @@ class EndbossStatusBarOfHP extends DrawableObject {
         super(); // Call the parent class constructor
         this.loadImages(this.HPImages);
         this.x = 500;
-        this.y = 80;
+        this.y = 120;
         this.height = 50;
     }
 

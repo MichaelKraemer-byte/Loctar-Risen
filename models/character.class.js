@@ -408,6 +408,8 @@ class Character extends MovableObject{
          */
         this.jumpingProcessInterval = false;
 
+
+
         this.setBodyVariables();
 
         // Load images for different character states
@@ -454,13 +456,16 @@ class Character extends MovableObject{
      */
     setupMovementAndSound() {
         setInterval(() => {
-            this.walkSound.pause();
+            setTimeout(()=>{
+                this.walkSound.pause();
+            }, 5000);
+            
+
             if (this.shouldMoveRight()) this.moveRight();
             if (this.shouldMoveLeft()) this.moveLeft();
             this.updateCameraPosition();
         }, 1000 / 60);
     }
-
 
 
     /**

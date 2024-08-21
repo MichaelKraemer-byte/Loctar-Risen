@@ -17,7 +17,7 @@ const level_1 = new Level (
         new Minotaur_1(4000),
     ],
     [
-        new Endboss(300),
+        new Endboss(2700),
         new Endboss(4750),
     ],
     [
@@ -79,9 +79,11 @@ const level_1 = new Level (
         new RuinDecor('assets/ruins-tileset/PNG/Environment/Decor_Ruins_01.png', -30),
         new Foreground('assets/crafties/forest-backgrounds/forest/PNG/Cartoon_Forest_BG_01/Layers/Foreground.png', 720),
         new Foreground('assets/crafties/forest-backgrounds/forest/PNG/Cartoon_Forest_BG_01/Layers/Foreground.png', 1440),
+        new Sign('assets/ruins-tileset/PNG/Environment/Sign_04.png', 2000),
         new Foreground('assets/crafties/forest-backgrounds/forest/PNG/Cartoon_Forest_BG_01/Layers/Foreground.png', 2160),
         new Foreground('assets/crafties/forest-backgrounds/forest/PNG/Cartoon_Forest_BG_01/Layers/Foreground.png', 2880),
         new Foreground('assets/crafties/forest-backgrounds/forest/PNG/Cartoon_Forest_BG_01/Layers/Foreground.png', 3600),
+        new Sign('assets/ruins-tileset/PNG/Environment/Sign_02.png', 3700),
         new Foreground('assets/crafties/forest-backgrounds/forest/PNG/Cartoon_Forest_BG_01/Layers/Foreground.png', 4320),
         new Foreground('assets/crafties/forest-backgrounds/forest/PNG/Cartoon_Forest_BG_01/Layers/Foreground.png', 5040),
         new Foreground('assets/crafties/forest-backgrounds/forest/PNG/Cartoon_Forest_BG_01/Layers/Foreground.png', 5760)

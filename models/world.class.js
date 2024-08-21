@@ -1098,31 +1098,17 @@ executeCharacterAttack(target) {
  * 
  */
     addEndbossStatusbarToMap() {    
-        // Durchlaufe alle Endbosse im Level
         this.level.endboss.forEach((endboss) => {
-            // Filtere alle EndbossStatusBars aus dem statusBars-Array
             const endbossStatusBars = this.statusBars.filter(bar => bar instanceof EndbossStatusBarOfHP);
-            
-            // Überprüfe, ob es bereits eine StatusBar für den aktuellen Endboss gibt
             const existingBar = endbossStatusBars.find(bar => bar.endboss === endboss);
-
             if (!endboss.isDead() && endboss.isVisible()) {
                 if (!existingBar) {
-                    // Erstelle eine neue StatusBar für den Endboss
                     const newBar = new EndbossStatusBarOfHP();
-
-                    // Setze die y-Position der StatusBar basierend auf der Anzahl der vorhandenen StatusBars
-                    newBar.y = 120 * endbossStatusBars.length; 
-
-                    // Weise den aktuellen Endboss der StatusBar zu
                     newBar.endboss = endboss;
-
-                    // Füge die neue StatusBar zum StatusBars-Array hinzu
                     this.statusBars.push(newBar);
                 }
             } else {
                 if (existingBar) {
-                    // Entferne die existierende StatusBar, wenn der Endboss tot oder nicht sichtbar ist
                     const barIndex = this.statusBars.indexOf(existingBar);
                     if (barIndex !== -1) {
                         this.statusBars.splice(barIndex, 1);

@@ -162,7 +162,7 @@ class Endboss extends MovableObject {
      * The health points of the end boss.
      * @type {number}
      */
-    HP = 400;
+    HP = 300;
 
     /**
      * The offset for positioning the end boss.

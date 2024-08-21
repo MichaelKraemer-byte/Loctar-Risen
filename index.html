@@ -12,12 +12,12 @@
 
     <title>Loctar Risen</title>
 </head>
-<body onload="startResettedGame(); setupUserInteractionListener();">
+<body onload="startResettedGame(); setupUserInteractionListener(); checkAndStartBackgroundMusic();">
 
-    <div onclick="soundOnOrOff()" class="landing-sound-button-container" id="landingSoundButtonContainer">
+    <div class="landing-sound-button-container" id="landingSoundButtonContainer">
       <img onclick="backToMenu()" class="landing-sound-icon homeButton" id="homeButton" src="./assets/WebImages/home.png">
 
-      <img class="landing-sound-icon" id="landingSoundIMG" src="./assets/WebImages/volume.png">
+      <img onclick="soundOnOrOff()" class="landing-sound-icon" id="landingSoundIMG" src="./assets/WebImages/volume.png">
 
     </div>
 
@@ -116,6 +116,7 @@
 
     <!-- environments -->
     <script src="./environments/ruinDecor.class.js"></script>
+    <script src="./environments/sign.class.js"></script>
 
     <!-- Level -->
     <script src="./models/level.class.js"></script>

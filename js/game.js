@@ -89,6 +89,57 @@ let globalVolume = true;
 let userInteracted = false;
 
 
+
+/**
+ * Starts the game if the page was reloaded.
+ * - Checks `localStorage` to see if the page should be treated as a reset.
+ * - Removes the `reload` item from `localStorage` to avoid resetting on the next start.
+ * - If the page was reloaded, starts the game.
+ * - If not, renders the landing screen.
+ * - Also initiates an interval to check if the background music is turned on or off,
+ *   and starts playing the background music if it is not already playing.
+ */
+function startResettedGame() {
+    if (window.localStorage.getItem('reload') == 'restart') {
+        gameHasStarted = true;
+        startGame();
+    } else  {
+        let landingScreen = document.getElementById('landingScreen');
+        landingScreen.innerHTML = renderLandingScreen();
+    }
+};
+
+
+/**
+ * Resets the game by saving the current state to `localStorage` and reloading the page.
+ * - Sets an item in `localStorage` to indicate that the page should be reloaded.
+ * - Reloads the page to reset the game.
+ */
+function resetGame() {
+    // Speichere den aktuellen Zustand im localStorage oder sessionStorage, wenn nötig
+    window.localStorage.setItem('reload', 'restart');
+    window.location.reload(); // Seite neu laden
+}
+
+
+/**
+ * Pauses the game theme and reloads the page to return to the menu.
+ * - Sets an item in `localStorage` to indicate that the page should not be reloaded on next start.
+ * - Reloads the page to return to the menu.
+ */
+function backToMenu(){
+    gameTheme.pause();
+    window.localStorage.setItem('reload', 'menu');
+    window.location.reload(); 
+}
+
+
+// function turnOnSoundAgain(){
+//     if () {
+        
+//     }
+// }
+
 /**
  * Initializes the game by pausing the menu theme, setting game start state,
  * setting up the canvas, and creating a new game world.
@@ -111,7 +162,9 @@ function init() {
  * @param {number} audioSpeed - The speed at which the audio should play (default is 1).
  */
 function playAudio(audio, volume, audioSpeed){
+
     if (globalVolume) {
+        if (globalVolume && userInteracted) {
         audio.volume = volume;
         audio.play();
         audio.playbackRate = audioSpeed;
@@ -121,6 +174,63 @@ function playAudio(audio, volume, audioSpeed){
         audio.pause();
         audio.playbackRate = audioSpeed;
     }
+    }
+}
+
+
+
+
+
+/**
+ * Toggles the sound on or off based on the current state.
+ * Updates the sound icon and plays or pauses the appropriate theme music.
+ */
+function soundOnOrOff() {
+    if (soundIMG.src.includes('volume.png') || landingSoundIMG.src.includes('volume.png') ) {
+        soundIMG.src = './assets/WebImages/mute.png';
+        landingSoundIMG.src = './assets/WebImages/mute.png';
+        globalVolume = false;
+        window.localStorage.setItem('volume', 'off');
+        menuTheme.pause();
+        gameTheme.pause();
+    } else {
+        soundIMG.src = './assets/WebImages/volume.png';
+        landingSoundIMG.src = './assets/WebImages/volume.png';
+        globalVolume = true;
+        window.localStorage.setItem('volume', 'on');
+        if (gameHasStarted && userInteracted) {
+            playAudio(gameTheme, 0.4, 1);
+        } else if(userInteracted){
+            playAudio(menuTheme, 0.4, 1);
+        }
+    }
+}
+
+
+
+/**
+ * Periodically checks the saved volume setting in localStorage and adjusts the sound settings accordingly.
+ * This ensures that the sound settings remain consistent across different sessions or tabs.
+ */
+function checkAndStartBackgroundMusic(){
+    setInterval(()=> {
+        if (window.localStorage.getItem('volume') == 'off') {
+            soundIMG.src = './assets/WebImages/mute.png';
+            landingSoundIMG.src = './assets/WebImages/mute.png';
+            globalVolume = false;
+            gameTheme.pause();
+            menuTheme.pause();
+        } else {
+            soundIMG.src = './assets/WebImages/volume.png';
+            landingSoundIMG.src = './assets/WebImages/volume.png';
+            globalVolume = true;
+            if (gameHasStarted && userInteracted) {
+                playAudio(gameTheme, 0.4, 1);
+            } else if(userInteracted) {
+                playAudio(menuTheme, 0.4, 1);
+            }
+        }
+    }, 100);    
 }
 
 
@@ -225,7 +335,12 @@ updateFullscreenVisibility();
 
 
 /**
- * Adds event listener for window resize to update fullscreen visibility.
+ * Adds an event listener for the 'resize' event on the window object.
+ * This listener triggers the updateFullscreenVisibility function to update 
+ * the fullscreen visibility whenever the window is resized.
+ *
+ * @event resize
+ * @param {Event} event - The resize event object.
  */
 window.addEventListener('resize', updateFullscreenVisibility);
 
@@ -289,25 +404,51 @@ function hideContainer() {
     }, 100);
 }
 
+
 /**
  * Adds event listeners to show and hide containers when the mouse enters and leaves the canvas area.
+ *
+ * @event mouseover
+ * @param {MouseEvent} event - The mouseover event object, triggered when the mouse enters the canvas area.
+ *
+ * @event mouseout
+ * @param {MouseEvent} event - The mouseout event object, triggered when the mouse leaves the canvas area.
  */
 gameCanvas.addEventListener('mouseover', showFullScreenContainer);
 gameCanvas.addEventListener('mouseout', hideContainer);
 
-
 /**
- * Adds event listeners to the fullscreen and sound button containers to show and hide them
- * when the mouse enters and leaves these areas.
+ * Adds event listeners to the fullscreen container to show and hide it
+ * when the mouse enters and leaves this area.
+ *
+ * @event mouseover
+ * @param {MouseEvent} event - The mouseover event object, triggered when the mouse enters the fullscreen container.
+ *
+ * @event mouseout
+ * @param {MouseEvent} event - The mouseout event object, triggered when the mouse leaves the fullscreen container.
  */
 fullscreenContainer.addEventListener('mouseover', showFullScreenContainer);
 fullscreenContainer.addEventListener('mouseout', hideContainer);
+
+/**
+ * Adds event listeners to the sound button container to show and hide it
+ * when the mouse enters and leaves this area.
+ *
+ * @event mouseover
+ * @param {MouseEvent} event - The mouseover event object, triggered when the mouse enters the sound button container.
+ *
+ * @event mouseout
+ * @param {MouseEvent} event - The mouseout event object, triggered when the mouse leaves the sound button container.
+ */
 soundButtonContainer.addEventListener('mouseover', showFullScreenContainer);
 soundButtonContainer.addEventListener('mouseout', hideContainer);
 
 
 /**
  * Toggles fullscreen mode when the fullscreen container is clicked.
+ *
+ * @event click
+ * @param {MouseEvent} event - The click event object, triggered when the fullscreen container is clicked.
  */
 fullscreenContainer.addEventListener('click', function() {
     if (document.fullscreenElement) {
@@ -317,60 +458,6 @@ fullscreenContainer.addEventListener('click', function() {
     }
 });
 
-
-/**
- * Toggles the sound on or off based on the current state.
- * Updates the sound icon and plays or pauses the appropriate theme music.
- */
-function soundOnOrOff() {
-    if (soundIMG.src.includes('volume.png') || landingSoundIMG.src.includes('volume.png') ) {
-        soundIMG.src = './assets/WebImages/mute.png';
-        landingSoundIMG.src = './assets/WebImages/mute.png';
-        globalVolume = false;
-        window.localStorage.setItem('volume', 'off');
-        menuTheme.pause();
-        gameTheme.pause();
-    } else {
-        soundIMG.src = './assets/WebImages/volume.png';
-        landingSoundIMG.src = './assets/WebImages/volume.png';
-        globalVolume = true;
-        window.localStorage.setItem('volume', 'on');
-        if (gameHasStarted) {
-            gameTheme.play();
-        } else if(userInteracted){
-            menuTheme.play();
-        }
-    }
-}
-
-
-
-/**
- * Periodically checks the saved volume setting in localStorage and adjusts the sound settings accordingly.
- * This ensures that the sound settings remain consistent across different sessions or tabs.
- */
-function checkAndStartBackgroundMusic(){
-    setInterval(()=> {
-        if (window.localStorage.getItem('volume') == 'off') {
-            soundIMG.src = './assets/WebImages/mute.png';
-            landingSoundIMG.src = './assets/WebImages/mute.png';
-            globalVolume = false;
-            window.localStorage.setItem('volume', 'off');
-            gameTheme.pause();
-            menuTheme.pause();
-        } else {
-            soundIMG.src = './assets/WebImages/volume.png';
-            landingSoundIMG.src = './assets/WebImages/volume.png';
-            globalVolume = true;
-            window.localStorage.setItem('volume', 'on');
-            if (gameHasStarted) {
-                gameTheme.play();
-            } else if(userInteracted) {
-                menuTheme.play();
-            }
-        }
-    }, 100);    
-}
 
 
 
@@ -494,7 +581,16 @@ function handleTouchEnd(buttonId) {
 
 /**
  * Adds event listeners for touch events to all elements with the class 'buttonWrapper'.
- * Handles touch start, touch end, and touch cancel events by calling the corresponding functions.
+ * Handles touchstart, touchend, and touchcancel events by calling the corresponding functions.
+ *
+ * @event touchstart
+ * @param {TouchEvent} e - The touchstart event object, triggered when a touch point is placed on the button.
+ *
+ * @event touchend
+ * @param {TouchEvent} e - The touchend event object, triggered when a touch point is removed from the button.
+ *
+ * @event touchcancel
+ * @param {TouchEvent} e - The touchcancel event object, triggered when the touch event is interrupted.
  */
 document.querySelectorAll('.buttonWrapper').forEach(button => {
     button.addEventListener('touchstart', (e) => {
@@ -560,12 +656,6 @@ function handleUserInteraction() {
  * - Adds a `visibilitychange` event listener to set the `userInteracted` flag to `true` when the tab becomes visible.
  */
 function setupUserInteractionListener() {
-    /**
-     * Sets the `userInteracted` flag to `true` when a user interaction is detected.
-     */
-    function handleUserInteraction() {
-        userInteracted = true;
-    }
 
     // Add event listeners for user interactions
     document.addEventListener('click', handleUserInteraction);
@@ -796,72 +886,6 @@ function slideInSuccessParchment() {
 }
 
 
-/**
- * Resets the game by saving the current state to `localStorage` and reloading the page.
- * - Sets an item in `localStorage` to indicate that the page should be reloaded.
- * - Reloads the page to reset the game.
- */
-function resetGame() {
-    // Speichere den aktuellen Zustand im localStorage oder sessionStorage, wenn nötig
-    window.localStorage.setItem('reload', 'restart');
-    window.location.reload(); // Seite neu laden
-}
-
-
-/**
- * Pauses the game theme and reloads the page to return to the menu.
- * - Sets an item in `localStorage` to indicate that the page should not be reloaded on next start.
- * - Reloads the page to return to the menu.
- */
-function backToMenu(){
-    gameTheme.pause();
-    window.localStorage.setItem('reload', 'menu');
-    window.location.reload(); // Seite neu laden
-}
-
-
-/**
- * Plays the menu theme audio with specified volume and playback settings.
- * - Calls `playAudio` with the menu theme, a volume of 0.4, and a playback rate of 1.
- */
-function playMenuTheme(){
-    playAudio(menuTheme, 0.4, 1);
-}
-
-
-/**
- * Adds an event listener to the document to play the menu theme audio when clicked.
- * - Plays the menu theme only if the game has not started.
- */
-document.addEventListener('click', () => {
-    if (!gameHasStarted) {
-        userInteracted = true;
-        playMenuTheme();
-    } 
-});
-
-
-/**
- * Starts the game if the page was reloaded.
- * - Checks `localStorage` to see if the page should be treated as a reset.
- * - Removes the `reload` item from `localStorage` to avoid resetting on the next start.
- * - If the page was reloaded, starts the game.
- * - If not, renders the landing screen.
- * - Also initiates an interval to check if the background music is turned on or off,
- *   and starts playing the background music if it is not already playing.
- */
-function startResettedGame() {
-    checkAndStartBackgroundMusic();
-
-    if (window.localStorage.getItem('reload') == 'restart') {
-        gameHasStarted = true;
-        startGame();
-    } else  {
-        let landingScreen = document.getElementById('landingScreen');
-        landingScreen.innerHTML = renderLandingScreen();
-    }
-};
-
 
 /**
  * Slides in a failure parchment pop-up with an animation.
@@ -877,5 +901,4 @@ function slideInFailureParchment(){
     greyBackground.style.animation = 'fadeIn 0.5s ease-in-out forwards';
     popUp.style.animation = 'slideIn 0.5s ease-in-out forwards';
 }
-
 
