@@ -646,7 +646,6 @@ checkEndbossCollisionsWithThrowables() {
 }
 
 
-
  /**
  * Handles the actions when a throwable object hits an enemy or the endboss.
  * Plays a sound, sets the collision status to true, and reduces the target's health by 40.

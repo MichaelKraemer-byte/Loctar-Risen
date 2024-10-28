@@ -68,6 +68,15 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    flex-direction: column;
+    color: rgb(193, 235, 70);
+    font-size: clamp(17px, 1.6vw, 20px) !important;
+    text-align: center;
+    font-family: 'morpheus', Arial, Helvetica, sans-serif;
+    -webkit-text-stroke-width: 0.1px;
+    -webkit-text-stroke-color:  rgb(123, 224, 69);
+    letter-spacing: 3px;
+    text-shadow: 3px 4px 3px rgba(0, 0, 0, 0.5);
   }
   
   @keyframes l13 {

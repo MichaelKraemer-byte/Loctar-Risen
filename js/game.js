@@ -676,7 +676,12 @@ function setupUserInteractionListener() {
  */
 function disOrEnableOkButton() {
     let button = document.getElementById('OkayButton');
-    if (window.matchMedia("(orientation: landscape)").matches) {
+    
+    // Überprüfe die Orientierung basierend auf window.orientation (sicher für mobile Geräte)
+    let isLandscape = window.innerWidth > window.innerHeight;
+
+    // Zusätzlich mit Media-Query absichern (für Desktop und einige Geräte)
+    if (isLandscape || window.matchMedia("(orientation: landscape)").matches) {
         button.disabled = false;
     } else {
         button.disabled = true;

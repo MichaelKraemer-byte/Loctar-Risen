@@ -114,7 +114,7 @@ class Endboss extends MovableObject {
      * Audio object for the walking sound effect.
      * @type {HTMLAudioElement}
      */
-    walkSound = new Audio('assets/audio/walking/walking-on-crunchy-road.wav');
+    walkSound = new Audio('assets/audio/walking/walking-on-crunchy-road.mp3');
 
     /**
      * Audio object for the hurt sound effect.

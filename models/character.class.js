@@ -279,7 +279,7 @@ class Character extends MovableObject{
      * Audio object for the walking sound effect.
      * @type {HTMLAudioElement}
      */
-    walkSound = new Audio('assets/audio/walking/walking-on-tall-grass.wav');
+    walkSound = new Audio('assets/audio/walking/walking-on-tall-grass.mp3');
 
     /**
      * Audio object for the jump sound effect.
